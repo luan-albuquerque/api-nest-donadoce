@@ -14,7 +14,7 @@ export class UserRepositoryInPrisma implements UserRepository {
                 email: createUserDto.email,
                 fone: createUserDto.fone,
                 name: createUserDto.name,
-                nickname: createUserDto.nickname,
+                username: createUserDto.username,
                 password: createUserDto.password,
                 createdAt: new Date(),
                 is_enabled: true,
@@ -27,14 +27,26 @@ export class UserRepositoryInPrisma implements UserRepository {
     list(): Promise<User[]> {
         throw new Error('Method not implemented.');
     }
-    findByMail(register: string): Promise<User> {
-        throw new Error('Method not implemented.');
+    async findByMail(email: string): Promise<User> {
+       const data = await this.prisma.user.findFirst({
+           where:{
+            email
+           }
+        })
+
+        return data
     }
     findById(register: string): Promise<User> {
         throw new Error('Method not implemented.');
     }
-    findByCpf(register: string): Promise<User> {
-        throw new Error('Method not implemented.');
+    async findByCpf(cpf: string): Promise<User> {
+        const data = await this.prisma.user.findFirst({
+            where:{
+             cpf
+            }
+         })
+ 
+         return data
     }
     findByNickName(register: string): Promise<User> {
         throw new Error('Method not implemented.');

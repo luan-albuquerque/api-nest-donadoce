@@ -1,7 +1,7 @@
 export class User {
     id: string
     name: string
-    nickname: string
+    username: string
     password : string
     cpf?: string
     fone: number

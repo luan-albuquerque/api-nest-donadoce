@@ -4,18 +4,22 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './services/users.service';
 import { CreateUserService } from './services/create-user.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags, ApiOperation } from '@nestjs/swagger';
 
 @ApiTags("Users")
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly createUserService: CreateUserService) {}
+    private readonly createUserService: CreateUserService) { }
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.createUserService.execute(createUserDto);
+  @ApiOperation({ summary: "EndPoint para criação de usuarios", description: "Nescessario nivel administrador" })
+  @ApiOkResponse({ status: 201, description: "Criado com sucesso" })
+  async create(@Body() createUserDto: CreateUserDto) {
+    await this.createUserService.execute(createUserDto);
+    return { message: "Cadastrado com sucesso"};
+
   }
 
   @Get()
