@@ -4,7 +4,7 @@ import CreateSessionService from './services/createSession.service';
 import CreateSessionDTO from './dtos/CreateSessionDTO';
 
 @ApiTags("Auth")
-@Controller('auth')
+@Controller('session')
 export class AuthController {
   constructor(
     private readonly createSessionService: CreateSessionService) { }
