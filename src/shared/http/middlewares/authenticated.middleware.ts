@@ -4,34 +4,53 @@ import { verify } from "jsonwebtoken";
 import { secret } from "src/config/jwt/config.jwt";
 
 interface TokenPayload {
-    iat: number;
-    exp: number;
-    id: string;
-    name: string;
-    username: string;
-    email: string;
+  iat: number;
+  exp: number;
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  is_enabled: boolean,
+  is_admin: boolean,
+  is_product: boolean,
+  is_revenues: boolean
 }
 
 
-function EnsureAuthenticatedMiddleware(request: Request, response: Response, next: NextFunction) { 
+function EnsureAuthenticatedMiddleware(request: Request, response: Response, next: NextFunction) {
   try {
 
-   const authHeader = request.headers.authorization
+    const authHeader = request.headers.authorization
 
-   if(!authHeader){
-    throw new UnauthorizedException("JWT is missign")
-   }
+    if (!authHeader) {
+      throw new UnauthorizedException("JWT is missign")
+    }
 
-   const [, token ] = authHeader.split(' ')
+    const [, token] = authHeader.split(' ')
 
-   const decoded = verify(token, secret);
+    const decoded = verify(token, secret);
 
-   const { id, name, username, email} = decoded as TokenPayload;
+    const { id, name, username, email, is_admin, is_enabled, is_product, is_revenues } = decoded as TokenPayload;
+    if (!is_enabled) {
+      throw new UnauthorizedException('User Unauthorized')
 
-   request.user = { id, name, username, email}
-    
+    }
+    request.user = {
+      id,
+      name,
+      username,
+      email,
+      is_admin,
+      is_enabled,
+      is_product,
+      is_revenues
+    }
+
+
+
+    next()
   } catch (error) {
-     throw new UnauthorizedException('JWT token invalid')
+    throw new UnauthorizedException('JWT token invalid')
   }
 
 }

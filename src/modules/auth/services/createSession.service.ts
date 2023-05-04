@@ -4,6 +4,7 @@ import BCryptHashPassword from "../providers/Hash/implementations/BCryptHashPass
 import { UserRepository } from "src/modules/users/repository/UserRepository";
 import CreateSessionDTO from "../dtos/CreateSessionDTO";
 import { User } from "src/modules/users/entities/user.entity";
+import { secret } from "src/config/jwt/config.jwt";
 
 @Injectable()
 class CreateSessionService {
@@ -11,7 +12,7 @@ class CreateSessionService {
         private readonly userRepository: UserRepository,
         @Inject(BCryptHashPassword)
         private readonly hashpassword: IHashPasswordContract,
-        private jtw: JwtService
+        private jwt: JwtService
     ) { }
 
     async execute({ email, password }: CreateSessionDTO) {
@@ -32,11 +33,16 @@ class CreateSessionService {
             }
 
 
-            return this.jtw.sign({
+            return await this.jwt.signAsync({
                 id: user.id,
                 name: user.name,
                 username: user.username,
-                email: user.email
+                email: user.email,
+                is_enabled: user.is_enabled,
+                is_admin: user.is_admin,
+                is_product: user.is_product,
+                is_revenues: user.is_revenues
+
             })
         } catch (error) {
             if (error) throw error;

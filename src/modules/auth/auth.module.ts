@@ -5,10 +5,13 @@ import BCryptHashPassword from "./providers/Hash/implementations/BCryptHashPassw
 import CreateSessionService from "./services/createSession.service";
 import { expiresIn, secret } from "src/config/jwt/config.jwt";
 import { AuthController } from "./auth.controller";
+import { ConfigModule } from "@nestjs/config";
 
 
 @Module({
-  imports:[DatabaseModule,
+  imports:[
+    ConfigModule.forRoot(),
+    DatabaseModule,
     JwtModule.register({
     secret: secret,
     signOptions:{

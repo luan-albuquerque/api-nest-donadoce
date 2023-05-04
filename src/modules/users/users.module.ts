@@ -4,10 +4,11 @@ import { UsersService } from './services/users.service';
 import { CreateUserService } from './services/create-user.service';
 import { DatabaseModule } from 'src/shared/config/database/database.module';
 import BCryptHash from './providers/implementations/BCryptHash';
+import { FindAllUserService } from './services/find-all-user.service';
 
 @Module({
-  imports:[DatabaseModule],
+  imports: [DatabaseModule],
   controllers: [UsersController],
-  providers: [UsersService, CreateUserService,BCryptHash]
+  providers: [UsersService, CreateUserService, FindAllUserService, BCryptHash]
 })
-export class UsersModule {}
+export class UsersModule { }

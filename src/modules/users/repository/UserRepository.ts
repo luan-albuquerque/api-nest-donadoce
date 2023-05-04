@@ -1,4 +1,5 @@
 import { CreateUserDto } from "../dto/create-user.dto";
+import { PaginationOptions } from "../dto/pagination-options.dto";
 import { User } from "../entities/user.entity";
 
 export abstract class UserRepository {
@@ -6,6 +7,6 @@ export abstract class UserRepository {
     abstract findById(register: string):Promise<User>
     abstract findByCpf(cpf: string):Promise<User>
     abstract create(createUserDto: CreateUserDto):Promise<void>
-    abstract list():Promise<User[]>
+    abstract list(data :PaginationOptions):Promise<User[]>
 
 }
