@@ -1,12 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, DefaultValuePipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, DefaultValuePipe, Put } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './services/users.service';
 import { CreateUserService } from './services/create-user.service';
-import { ApiOkResponse, ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags, ApiOperation, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { FindAllUserService } from './services/find-all-user.service';
 import { User } from './entities/user.entity';
+import { UpdateUserService } from './services/update-user.service';
 
 @ApiTags("Users")
 @ApiBearerAuth()
@@ -15,7 +16,8 @@ export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly findAllUserService: FindAllUserService,
-    private readonly createUserService: CreateUserService
+    private readonly createUserService: CreateUserService,
+    private readonly updateUserService: UpdateUserService
   ) { }
 
   @Post()
@@ -39,13 +41,20 @@ export class UsersController {
     return await this.findAllUserService.execute({limit, skip});
   }
 
+  @Put(':id')
+  @ApiOperation({ summary: "EndPoint para update de usuarios" })
+  // @ApiBody({ type: CreateUserDto})
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return await this.updateUserService.execute(id, updateUserDto);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  patch(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
