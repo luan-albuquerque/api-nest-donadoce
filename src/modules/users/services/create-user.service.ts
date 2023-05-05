@@ -18,11 +18,16 @@ export class CreateUserService {
     delete createUserDto.is_admin
     const userFindByCpf = await this.userRepository.findByCpf(createUserDto.cpf);
     const userFindByMail = await this.userRepository.findByMail(createUserDto.email);
+    const userFindByUsername = await this.userRepository.findByUsername(createUserDto.username);
     if (userFindByCpf) {
       throw new HttpException('CPF já existente', HttpStatus.CONFLICT)
     }
     if (userFindByMail) {
       throw new HttpException('Email já existente', HttpStatus.CONFLICT)
+    }
+
+    if (userFindByUsername) {
+      throw new HttpException('Username já existente', HttpStatus.CONFLICT)
     }
 
     const passwordHash: string = await this.hashPassword.generateHash(createUserDto.password)

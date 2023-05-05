@@ -8,6 +8,17 @@ import { PaginationOptions } from 'src/modules/users/dto/pagination-options.dto'
 @Injectable()
 export class UserRepositoryInPrisma implements UserRepository {
     constructor(private prisma: PrismaService) { }
+    async findByUsername(username: string): Promise<User> {
+        const data = await this.prisma.user.findUnique({
+         where:{
+            username
+         }
+        }).finally(async () => {
+            await this.prisma.$disconnect()
+        })
+
+        return data
+    }
     async create(createUserDto: CreateUserDto): Promise<void> {
         await this.prisma.user.create({
             data: {
