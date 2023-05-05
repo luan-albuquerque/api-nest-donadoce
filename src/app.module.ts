@@ -28,7 +28,7 @@ export class AppModule implements NestModule {
       .exclude({
         method: RequestMethod.POST, path: "/session"
       }).forRoutes("*")
-    consumer.apply(EnsureAdminMiddleware).forRoutes("users")
+    // consumer.apply(EnsureAdminMiddleware).forRoutes("users")
   }
 
 }
