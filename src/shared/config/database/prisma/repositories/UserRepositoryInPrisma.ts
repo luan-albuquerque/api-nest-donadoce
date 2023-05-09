@@ -70,7 +70,6 @@ export class UserRepositoryInPrisma implements UserRepository {
                 name: true,
                 username: true,
                 cpf:true,
-                password: true,
                 email: true,
                 fone: true,
                 is_enabled: true,
