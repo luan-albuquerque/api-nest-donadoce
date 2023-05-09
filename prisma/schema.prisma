@@ -14,9 +14,9 @@ model User {
   id          String    @id @default(uuid())
   name        String
   username    String    @unique
-  password    String    
+  password    String
   cpf         String    @unique
-  fone        Int?       
+  fone        Int?
   email       String    @unique
   is_enabled  Boolean   @default(true)
   is_admin    Boolean   @default(false)
@@ -25,4 +25,17 @@ model User {
   is_revenues Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updateAt    DateTime?
+  token       Token[]
+}
+
+model Token {
+  id         String    @id @default(uuid())
+  user_id    String
+  token      String    @default(uuid())
+  expires    DateTime
+  used       Boolean   @default(false)
+  used_in    DateTime?
+  created_at DateTime  @default(now())
+  updated_t  DateTime?
+  user       User      @relation(fields: [user_id], references: [id])
 }
