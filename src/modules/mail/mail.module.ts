@@ -3,8 +3,11 @@ import { MailService } from './mail.service';
 import { MailController } from './mail.controller';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
+import { DatabaseModule } from 'src/shared/config/database/database.module';
+import { SendMailToken } from './services/sendMailToken.service';
 @Module({
   imports:[
+    DatabaseModule,
     MailerModule.forRootAsync({
       useFactory: () => ({
         transport: {
@@ -32,6 +35,6 @@ import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
     }),
   ],
   controllers: [MailController],
-  providers: [MailService]
+  providers: [SendMailToken]
 })
 export class MailModule {}

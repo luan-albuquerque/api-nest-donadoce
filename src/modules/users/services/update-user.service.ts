@@ -34,13 +34,13 @@ export class UpdateUserService {
       throw new HttpException('Username já existente', HttpStatus.CONFLICT)
     }
 
-    const passwordHash: string = await this.hashPassword.generateHash(updateUserDto.password)
+    // const passwordHash: string = await this.hashPassword.generateHash(updateUserDto.password)
 
 
     const data: UpdateUserDto = {
       name: updateUserDto.name,
       username: updateUserDto.username,
-      password: passwordHash,
+      // password: passwordHash,
       cpf: updateUserDto.cpf,
       fone: null,
       email: updateUserDto.email,
