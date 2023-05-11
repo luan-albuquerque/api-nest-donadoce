@@ -20,7 +20,7 @@ export class UserRepositoryInPrisma implements UserRepository {
                 fone: updateUserDto.fone,
                 name: updateUserDto.name,
                 username: updateUserDto.username,
-                password: updateUserDto.password,
+                // password: updateUserDto.password,
                 updateAt: new Date(),
                 is_enabled: updateUserDto.is_enabled,
                 is_product: updateUserDto.is_product,
