@@ -5,7 +5,6 @@ import CreateSessionDTO from './dtos/CreateSessionDTO';
 import SendEmailWithTokenDTO from './dtos/SendEmailWithTokenDTO';
 import SendEmailWithTokenService from "./services/sendEmailWithToken.service"
 import Token from './entities/Token';
-import SendEmailWithToken from './services/sendEmailWithToken.service';
 import RedefinePasswordDTO from './dtos/RedefinePasswordDTO';
 import RedefinePasswordService from './services/redefinePassword.service';
 
