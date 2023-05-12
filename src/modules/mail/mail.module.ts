@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { MailService } from './mail.service';
-import { MailController } from './mail.controller';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { DatabaseModule } from 'src/shared/config/database/database.module';
-import { SendMailToken } from './services/sendMailToken.service';
+import SendEmailWithTokenForRecoverPasswordService from './services/sendMailToken.service';
+import SendEmailConfirmRecoverPasswordService from './services/sendEmailConfirmRecoveyPassword.service';
 @Module({
   imports:[
     DatabaseModule,
@@ -22,19 +21,27 @@ import { SendMailToken } from './services/sendMailToken.service';
           },
         },
         defaults: {
-          from: `"não-responder" <${process.env.EMAIL_MAIL}>`,
+          from: `"No reply this email" <${process.env.EMAIL_MAIL}>`,
         },
         template: {
-          dir: __dirname + '/templates',
+          dir: process.cwd() + "/src/modules/mail/template",
           adapter: new EjsAdapter(),
           options: {
-            strict: true,
+            strict: false,
           },
         },
       }),
     }),
   ],
-  controllers: [MailController],
-  providers: [SendMailToken]
+  // controllers: [],
+  providers: [
+    SendEmailConfirmRecoverPasswordService,
+    SendEmailWithTokenForRecoverPasswordService],
+  exports:[
+    SendEmailConfirmRecoverPasswordService,
+    SendEmailWithTokenForRecoverPasswordService
+  ]
 })
+
+
 export class MailModule {}

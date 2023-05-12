@@ -6,19 +6,33 @@ import CreateSessionService from "./services/createSession.service";
 import { expiresIn, secret } from "src/config/jwt/config.jwt";
 import { AuthController } from "./auth.controller";
 import { ConfigModule } from "@nestjs/config";
+import SendEmailWithTokenService from "./services/sendEmailWithToken.service";
+import SendEmailWithTokenForRecoverPasswordService from "../mail/services/sendMailToken.service";
+import SendEmailConfirmRecoverPasswordService from "../mail/services/sendEmailConfirmRecoveyPassword.service";
+import RedefinePasswordService from "./services/redefinePassword.service";
 
 
 @Module({
-  imports:[
+  imports: [
     ConfigModule.forRoot(),
     DatabaseModule,
     JwtModule.register({
-    secret: secret,
-    signOptions:{
-      expiresIn: expiresIn
-    }
-  }) ],
+      secret: secret,
+      signOptions: {
+        expiresIn: expiresIn
+      }
+    })],
   controllers: [AuthController],
-  providers: [CreateSessionService, BCryptHashPassword]
+  providers: [
+    // Serviços do Auth
+    CreateSessionService, 
+    RedefinePasswordService,
+    // Serviços Externos
+    SendEmailWithTokenForRecoverPasswordService, 
+    SendEmailConfirmRecoverPasswordService,
+    SendEmailWithTokenService, 
+    // Crypit
+    BCryptHashPassword
+  ]
 })
-export class AuthModule {}
+export class AuthModule { }

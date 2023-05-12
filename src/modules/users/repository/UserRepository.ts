@@ -10,6 +10,7 @@ export abstract class UserRepository {
     abstract findByCpf(cpf: string):Promise<User>
     abstract create(createUserDto: CreateUserDto):Promise<void>
     abstract update(id: string, updateUserDto: UpdateUserDto):Promise<void>
+    abstract updatePassword(id: string, password: string):Promise<void>
     abstract list( data :PaginationOptions):Promise<User[]>
 
 }

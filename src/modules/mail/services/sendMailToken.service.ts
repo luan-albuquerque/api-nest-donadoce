@@ -1,33 +1,26 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import SendEmailWithTokenDTO from 'src/modules/auth/dtos/SendEmailWithTokenDTO';
-import { TokenRepository } from 'src/modules/auth/repository/TokenRepository';
-import { UserRepository } from 'src/modules/users/repository/UserRepository';
-
+import { MailerService } from "@nestjs-modules/mailer";
+import * as dayjs from "dayjs"
+import { Injectable } from "@nestjs/common"
+import ISendEmailWithTokenDTO from "../dtos/ISendEmailWithTokenDTO";
 @Injectable()
-export class SendMailToken {
+export default class SendEmailWithTokenForRecoverPasswordService {
+  constructor(private mailer: MailerService) { }
+  async execute({ user, token }: ISendEmailWithTokenDTO) {
+    
+    await this.mailer.sendMail({
+      to: user.email,
+      from: 'Dona Doce' + process.env.EMAIL_MAIL,
+      subject: "Recuperar Senha",
+      context: {
+        name: user.name,
+        token: token,
+        date: dayjs(new Date()).format('DD/MM/YYYY HH:mm:ss')
+      },
+      template: 'sendToken',
 
-    constructor(
-        private readonly tokenRepository: TokenRepository,
-        private readonly userRepository: UserRepository
-    ){}
-
-    async execute({ email }: SendEmailWithTokenDTO){
-         
-       const user = await this.userRepository.findByMail(email);
-
-       if (!user) {
-        throw new NotFoundException('This user does not exists in database');
-      }
-      const findLastToken = await this.tokenRepository.findbyOne(user.id)
-
-      if(findLastToken && !findLastToken.used && findLastToken.used_in === null){
-    //    Manda o email
-      } else {
-        
-      }
-
-
-    }
-
+    }).catch((error) => {
+      console.log('ERROR SEND EMAIL WITH TOKEN' + error)
+    })
+  }
 
 }

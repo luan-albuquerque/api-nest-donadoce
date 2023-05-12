@@ -9,6 +9,18 @@ import { UpdateUserDto } from 'src/modules/users/dto/update-user.dto';
 @Injectable()
 export class UserRepositoryInPrisma implements UserRepository {
     constructor(private prisma: PrismaService) { }
+    async updatePassword(id: string, password: string): Promise<void> {
+        await this.prisma.user.update({
+            where:{
+                id: id,
+            },
+            data: {
+              password,
+            }
+        }).finally(async () => {
+            await this.prisma.$disconnect()
+        })
+    }
    async update(id: string, updateUserDto: UpdateUserDto): Promise<void> {
         await this.prisma.user.update({
             where:{

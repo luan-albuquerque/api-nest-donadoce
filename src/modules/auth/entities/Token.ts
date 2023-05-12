@@ -1,4 +1,4 @@
-export class Token {
+export default class Token {
 
     id: string
     user_id: string
