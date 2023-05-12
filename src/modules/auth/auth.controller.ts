@@ -7,7 +7,7 @@ import SendEmailWithTokenService from "./services/sendEmailWithToken.service"
 import Token from './entities/Token';
 import RedefinePasswordDTO from './dtos/RedefinePasswordDTO';
 import RedefinePasswordService from './services/redefinePassword.service';
-
+// Teste
 @ApiTags("Auth")
 @Controller('session')
 export class AuthController {
