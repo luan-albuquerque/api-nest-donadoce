@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { DatabaseModule } from 'src/shared/config/database/database.module';
-import SendEmailWithTokenForRecoverPasswordService from './services/sendMailToken.service';
+import SendEmailWithTokenForRecoverPasswordService from './services/SendEmailWithTokenForRecoverPasswordService.service';
 import SendEmailConfirmRecoverPasswordService from './services/sendEmailConfirmRecoveyPassword.service';
 @Module({
   imports:[

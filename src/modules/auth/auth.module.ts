@@ -7,7 +7,7 @@ import { expiresIn, secret } from "src/config/jwt/config.jwt";
 import { AuthController } from "./auth.controller";
 import { ConfigModule } from "@nestjs/config";
 import SendEmailWithTokenService from "./services/sendEmailWithToken.service";
-import SendEmailWithTokenForRecoverPasswordService from "../mail/services/sendMailToken.service";
+import SendEmailWithTokenForRecoverPasswordService from "../mail/services/SendEmailWithTokenForRecoverPasswordService.service";
 import SendEmailConfirmRecoverPasswordService from "../mail/services/sendEmailConfirmRecoveyPassword.service";
 import RedefinePasswordService from "./services/redefinePassword.service";
 
