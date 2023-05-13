@@ -11,28 +11,25 @@ import EnsureAdminMiddleware from './shared/http/middlewares/admin.middleware';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     DatabaseModule,
     UsersModule,
     AuthModule,
     MailModule,
-    ConfigModule.forRoot()
   ],
   controllers: [],
   providers: [
     PrismaService,
   ],
 })
-export class AppModule {}
 
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(EnsureAuthenticatedMiddleware)
+      .exclude({
+        method: RequestMethod.POST, path: "/session"
+      }).forRoutes("*")
+    consumer.apply(EnsureAdminMiddleware).forRoutes("users")
+  }
 
-
-// export class AppModule implements NestModule {
-//   configure(consumer: MiddlewareConsumer) {
-//     consumer.apply(EnsureAuthenticatedMiddleware)
-//       .exclude({
-//         method: RequestMethod.POST, path: "/session"
-//       }).forRoutes("*")
-//     // consumer.apply(EnsureAdminMiddleware).forRoutes("users")
-//   }
-
-// }
+}

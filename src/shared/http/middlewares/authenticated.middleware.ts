@@ -28,8 +28,9 @@ function EnsureAuthenticatedMiddleware(request: Request, response: Response, nex
 
     const [, token] = authHeader.split(' ')
 
-    const decoded = verify(token, secret);
-
+  
+    const decoded = verify(token, secret);    
+  
     const { id, name, username, email, is_admin, is_enabled, is_product, is_revenues } = decoded as TokenPayload;
     if (!is_enabled) {
       throw new UnauthorizedException('User Unauthorized')
@@ -50,7 +51,9 @@ function EnsureAuthenticatedMiddleware(request: Request, response: Response, nex
 
     next()
   } catch (error) {
-    throw new UnauthorizedException('JWT token invalid')
+    console.log({error});
+    
+    // throw new UnauthorizedException('JWT token invalid')
   }
 
 }

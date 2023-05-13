@@ -33,7 +33,7 @@ class CreateSessionService {
             }
 
 
-            return await this.jwt.signAsync({
+            return await this.jwt.sign({
                 id: user.id,
                 name: user.name,
                 username: user.username,
