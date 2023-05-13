@@ -21,13 +21,12 @@ function EnsureAuthenticatedMiddleware(request: Request, response: Response, nex
   try {
 
     const authHeader = request.headers.authorization
-
+  
     if (!authHeader) {
       throw new UnauthorizedException("JWT is missign")
     }
 
     const [, token] = authHeader.split(' ')
-
   
     const decoded = verify(token, secret);    
   
@@ -51,9 +50,8 @@ function EnsureAuthenticatedMiddleware(request: Request, response: Response, nex
 
     next()
   } catch (error) {
-    console.log({error});
     
-    // throw new UnauthorizedException('JWT token invalid')
+    throw new UnauthorizedException('JWT token invalid')
   }
 
 }
