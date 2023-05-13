@@ -9,7 +9,7 @@ function EnsureAdminMiddleware(request: Request, response: Response, next: NextF
     }
     next()
    } catch (error) {
-    throw new UnauthorizedException({user})
+    throw new UnauthorizedException('JWT token invalid')
 
     
    }

@@ -63,6 +63,7 @@ export class UserRepositoryInPrisma implements UserRepository {
                 name: createUserDto.name,
                 username: createUserDto.username,
                 password: createUserDto.password,
+                is_admin: createUserDto.is_admin,
                 createdAt: new Date(),
                 is_enabled: true,
                 is_product: createUserDto.is_product,
