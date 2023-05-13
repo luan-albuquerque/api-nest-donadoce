@@ -46,8 +46,6 @@ function EnsureAuthenticatedMiddleware(request: Request, response: Response, nex
       is_revenues
     }
 
-
-
     next()
   } catch (error) {
     
