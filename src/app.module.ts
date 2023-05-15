@@ -28,8 +28,8 @@ export class AppModule implements NestModule {
     consumer.apply(EnsureAuthenticatedMiddleware)
       .exclude(
       { method: RequestMethod.POST, path: "/session" },
-      { method: RequestMethod.POST, path: 'api/session/send-email' },
-      { method: RequestMethod.POST, path: 'api/session/redefine-password' }
+      { method: RequestMethod.POST, path: '/session/send-email' },
+      { method: RequestMethod.POST, path: '/session/redefine-password' }
 ).forRoutes("*")
     consumer.apply(EnsureAdminMiddleware).forRoutes("users")
   }
