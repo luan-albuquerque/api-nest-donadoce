@@ -26,9 +26,11 @@ import EnsureAdminMiddleware from './shared/http/middlewares/admin.middleware';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(EnsureAuthenticatedMiddleware)
-      .exclude({
-        method: RequestMethod.POST, path: "/session"
-      }).forRoutes("*")
+      .exclude(
+      { method: RequestMethod.POST, path: "/session" },
+      { method: RequestMethod.POST, path: 'api/session/send-email' },
+      { method: RequestMethod.POST, path: 'api/session/redefine-password' }
+).forRoutes("*")
     consumer.apply(EnsureAdminMiddleware).forRoutes("users")
   }
 
