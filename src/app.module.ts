@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './shared/config/database/database.module';
 import { PrismaService } from './shared/config/database/prisma/prisma.service';
 import { AuthModule } from './modules/auth/auth.module';
+import { IngredientsModule } from './modules/ingredients/ingredients.module';
+import { RevenueModule } from './modules/revenue/revenue.module';
 import EnsureAuthenticatedMiddleware from './shared/http/middlewares/authenticated.middleware';
 import EnsureAdminMiddleware from './shared/http/middlewares/admin.middleware';
 
@@ -16,6 +18,8 @@ import EnsureAdminMiddleware from './shared/http/middlewares/admin.middleware';
     UsersModule,
     AuthModule,
     MailModule,
+    IngredientsModule,
+    RevenueModule,
   ],
   controllers: [],
   providers: [
