@@ -39,3 +39,12 @@ model Token {
   updated_t  DateTime?
   user       User      @relation(fields: [user_id], references: [id])
 }
+
+model Ingredients {
+  id          String    @id @default(uuid())
+  description String    @unique
+  value       Float
+  amount      Int
+  created_at  DateTime  @default(now())
+  updated_t   DateTime?
+}
