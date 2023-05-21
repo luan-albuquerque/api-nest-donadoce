@@ -5,9 +5,6 @@ import { UpdateRevenueDto } from '../dto/update-revenue.dto';
 
 @Injectable()
 export class RevenueService {
-  create(createRevenueDto: CreateRevenueDto) {
-    return 'This action adds a new revenue';
-  }
 
   findAll() {
     return `This action returns all revenue`;

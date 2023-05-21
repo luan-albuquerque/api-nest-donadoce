@@ -8,7 +8,6 @@ import { PrismaService } from "src/shared/config/database/prisma/prisma.service"
 import { skip } from "rxjs";
 
 @Injectable()
-
 export class IngredientsRepositoryInPrisma implements IngredientsRepository {
     constructor(private readonly prisma: PrismaService) { }
     async create(createIngredientDto: CreateIngredientDto): Promise<void> {

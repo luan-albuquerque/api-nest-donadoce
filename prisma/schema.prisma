@@ -41,10 +41,43 @@ model Token {
 }
 
 model Ingredients {
-  id          String    @id @default(uuid())
-  description String    @unique
-  value       Float
-  amount      Int
-  created_at  DateTime  @default(now())
-  updated_t   DateTime?
+  id                   String                 @id @default(uuid())
+  description          String                 @unique
+  value                Float
+  amount               Int
+  created_at           DateTime               @default(now())
+  updated_t            DateTime?
+  ingredients_Revenues Ingredients_Revenues[]
 }
+
+model Ingredients_Revenues {
+  fk_ingredient     String
+  fk_revenues       String
+  amount_ingredient Int
+  ingredients       Ingredients @relation(fields: [fk_ingredient], references: [id])
+  revenues          Revenues    @relation(fields: [fk_revenues], references: [id])
+
+  @@id([fk_ingredient, fk_revenues])
+}
+
+model Revenues {
+  id                   String                 @id @default(uuid())
+  description          String                 @unique
+  value                Float
+  yield_per_quantity   Int?
+  time_in_hours        Int?
+  presumed_profit      Float?
+  imagem               String?
+  created_at           DateTime               @default(now())
+  updated_t            DateTime?
+  ingredients_Revenues Ingredients_Revenues[]
+  // recipe_steps         Recipe_steps[]
+}
+
+// Removido 
+// model Recipe_steps {
+//   id          String   @id @default(uuid())
+//   text        String
+//   fk_revenues String
+//   revenues    Revenues @relation(fields: [fk_revenues], references: [id])
+// }

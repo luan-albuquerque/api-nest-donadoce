@@ -5,11 +5,11 @@ import { Ingredient } from "../../entities/ingredient.entity";
 
 export abstract class IngredientsRepository {
     abstract create(createIngredientDto: CreateIngredientDto):Promise<void>
+    abstract remove(id: string):Promise<void>
     abstract update(id: string, updateIngredientDto: UpdateIngredientDto):Promise<void>
     abstract list( data :PaginationOptions):Promise<Ingredient[]>
     abstract findById(id: string):Promise<Ingredient>
     abstract findByDescription(description: string): Promise<Ingredient>
-    abstract remove(id: string):Promise<void>
 
 
 }
