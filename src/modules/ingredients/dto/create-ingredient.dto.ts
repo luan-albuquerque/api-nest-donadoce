@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { IsInt, IsNotEmpty, IsString } from "class-validator"
+import { IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator"
 
 export class CreateIngredientDto {
     @IsString({ message: 'Descrição precisa ser string' })
@@ -8,7 +8,7 @@ export class CreateIngredientDto {
     description: string
 
     @ApiProperty()
-    @IsInt({ message: 'Valor não pode ser string' })
+    @IsNumber()
     @IsNotEmpty({ message: 'Valor não pode ser vazio' })
     value: number
 

@@ -7,6 +7,7 @@ const swaggerConfig = new DocumentBuilder()
   .setVersion('1.0')
   .addServer(`http://localhost:${3000}`)
   .addServer(`https://rentx.gedroid.com`)
+  .addServer(`http://rentx.gedroid.com`)
   .addBearerAuth()
   .build();
 
