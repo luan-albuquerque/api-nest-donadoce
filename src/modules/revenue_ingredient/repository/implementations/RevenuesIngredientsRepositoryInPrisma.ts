@@ -10,6 +10,15 @@ import { RevenueIngredient } from "../../entities/revenue_ingredient.entity";
 export class RevenuesIngredientsRepositoryInPrisma implements RevenuesIngredientsRepository {
 
     constructor(private prisma: PrismaService) { }
+    async removeAllByRevenue(fk_revenue: string): Promise<void> {
+        await this.prisma.ingredients_Revenues.deleteMany({
+            where:{
+             fk_revenues: fk_revenue
+            }
+         }).finally(() => {
+             this.prisma.$disconnect()
+         })
+    }
 
 
     async findOneIngredient(fk_ingredient: string): Promise<RevenueIngredient> {

@@ -15,7 +15,7 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
             data: {
               time_in_hours: createRevenueDto.time_in_hours,
               description: createRevenueDto.description,
-              imagem: createRevenueDto.description,
+              imagem: createRevenueDto.imagem,
               presumed_profit: createRevenueDto.presumed_profit,
               value: createRevenueDto.value,
               yield_per_quantity: createRevenueDto.yield_per_quantity,
@@ -32,6 +32,13 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
            where:{
             id,
            },
+           include:{
+            ingredients_Revenues:{
+                where:{
+                    fk_revenues: id
+                }
+            }
+           }
         }).finally(() => {
             this.prisma.$disconnect()
         })
@@ -92,11 +99,12 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
             }, 
             data:{
                 description: updateRevenueDto.description,
-                imagem: updateRevenueDto.description,
+                imagem: updateRevenueDto.imagem,
                 presumed_profit: updateRevenueDto.presumed_profit,
                 value: updateRevenueDto.value,
+                time_in_hours:updateRevenueDto.time_in_hours,
                 yield_per_quantity: updateRevenueDto.yield_per_quantity,
-                created_at: new Date(),
+                updated_t: new Date(),
             }
         }).finally(() => {
             this.prisma.$disconnect()

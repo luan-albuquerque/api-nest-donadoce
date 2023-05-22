@@ -1,5 +1,6 @@
 import { ApiProperty,  } from "@nestjs/swagger"
-import { IsString, IsArray,IsNumber, IsUUID, IsEmpty, IsNotEmpty } from "class-validator"
+import { Type } from "class-transformer"
+import { IsString, IsArray,IsNumber, IsUUID, IsEmpty, IsNotEmpty, IsJSON } from "class-validator"
 import { RevenueIngredient } from "src/modules/revenue_ingredient/entities/revenue_ingredient.entity"
 
 class IngredientWithAmount {
@@ -23,34 +24,51 @@ export class CreateRevenueDto {
 
     @ApiProperty()
     @IsNumber()
+    @Type(()=> Number)
     @IsNotEmpty({ message: 'Valor não pode ser vazio' })
     value: number
 
-    @ApiProperty()
+    @ApiProperty({required: false})
     @IsNumber()
+    @Type(()=> Number)
     yield_per_quantity?: number
 
     @IsNumber()
-    @ApiProperty() 
+    @Type(()=> Number)
+    @ApiProperty({required: false})
     time_in_hours?: number
 
-    @ApiProperty()
     @IsNumber()
+    @Type(()=> Number)
+    @ApiProperty({required: false})
     presumed_profit?: number
 
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', required: false })
     imagem?: string
-    // @IsEmpty()
+
     @ApiProperty({
+        required:false,
         type: 'array',
         items: {
+          example:[
+           {
+            fk_ingredient: "id do ingrediente 1",
+            amount_ingredient: "Quantidade que vai na receita (em number)",
+           },
+           {
+            fk_ingredient: "id do ingrediente 2",
+            amount_ingredient: "Quantidade que vai na receita (em number)",
+           },
+          ],
           properties: {
             fk_ingredient: { type: 'string' },
             amount_ingredient: { type: 'number' },
           },
         },
       })
-    @IsArray({ message: 'fk_ingredient precisa ser um array de uuid de ingredientes' })
+  
+    @IsJSON({ message: 'ingredients precisa ser um array de uuid de ingredientes com quantidade' })
+    @Type(()=> Object)
     ingredients?: IngredientWithAmount[]
   
 }

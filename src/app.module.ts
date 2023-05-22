@@ -8,17 +8,11 @@ import { AuthModule } from './modules/auth/auth.module';
 import { IngredientsModule } from './modules/ingredients/ingredients.module';
 import { RevenueModule } from './modules/revenue/revenue.module';
 import { RevenueIngredientModule } from './modules/revenue_ingredient/revenue_ingredient.module';
-import { CreateRevenueIngredientService } from './modules/revenue_ingredient/services/create-revenue_ingredient.service';
-import { DeleteRevenueIngredientService } from './modules/revenue_ingredient/services/delete-revenue_ingredient.service';
-import { UpdateRevenueIngredientService } from './modules/revenue_ingredient/services/update-revenue_ingredient.service';
-import { CreateRevenueService } from './modules/revenue/services/create-revenue.service';
-import { UpdateRevenueService } from './modules/revenue/services/update-revenue.service';
-import { DeleteRevenueService } from './modules/revenue/services/delete-revenue.service';
-import { FindAllRevenueService } from './modules/revenue/services/find-all-revenue.service';
-import { FindOneRevenueService } from './modules/revenue/services/find-one-revenue.service';
 import EnsureAuthenticatedMiddleware from './shared/http/middlewares/authenticated.middleware';
 import EnsureAdminMiddleware from './shared/http/middlewares/admin.middleware';
 
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -30,18 +24,13 @@ import EnsureAdminMiddleware from './shared/http/middlewares/admin.middleware';
     IngredientsModule,
     RevenueModule,
     RevenueIngredientModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname,'..', 'uploads'),
+    }),
   ],
   controllers: [],
   providers: [
     PrismaService,
-    CreateRevenueIngredientService,
-    DeleteRevenueIngredientService,
-    UpdateRevenueIngredientService,
-    CreateRevenueService,
-    UpdateRevenueService,
-    DeleteRevenueService,
-    FindAllRevenueService,
-    FindOneRevenueService,
   ],
 })
 
