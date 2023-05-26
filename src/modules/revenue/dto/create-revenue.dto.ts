@@ -1,7 +1,6 @@
-import { ApiProperty,  } from "@nestjs/swagger"
+import { ApiProperty, } from "@nestjs/swagger"
 import { Type } from "class-transformer"
-import { IsString, IsArray,IsNumber, IsUUID, IsEmpty, IsNotEmpty, IsJSON } from "class-validator"
-import { RevenueIngredient } from "src/modules/revenue_ingredient/entities/revenue_ingredient.entity"
+import { IsArray, IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator"
 
 class IngredientWithAmount {
     @ApiProperty()
@@ -67,8 +66,9 @@ export class CreateRevenueDto {
         },
       })
   
-    @IsJSON({ message: 'ingredients precisa ser um array de uuid de ingredientes com quantidade' })
-    @Type(()=> Object)
+    @IsArray({ message: 'ingredients precisa ser um array de uuid de ingredientes com quantidade' })
+    @ValidateNested({each: true})
+    @Type(()=> IngredientWithAmount)
     ingredients?: IngredientWithAmount[]
   
 }
