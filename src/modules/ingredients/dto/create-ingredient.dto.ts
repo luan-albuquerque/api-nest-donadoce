@@ -11,9 +11,4 @@ export class CreateIngredientDto {
     @IsNumber()
     @IsNotEmpty({ message: 'Valor não pode ser vazio' })
     value: number
-
-    @ApiProperty()
-    @IsInt({ message: 'Quantidade não pode ser string' })
-    @IsNotEmpty({ message: 'Quantidade não pode ser vazio' })
-    amount: number
 }

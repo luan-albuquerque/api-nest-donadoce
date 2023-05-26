@@ -44,7 +44,6 @@ model Ingredients {
   id                   String                 @id @default(uuid())
   description          String                 @unique
   value                Float
-  amount               Int
   created_at           DateTime               @default(now())
   updated_t            DateTime?
   ingredients_Revenues Ingredients_Revenues[]

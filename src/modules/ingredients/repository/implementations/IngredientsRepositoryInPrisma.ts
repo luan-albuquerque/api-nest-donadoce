@@ -15,7 +15,6 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
             data: {
                 description: createIngredientDto.description,
                 value: createIngredientDto.value,
-                amount: createIngredientDto.amount,
                 created_at: new Date()
             }
         }).finally(() => {
@@ -27,7 +26,6 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
             data: {
                 description: updateIngredientDto.description,
                 value: updateIngredientDto.value,
-                amount: updateIngredientDto.amount,
                 updated_t: new Date()
             },
             where: {
