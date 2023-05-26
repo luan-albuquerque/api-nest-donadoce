@@ -44,7 +44,7 @@ export class RevenueController {
    @UploadedFiles() files: any,
   ) {
     
-    const imagem =  files.imagem ? files.imagem[0].filename : null;
+    const imagem =  files ? files.imagem ? files.imagem[0].filename : null : null;
     const bodyform = Object(body)
     
     const newData: CreateRevenueDto =  {
@@ -54,7 +54,7 @@ export class RevenueController {
       yield_per_quantity :Number(bodyform.yield_per_quantity),
       time_in_hours  :Number(bodyform.time_in_hours),
       presumed_profit :Number(bodyform.presumed_profit),
-      ingredients: JSON.parse(bodyform.ingredients)
+      ingredients: bodyform.ingredients
     }
  
     return await this.createRevenueService.execute(newData)
