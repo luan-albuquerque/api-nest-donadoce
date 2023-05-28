@@ -4,7 +4,7 @@ export class User {
     username: string
     password? : string
     cpf?: string
-    fone: number
+    fone: BigInt
     email: string
     is_enabled: boolean
     is_admin?: boolean
