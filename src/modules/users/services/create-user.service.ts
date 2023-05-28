@@ -38,7 +38,7 @@ export class CreateUserService {
       username: createUserDto.username,
       password: passwordHash,
       cpf: createUserDto.cpf,
-      fone: null,
+      fone: createUserDto.fone,
       email: createUserDto.email,
       is_enabled: true,
       is_admin: createUserDto.is_admin,
