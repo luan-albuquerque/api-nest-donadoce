@@ -4,7 +4,7 @@ import { IngredientsRepository } from '../repository/contract/IngredientsReposit
 
 @Injectable()
 export class CreateIngredientsService {
-
+// Teste
   constructor(private readonly ingredientsRepository: IngredientsRepository) { }
 
   async execute(createIngredientDto: CreateIngredientDto) {
