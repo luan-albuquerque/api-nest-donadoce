@@ -1,7 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateUserDto } from './create-user.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsEmail, IsInt, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsBoolean, IsEmail, IsInt, IsNotEmpty, IsPhoneNumber, IsString, Length } from 'class-validator';
 
 export class UpdateUserDto  {
     @IsString({ message: 'Esta variável de nome precisa ser string' })
@@ -30,9 +30,9 @@ export class UpdateUserDto  {
     cpf: string
 
     @ApiProperty()
-    @IsInt({ message: 'Fone não pode ser string' })
+    @IsPhoneNumber('BR',{message: 'Número de telefone precisa ser valido'})
     // @IsNotEmpty({ message: 'Fone não pode ser vazio' })
-    fone?: number
+    fone?: string
 
     @ApiProperty()
     @IsBoolean({ message: 'O status da is_enabled precisa ser um boolean' })

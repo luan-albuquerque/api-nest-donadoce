@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { IsString, IsNotEmpty, IsInt, IsBoolean, IsEmail, Length } from "class-validator"
+import { IsString, IsNotEmpty, IsInt, IsBoolean, IsEmail, Length, IsPhoneNumber } from "class-validator"
 
 export class CreateUserDto {
     @IsString({ message: 'Esta variável de nome precisa ser string' })
@@ -36,9 +36,8 @@ export class CreateUserDto {
     cpf: string
 
     @ApiProperty()
-    @IsInt({ message: 'Fone não pode ser string' })
-    // @IsNotEmpty({ message: 'Fone não pode ser vazio' })
-    fone?: number
+    @IsPhoneNumber('BR',{message: 'Número de telefone precisa ser valido'})
+    fone?: string
 
     @ApiProperty()
     @IsBoolean({ message: 'O status da is_enabled precisa ser um boolean' })
