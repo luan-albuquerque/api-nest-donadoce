@@ -42,7 +42,7 @@ export class UpdateUserService {
       username: updateUserDto.username,
       // password: passwordHash,
       cpf: updateUserDto.cpf,
-      fone: null,
+      fone: updateUserDto.fone,
       email: updateUserDto.email,
       is_enabled: updateUserDto.is_enabled,
       is_product: updateUserDto.is_product,
