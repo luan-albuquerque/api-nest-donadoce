@@ -6,8 +6,8 @@ const swaggerConfig = new DocumentBuilder()
   .setContact('Dona Doce', '', '')
   .setVersion('1.0')
   .addServer(`http://localhost:${3000}`)
-  .addServer(`https://rentx.gedroid.com`)
-  .addServer(`http://rentx.gedroid.com`)
+  .addServer(`https://api.doce.gedroid.com`)
+  .addServer(`http://api.doce.gedroid.com`)
   .addBearerAuth()
   .build();
 
