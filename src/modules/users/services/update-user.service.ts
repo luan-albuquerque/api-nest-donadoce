@@ -17,31 +17,31 @@ export class UpdateUserService {
 
     delete updateUserDto.is_admin
     const userFindById = await this.userRepository.findById(id);
-    const userFindByCpf = await this.userRepository.findByCpf(updateUserDto.cpf);
+    // const userFindByCpf = await this.userRepository.findByCpf(updateUserDto.cpf);
     const userFindByMail = await this.userRepository.findByMail(updateUserDto.email);
-    const userFindByUsername = await this.userRepository.findByUsername(updateUserDto.username);
+    // const userFindByUsername = await this.userRepository.findByUsername(updateUserDto.username);
     if (!userFindById) {
         throw new HttpException('Id não encontrado', HttpStatus.NOT_FOUND)
       }
-    if (userFindByCpf && userFindById.cpf != updateUserDto.cpf) {
-      throw new HttpException('CPF já existente', HttpStatus.CONFLICT)
-    }
+    // if (userFindByCpf && userFindById.cpf != updateUserDto.cpf) {
+    //   throw new HttpException('CPF já existente', HttpStatus.CONFLICT)
+    // }
     if (userFindByMail && userFindById.email != updateUserDto.email) {
       throw new HttpException('Email já existente', HttpStatus.CONFLICT)
     }
 
-    if (userFindByUsername && userFindById.username != updateUserDto.username) {
-      throw new HttpException('Username já existente', HttpStatus.CONFLICT)
-    }
+    // if (userFindByUsername && userFindById.username != updateUserDto.username) {
+    //   throw new HttpException('Username já existente', HttpStatus.CONFLICT)
+    // }
 
     // const passwordHash: string = await this.hashPassword.generateHash(updateUserDto.password)
 
 
     const data: UpdateUserDto = {
       name: updateUserDto.name,
-      username: updateUserDto.username,
+      // username: updateUserDto.username,
       // password: passwordHash,
-      cpf: updateUserDto.cpf,
+      // cpf: updateUserDto.cpf,
       fone: updateUserDto.fone,
       email: updateUserDto.email,
       is_enabled: updateUserDto.is_enabled,

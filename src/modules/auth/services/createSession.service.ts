@@ -36,7 +36,7 @@ class CreateSessionService {
             return await this.jwt.sign({
                 id: user.id,
                 name: user.name,
-                username: user.username,
+                // username: user.username,
                 email: user.email,
                 is_enabled: user.is_enabled,
                 is_admin: user.is_admin,

@@ -1,9 +1,9 @@
 export class User {
     id: string
     name: string
-    username: string
+    // username: string
     password? : string
-    cpf?: string
+    // cpf?: string
     fone?: string
     email: string
     is_enabled: boolean

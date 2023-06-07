@@ -27,11 +27,11 @@ export class UserRepositoryInPrisma implements UserRepository {
                 id: id,
             },
             data: {
-                cpf: updateUserDto.cpf,
+                // cpf: updateUserDto.cpf,
                 email: updateUserDto.email,
                 fone: updateUserDto.fone,
                 name: updateUserDto.name,
-                username: updateUserDto.username,
+                // username: updateUserDto.username,
                 // password: updateUserDto.password,
                 updateAt: new Date(),
                 is_enabled: updateUserDto.is_enabled,
@@ -43,25 +43,25 @@ export class UserRepositoryInPrisma implements UserRepository {
             await this.prisma.$disconnect()
         })
     }
-    async findByUsername(username: string): Promise<User> {
-        const data = await this.prisma.user.findUnique({
-         where:{
-            username
-         }
-        }).finally(async () => {
-            await this.prisma.$disconnect()
-        })
+    // async findByUsername(username: string): Promise<User> {
+    //     const data = await this.prisma.user.findUnique({
+    //      where:{
+    //         username
+    //      }
+    //     }).finally(async () => {
+    //         await this.prisma.$disconnect()
+    //     })
 
-        return data
-    }
+    //     return data
+    // }
     async create(createUserDto: CreateUserDto): Promise<void> {
         await this.prisma.user.create({
             data: {
-                cpf: createUserDto.cpf,
+                // cpf: createUserDto.cpf,
                 email: createUserDto.email,
                 fone: createUserDto.fone,
                 name: createUserDto.name,
-                username: createUserDto.username,
+                // username: createUserDto.username,
                 password: createUserDto.password,
                 is_admin: createUserDto.is_admin,
                 createdAt: new Date(),
@@ -82,9 +82,9 @@ export class UserRepositoryInPrisma implements UserRepository {
             select: {
                 id: true,
                 name: true,
-                username: true,
+                // username: true,
                 email: true,
-                cpf:true,
+                // cpf:true,
                 fone: true,
                 is_admin: true,
                 is_enabled: true,
@@ -105,7 +105,6 @@ export class UserRepositoryInPrisma implements UserRepository {
             where: {
                 email
             },
-
         })
 
         return data
@@ -120,18 +119,18 @@ export class UserRepositoryInPrisma implements UserRepository {
 
         return data
     }
-    async findByCpf(cpf: string): Promise<User> {
-        const data = await this.prisma.user.findFirst({
-            where: {
-                cpf
-            }
-        }).finally(async () => {
-            await this.prisma.$disconnect()
-        })
+    // async findByCpf(cpf: string): Promise<User> {
+    //     const data = await this.prisma.user.findFirst({
+    //         where: {
+    //             cpf
+    //         }
+    //     }).finally(async () => {
+    //         await this.prisma.$disconnect()
+    //     })
 
 
-        return data
-    }
+    //     return data
+    // }
     findByNickName(register: string): Promise<User> {
         throw new Error('Method not implemented.');
     }

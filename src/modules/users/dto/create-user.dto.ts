@@ -7,14 +7,14 @@ export class CreateUserDto {
     @ApiProperty()
     name: string;
   
-    @IsString({ message: 'Esta variável de nome de usuário precisa ser string' })
-    @IsNotEmpty({ message: 'Esta variável de nome de usuário não pode ficar vazia' })
-    @Length(5, 20, {
-      message:
-        'Esta variável de nome de usuário pode ter no mínimo 5 caracteres ou no máximo 20 caracteres',
-    })
-    @ApiProperty()
-    username: string;
+    // @IsString({ message: 'Esta variável de nome de usuário precisa ser string' })
+    // @IsNotEmpty({ message: 'Esta variável de nome de usuário não pode ficar vazia' })
+    // @Length(5, 20, {
+    //   message:
+    //     'Esta variável de nome de usuário pode ter no mínimo 5 caracteres ou no máximo 20 caracteres',
+    // })
+    // @ApiProperty()
+    // username: string;
   
     @IsString({ message: 'Esta variável de e-mail precisa ser string' })
     @IsEmail()
@@ -31,9 +31,9 @@ export class CreateUserDto {
     @ApiProperty()
     password: string;
 
-    @ApiProperty()
-    @IsNotEmpty({ message: 'CPF não pode ser vazio'})
-    cpf: string
+    // @ApiProperty()
+    // @IsNotEmpty({ message: 'CPF não pode ser vazio'})
+    // cpf: string
 
     @ApiProperty()
     @IsPhoneNumber('BR',{message: 'Número de telefone precisa ser valido'})

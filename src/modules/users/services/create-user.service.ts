@@ -16,28 +16,30 @@ export class CreateUserService {
   async execute(createUserDto: CreateUserDto) {
 
     delete createUserDto.is_admin
-    const userFindByCpf = await this.userRepository.findByCpf(createUserDto.cpf);
+
+    
+    // const userFindByCpf = await this.userRepository.findByCpf(createUserDto.cpf);
     const userFindByMail = await this.userRepository.findByMail(createUserDto.email);
-    const userFindByUsername = await this.userRepository.findByUsername(createUserDto.username);
-    if (userFindByCpf) {
-      throw new HttpException('CPF já existente', HttpStatus.CONFLICT)
-    }
+    // const userFindByUsername = await this.userRepository.findByUsername(createUserDto.username);
+    // if (userFindByCpf) {
+    //   throw new HttpException('CPF já existente', HttpStatus.CONFLICT)
+    // }
     if (userFindByMail) {
       throw new HttpException('Email já existente', HttpStatus.CONFLICT)
     }
 
-    if (userFindByUsername) {
-      throw new HttpException('Username já existente', HttpStatus.CONFLICT)
-    }
+    // if (userFindByUsername) {
+    //   throw new HttpException('Username já existente', HttpStatus.CONFLICT)
+    // }
 
     const passwordHash: string = await this.hashPassword.generateHash(createUserDto.password)
 
 
     const data: CreateUserDto = {
       name: createUserDto.name,
-      username: createUserDto.username,
+      // username: createUserDto.username,
       password: passwordHash,
-      cpf: createUserDto.cpf,
+      // cpf: createUserDto.cpf,
       fone: createUserDto.fone,
       email: createUserDto.email,
       is_enabled: true,
