@@ -34,4 +34,4 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         key: ${{ secrets.SSH_KEY }}
         script:
-         cd /home/app/api_nest_dona_doce && npm install && npm run build && pm2 restart api_nest_dona_doce
+         cd /home/app/api_nest_dona_doce && npx prisma generate && npm install && npm run build && pm2 restart api_nest_dona_doce
