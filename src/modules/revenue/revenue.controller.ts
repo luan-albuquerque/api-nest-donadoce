@@ -114,7 +114,7 @@ export class RevenueController {
     await this.updateRevenueService.execute(id, newData)
   }
 
-
+  @Delete()
   @ApiOperation({ summary: "EndPoint de deletar receita com todos os ingredientes compostos nela.", description: ""})
   remove(@Param('fk_revenue') fk_revenue: string) {
     return this.deleteRevenueService.execute(fk_revenue);
