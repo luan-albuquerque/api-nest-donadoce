@@ -11,7 +11,7 @@ export class DeleteRevenueService {
     ) { }
 
     async execute(id: string) {
-        await this.revenuesIngredientsRepository.removeAllByRevenue(id).then(async ()=>{
+        await this.revenuesIngredientsRepository.removeAllByRevenue(id).finally(async ()=>{
             await this.revenuesRepository.remove(id)
         })
         
