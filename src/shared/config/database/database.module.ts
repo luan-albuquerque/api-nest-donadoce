@@ -10,6 +10,8 @@ import { RevenuesRepositoryInPrisma } from 'src/modules/revenue/repository/imple
 import { RevenuesRepository } from 'src/modules/revenue/repository/contract/RevenuesRepository';
 import { RevenuesIngredientsRepositoryInPrisma } from 'src/modules/revenue_ingredient/repository/implementations/RevenuesIngredientsRepositoryInPrisma';
 import { RevenuesIngredientsRepository } from 'src/modules/revenue_ingredient/repository/contract/RevenuesIngredientsRepository';
+import { IngredientControlRepository } from 'src/modules/ingredient_control/repository/contract/IngredientControlRepository';
+import { IngredientControlRepositoryInPrisma } from 'src/modules/ingredient_control/repository/implementations/IngredientControlRepositoryInPrisma';
 
 
 @Module({
@@ -35,6 +37,11 @@ import { RevenuesIngredientsRepository } from 'src/modules/revenue_ingredient/re
             provide: RevenuesIngredientsRepository,
             useClass: RevenuesIngredientsRepositoryInPrisma
 
+          },
+          {
+            provide: IngredientControlRepository,
+            useClass: IngredientControlRepositoryInPrisma
+
           }
     ],
     exports: [
@@ -42,7 +49,8 @@ import { RevenuesIngredientsRepository } from 'src/modules/revenue_ingredient/re
       TokenRepository,
       IngredientsRepository,
       RevenuesRepository,
-      RevenuesIngredientsRepository
+      RevenuesIngredientsRepository,
+      IngredientControlRepository
     ]
 })
 export class DatabaseModule { }

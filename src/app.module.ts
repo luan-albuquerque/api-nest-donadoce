@@ -13,6 +13,8 @@ import EnsureAdminMiddleware from './shared/http/middlewares/admin.middleware';
 
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { CompanyModule } from './modules/company/company.module';
+import { IngredientControlModule } from './modules/ingredient_control/ingredient_control.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { join } from 'path';
     IngredientsModule,
     RevenueModule,
     RevenueIngredientModule,
+    IngredientControlModule,
+    CompanyModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname,'..', 'uploads'),
     }),

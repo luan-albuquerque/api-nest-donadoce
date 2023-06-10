@@ -10,6 +10,7 @@ export abstract class IngredientsRepository {
     abstract list( data :PaginationOptions):Promise<Ingredient[]>
     abstract findById(id: string):Promise<Ingredient>
     abstract findByDescription(description: string): Promise<Ingredient>
+    abstract listFluxoIngredient(control: boolean): Promise<Ingredient[]>
 
 
 }

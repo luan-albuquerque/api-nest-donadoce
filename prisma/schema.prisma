@@ -44,9 +44,21 @@ model Ingredients {
   id                   String                 @id @default(uuid())
   description          String                 @unique
   value                Float
+  amount_actual        Int?
   created_at           DateTime               @default(now())
   updated_t            DateTime?
   ingredients_Revenues Ingredients_Revenues[]
+  Ingredient_control   Ingredient_control[]
+}
+
+model Ingredient_control {
+  id            Int         @id @default(autoincrement())
+  fk_ingredient String
+  created_at    DateTime    @default(now())
+  is_output     Boolean    
+  unitary_value Float?
+  amount        Int
+  ingredients   Ingredients @relation(fields: [fk_ingredient], references: [id])
 }
 
 model Ingredients_Revenues {
@@ -79,4 +91,32 @@ model Revenues {
 //   text        String
 //   fk_revenues String
 //   revenues    Revenues @relation(fields: [fk_revenues], references: [id])
+// }
+
+model Clients {
+  id             String    @id @default(uuid())
+  corporate_name String
+  cnpj           String    @unique
+  fone           String?
+  email          String    @unique
+  password       String
+  address        String
+  cep            String
+  is_enabled     Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updateAt       DateTime?
+}
+
+// model Company {
+//   id             String    @id @default(uuid())
+//   corporate_name String
+//   cnpj           String    @unique
+//   fone           String?
+//   email          String    @unique
+//   address        String
+//   cep            String
+//   is_enabled     Boolean   @default(true)
+//   fk
+//   createdAt      DateTime  @default(now())
+//   updateAt       DateTime?
 // }
