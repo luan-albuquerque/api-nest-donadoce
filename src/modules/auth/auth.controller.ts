@@ -43,4 +43,6 @@ export class AuthController {
      await this.redefinePasswordService.execute({ token, confirmpassword, password })
   }
 
+ 
+
 }

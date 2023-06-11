@@ -15,6 +15,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { CompanyModule } from './modules/company/company.module';
 import { IngredientControlModule } from './modules/ingredient_control/ingredient_control.module';
+import { ClientsModule } from './modules/clients/clients.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { IngredientControlModule } from './modules/ingredient_control/ingredient
     RevenueIngredientModule,
     IngredientControlModule,
     CompanyModule,
+    ClientsModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname,'..', 'uploads'),
     }),
@@ -43,6 +45,7 @@ export class AppModule implements NestModule {
     consumer.apply(EnsureAuthenticatedMiddleware)
       .exclude(
       { method: RequestMethod.POST, path: "/session" },
+      { method: RequestMethod.POST, path: "/clients/auth" },
       { method: RequestMethod.POST, path: '/session/send-email' },
       { method: RequestMethod.POST, path: '/session/redefine-password' }
 ).forRoutes("*")

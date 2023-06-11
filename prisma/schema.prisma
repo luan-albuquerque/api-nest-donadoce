@@ -55,7 +55,7 @@ model Ingredient_control {
   id            Int         @id @default(autoincrement())
   fk_ingredient String
   created_at    DateTime    @default(now())
-  is_output     Boolean    
+  is_output     Boolean
   unitary_value Float?
   amount        Int
   ingredients   Ingredients @relation(fields: [fk_ingredient], references: [id])
@@ -105,18 +105,20 @@ model Clients {
   is_enabled     Boolean   @default(true)
   createdAt      DateTime  @default(now())
   updateAt       DateTime?
+  Company        Company[]
 }
 
-// model Company {
-//   id             String    @id @default(uuid())
-//   corporate_name String
-//   cnpj           String    @unique
-//   fone           String?
-//   email          String    @unique
-//   address        String
-//   cep            String
-//   is_enabled     Boolean   @default(true)
-//   fk
-//   createdAt      DateTime  @default(now())
-//   updateAt       DateTime?
-// }
+model Company {
+  id             String    @id @default(uuid())
+  corporate_name String
+  cnpj           String    
+  fone           String?
+  email          String    
+  address        String
+  cep            String
+  is_enabled     Boolean   @default(true)
+  fk_clients     String
+  clients        Clients   @relation(fields: [fk_clients], references: [id])
+  createdAt      DateTime  @default(now())
+  updateAt       DateTime?
+}

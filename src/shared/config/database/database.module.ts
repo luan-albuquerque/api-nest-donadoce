@@ -12,6 +12,8 @@ import { RevenuesIngredientsRepositoryInPrisma } from 'src/modules/revenue_ingre
 import { RevenuesIngredientsRepository } from 'src/modules/revenue_ingredient/repository/contract/RevenuesIngredientsRepository';
 import { IngredientControlRepository } from 'src/modules/ingredient_control/repository/contract/IngredientControlRepository';
 import { IngredientControlRepositoryInPrisma } from 'src/modules/ingredient_control/repository/implementations/IngredientControlRepositoryInPrisma';
+import { ClientsRepository } from 'src/modules/clients/repository/contract/ClientsRepository';
+import { ClientsRepositoryInPrisma } from 'src/modules/clients/repository/implementations/ClientsRepositoryInPrisma';
 
 
 @Module({
@@ -42,6 +44,11 @@ import { IngredientControlRepositoryInPrisma } from 'src/modules/ingredient_cont
             provide: IngredientControlRepository,
             useClass: IngredientControlRepositoryInPrisma
 
+          },
+          {
+            provide: ClientsRepository,
+            useClass: ClientsRepositoryInPrisma,
+
           }
     ],
     exports: [
@@ -50,7 +57,8 @@ import { IngredientControlRepositoryInPrisma } from 'src/modules/ingredient_cont
       IngredientsRepository,
       RevenuesRepository,
       RevenuesIngredientsRepository,
-      IngredientControlRepository
+      IngredientControlRepository,
+      ClientsRepository
     ]
 })
 export class DatabaseModule { }
