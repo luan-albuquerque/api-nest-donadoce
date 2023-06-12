@@ -24,8 +24,10 @@ export class CreateRevenueService {
         if (revenue) {
             throw new UnauthorizedException("Descrição já existente em outra receita")
         }
-
+     console.log({TESTE: createRevenueDto.ingredients});
+     
         if (createRevenueDto.ingredients) {
+          
             await Promise.all(
                 createRevenueDto.ingredients.map(async (item) => {
                     const busca = await this.ingredientsRepository.findById(item.fk_ingredient)
