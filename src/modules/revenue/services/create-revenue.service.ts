@@ -24,12 +24,12 @@ export class CreateRevenueService {
         if (revenue) {
             throw new UnauthorizedException("Descrição já existente em outra receita")
         }
-     console.log({TESTE: createRevenueDto.ingredients});
+    
      
         if (createRevenueDto.ingredients) {
-          
+            const convertIngredients = JSON.parse(JSON.stringify(createRevenueDto.ingredients))
             await Promise.all(
-                createRevenueDto.ingredients.map(async (item) => {
+                convertIngredients.map(async (item) => {
                     const busca = await this.ingredientsRepository.findById(item.fk_ingredient)
                     if (!busca) {
                         throw new NotFoundException("Ingrediente não existe!")
@@ -42,9 +42,10 @@ export class CreateRevenueService {
 
         if (createRevenue) {
             if (createRevenueDto.ingredients) {
-                await Promise.all(
-                    createRevenueDto.ingredients.map(async (item) => {
+            const convertIngredients = JSON.parse(JSON.stringify(createRevenueDto.ingredients))
 
+                await Promise.all(
+                    convertIngredients.map(async (item) => {
                         createRevenueIngredientDto.push({
                             fk_ingredient: item.fk_ingredient,
                             fk_revenues: createRevenue.id,
