@@ -28,6 +28,11 @@ export class CreateRevenueService {
      
         if (createRevenueDto.ingredients) {
             const convertIngredients = JSON.parse(JSON.stringify(createRevenueDto.ingredients))
+            const teste1 = Object(createRevenueDto.ingredients)
+        
+
+            console.log({teste1,convertIngredients});
+            
             await Promise.all(
                 convertIngredients.map(async (item) => {
                     const busca = await this.ingredientsRepository.findById(item.fk_ingredient)
