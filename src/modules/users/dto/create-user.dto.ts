@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { IsString, IsNotEmpty, IsInt, IsBoolean, IsEmail, Length, IsPhoneNumber } from "class-validator"
+import { IsString, IsNotEmpty, IsInt, IsBoolean, IsEmail, Length, IsPhoneNumber,  } from "class-validator"
 
 export class CreateUserDto {
     @IsString({ message: 'Esta variável de nome precisa ser string' })
