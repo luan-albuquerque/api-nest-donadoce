@@ -67,8 +67,8 @@ export class CreateRevenueDto {
       })
   
     @IsArray({ message: 'ingredients precisa ser um array de uuid de ingredientes com quantidade' })
-    @ValidateNested({each: true})
-    @Type(()=> IngredientWithAmount)
+    // @ValidateNested({each: true})
+    // @Type(()=> IngredientWithAmount)
     ingredients?: IngredientWithAmount[]
   
 }
