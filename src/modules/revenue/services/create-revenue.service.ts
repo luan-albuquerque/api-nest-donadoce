@@ -27,8 +27,8 @@ export class CreateRevenueService {
     
      
         if (createRevenueDto.ingredients) {
-            const convertIngredients = JSON.parse(JSON.stringify(createRevenueDto.ingredients))
-            const teste1 = Object(createRevenueDto.ingredients)
+            const convertIngredients = Object(JSON.parse(JSON.stringify(createRevenueDto.ingredients)))
+            const teste1 = JSON.parse(String(createRevenueDto.ingredients))
         
 
             console.log({teste1,convertIngredients});
