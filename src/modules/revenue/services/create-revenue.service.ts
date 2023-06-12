@@ -27,12 +27,8 @@ export class CreateRevenueService {
     
      
         if (createRevenueDto.ingredients) {
-            const convertIngredients = Object(JSON.parse(JSON.stringify(createRevenueDto.ingredients)))
-            const teste1 = JSON.parse(String(createRevenueDto.ingredients))
-        
-
-            console.log({teste1,convertIngredients});
-            
+            const convertIngredients = JSON.parse(String(createRevenueDto.ingredients))
+ 
             await Promise.all(
                 convertIngredients.map(async (item) => {
                     const busca = await this.ingredientsRepository.findById(item.fk_ingredient)
@@ -47,7 +43,7 @@ export class CreateRevenueService {
 
         if (createRevenue) {
             if (createRevenueDto.ingredients) {
-            const convertIngredients = JSON.parse(JSON.stringify(createRevenueDto.ingredients))
+            const convertIngredients = JSON.parse(String(createRevenueDto.ingredients))
 
                 await Promise.all(
                     convertIngredients.map(async (item) => {
