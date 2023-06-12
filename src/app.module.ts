@@ -19,6 +19,10 @@ import { ClientsModule } from './modules/clients/clients.module';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+
+    }),
     ConfigModule.forRoot(),
     DatabaseModule,
     UsersModule,
@@ -30,9 +34,7 @@ import { ClientsModule } from './modules/clients/clients.module';
     IngredientControlModule,
     CompanyModule,
     ClientsModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname,'..', 'uploads'),
-    }),
+
   ],
   controllers: [],
   providers: [
@@ -44,11 +46,13 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(EnsureAuthenticatedMiddleware)
       .exclude(
-      { method: RequestMethod.POST, path: "/session" },
-      { method: RequestMethod.POST, path: "/clients/auth" },
-      { method: RequestMethod.POST, path: '/session/send-email' },
-      { method: RequestMethod.POST, path: '/session/redefine-password' }
-).forRoutes("*")
+
+        { method: RequestMethod.ALL, path: "/img_revenue/(.*)" },
+        { method: RequestMethod.POST, path: "/session" },
+        { method: RequestMethod.POST, path: "/clients/auth" },
+        { method: RequestMethod.POST, path: '/session/send-email' },
+        { method: RequestMethod.POST, path: '/session/redefine-password' }
+      ).forRoutes("*")
     consumer.apply(EnsureAdminMiddleware).forRoutes("users")
   }
 

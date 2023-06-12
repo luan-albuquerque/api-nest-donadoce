@@ -5,7 +5,7 @@ import { extname } from 'path';
 import { v4 as uuid } from 'uuid';
 
 export const multerConfig = {
-  dest: process.cwd() + "/uploads/revenue",
+  dest: process.cwd() + "/uploads/img_revenue",
 };
 
 export const multerOptions = {
