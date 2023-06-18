@@ -18,7 +18,7 @@ export class DeleteRevenueIngredientService {
         if (!revenue) {
             throw new UnauthorizedException("Receita não existente")
         }
-        const ingredientAllExistInRevenue = await this.revenuesIngredientsRepository.findOneIngredient(data.fk_ingredient)
+        const ingredientAllExistInRevenue = await this.revenuesIngredientsRepository.findOneIngredient(data.fk_ingredient, data.fk_revenues)
 
         if (!ingredientAllExistInRevenue) {
             throw new UnauthorizedException("Ingrediente não existente em receita")

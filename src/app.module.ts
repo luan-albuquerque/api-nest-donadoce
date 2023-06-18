@@ -42,18 +42,19 @@ import { ClientsModule } from './modules/clients/clients.module';
   ],
 })
 
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(EnsureAuthenticatedMiddleware)
-      .exclude(
+export class AppModule {}
+  // export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(EnsureAuthenticatedMiddleware)
+//       .exclude(
 
-        { method: RequestMethod.ALL, path: "/img_revenue/(.*)" },
-        { method: RequestMethod.POST, path: "/session" },
-        { method: RequestMethod.POST, path: "/clients/auth" },
-        { method: RequestMethod.POST, path: '/session/send-email' },
-        { method: RequestMethod.POST, path: '/session/redefine-password' }
-      ).forRoutes("*")
-    consumer.apply(EnsureAdminMiddleware).forRoutes("users")
-  }
+//         { method: RequestMethod.ALL, path: "/img_revenue/(.*)" },
+//         { method: RequestMethod.POST, path: "/session" },
+//         { method: RequestMethod.POST, path: "/clients/auth" },
+//         { method: RequestMethod.POST, path: '/session/send-email' },
+//         { method: RequestMethod.POST, path: '/session/redefine-password' }
+//       ).forRoutes("*")
+//     consumer.apply(EnsureAdminMiddleware).forRoutes("users")
+//   }
 
-}
+// }

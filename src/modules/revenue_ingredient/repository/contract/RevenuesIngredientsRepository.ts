@@ -5,7 +5,7 @@ import { RevenueIngredient } from "../../entities/revenue_ingredient.entity";
 
 export abstract class RevenuesIngredientsRepository {
         abstract create(createRevenueIngredientDto: CreateRevenueIngredientDto[]): Promise<void>
-        abstract findOneIngredient(fk_ingredient: string): Promise<RevenueIngredient>
+        abstract findOneIngredient(fk_ingredient: string, fk_revenues:string): Promise<RevenueIngredient>
         abstract remove(fk_ingredient: string, fk_revenues: string):Promise<void>
         abstract removeAllByRevenue( fk_revenue: string):Promise<void>
         abstract update(updateRevenueIngredientDto: UpdateRevenueIngredientDto): Promise<void>
