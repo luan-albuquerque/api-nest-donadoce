@@ -28,11 +28,11 @@ export class CreateIngredientFluxoService {
             actulQtd = actulQtd + createIngredientControlDto.amount
             newValue = createIngredientControlDto.unitary_value
         }else{
-            if((createIngredientControlDto.amount - actulQtd) < 0){
+            if((actulQtd - createIngredientControlDto.amount) < 0){
             throw new BadRequestException("Quantidade a sair superior a quantidade em estoque")
 
             }
-            actulQtd = createIngredientControlDto.amount - actulQtd
+            actulQtd = actulQtd -  createIngredientControlDto.amount 
         }
 
         
