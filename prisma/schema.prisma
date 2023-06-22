@@ -120,7 +120,7 @@ model Revenues {
 // }
 
 model Company {
-  id             String           @id
+  id             String           @id @default(uuid())
   corporate_name String
   cnpj           String           @unique
   county         String?

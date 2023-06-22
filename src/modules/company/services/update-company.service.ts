@@ -28,9 +28,12 @@ export class UpdateCompanyService {
       address: updateCompanyDto.address,
       cep: updateCompanyDto.cep,
       cnpj: updateCompanyDto.cnpj,
-      fone: updateCompanyDto.fone,
       email: updateCompanyDto.email,
-      is_enabled: updateCompanyDto.is_enabled
+      accountable: updateCompanyDto.accountable,
+      district: updateCompanyDto.district,
+      ie: updateCompanyDto.ie,
+      uf: updateCompanyDto.uf,
+      county: updateCompanyDto.county
     }
 
 
