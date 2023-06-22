@@ -20,7 +20,6 @@ export class CreateCompanyService {
       cep: createCompanyDto.cep,
       cnpj: createCompanyDto.cnpj,
       county: createCompanyDto.cep,
-      fone: createCompanyDto.fone,
       email: createCompanyDto.email,
       accountable: createCompanyDto.accountable,
       district: createCompanyDto.district,

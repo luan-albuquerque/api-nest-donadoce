@@ -12,10 +12,6 @@ export class CreateCompanyDto {
     @ApiProperty()
     cnpj: string
     
-    @ApiProperty()
-    @IsPhoneNumber('BR',{message: 'Número de telefone precisa ser valido'})
-    fone?: string
-
     @IsString({ message: 'Esta variável de e-mail precisa ser string' })
     @IsEmail()
     @IsNotEmpty({ message: 'Esta variável de e-mail não pode esvazia' })

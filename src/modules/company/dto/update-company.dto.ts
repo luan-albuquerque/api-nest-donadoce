@@ -14,15 +14,16 @@ export class UpdateCompanyDto   {
     @ApiProperty()
     cnpj: string
     
-    @ApiProperty()
-    @IsPhoneNumber('BR',{message: 'Número de telefone precisa ser valido'})
-    fone?: string
-
     @IsString({ message: 'Esta variável de e-mail precisa ser string' })
     @IsEmail()
     @IsNotEmpty({ message: 'Esta variável de e-mail não pode esvazia' })
     @ApiProperty()
     email: string
+
+    @IsString({ message: 'Esta variável de accountable precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de accountable não pode esvaziar' })
+    @ApiProperty()
+    accountable: string
 
     @IsString({ message: 'Esta variável de address precisa ser string' })
     @IsNotEmpty({ message: 'Esta variável de address não pode esvaziar' })
@@ -33,9 +34,23 @@ export class UpdateCompanyDto   {
     @IsPostalCode('BR', { message: 'cep precisa ser no formato XXXXX-XXX'})
     cep: string
 
+    @ApiProperty()
+    @IsString({ message: 'Esta variável de county precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de county não pode esvaziar' })
+    county: string
 
+    @ApiProperty()
+    @IsString({ message: 'Esta variável de district precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de district não pode esvaziar' })
+    district: string
 
-    @ApiProperty({required: true})
-    @IsBoolean({ message: 'O status da is_enabled precisa ser um boolean' })
-    is_enabled: boolean
+    @ApiProperty()
+    @IsString({ message: 'Esta variável de ie precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de ie não pode esvaziar' })
+    ie: string
+
+    @ApiProperty()
+    @IsString({ message: 'Esta variável de uf precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de uf não pode esvaziar' })
+    uf: string
 }

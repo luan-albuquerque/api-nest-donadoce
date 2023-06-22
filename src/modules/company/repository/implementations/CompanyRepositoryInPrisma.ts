@@ -8,6 +8,10 @@ import { UpdateCompanyDto } from "../../dto/update-company.dto";
 @Injectable()
 export class CompanyRepositoryInPrisma implements CompanyRepository {
     constructor(private prisma: PrismaService) { }
+    findByEmail(email: string): Promise<Company> {
+        throw new Error("Method not implemented.");
+    }
+
     async findAll(): Promise<Company[]> {
         const data = await this.prisma.company.findMany({
 
@@ -27,10 +31,12 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
                 address: updateCompanyDto.address,
                 cep: updateCompanyDto.cep,
                 cnpj: updateCompanyDto.cnpj,
-                fone: updateCompanyDto.fone,
-                email: updateCompanyDto.email,
-                is_enabled: updateCompanyDto.is_enabled,
-                updateAt: new Date()
+                county: updateCompanyDto.county,
+                district:updateCompanyDto.district,
+                ie: updateCompanyDto.ie,
+                uf: updateCompanyDto.uf,
+                updateAt: new Date(),
+                
             },
         }).catch(async (error) => {
             await this.prisma.$disconnect()
@@ -53,10 +59,10 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
                 address: createCompanyDto.address,
                 cep: createCompanyDto.cep,
                 cnpj: createCompanyDto.cnpj,
-                fone: createCompanyDto.fone,
-                email: createCompanyDto.email,
-                uf: 
-                is_enabled: true,
+                county: createCompanyDto.county,
+                district:createCompanyDto.district,
+                ie: createCompanyDto.ie,
+                uf: createCompanyDto.uf,
                 createdAt: new Date()
             }
         }).catch(async (error) => {
@@ -74,12 +80,11 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
 
         return data
     }
-    async findByCNPJByClient(cnpj: string, fk_clients: string): Promise<Company> {
+    async findByCNPJ(cnpj: string): Promise<Company> {
         const data = await this.prisma.company.findFirst({
             where: {
                 AND: {
                     cnpj,
-                    fk_clients,
                 }
             }
         }).finally(() => {
@@ -88,21 +93,7 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
 
         return data
     }
-    async findByEmailByClient(email: string, fk_clients: string): Promise<Company> {
-        const data = await this.prisma.company.findFirst({
-            where: {
-                AND: {
-                    email,
-                    fk_clients,
-                }
 
-            }
-        }).finally(() => {
-            this.prisma.$disconnect()
-        })
-
-        return data
-    }
 
 
 }
