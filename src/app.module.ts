@@ -45,7 +45,7 @@ import { PersonModule } from './modules/person/person.module';
 })
 
 export class AppModule {}
-//   export class AppModule implements NestModule {
+  // export class AppModule implements NestModule {
 //   configure(consumer: MiddlewareConsumer) {
 //     consumer.apply(EnsureAuthenticatedMiddleware)
 //       .exclude(

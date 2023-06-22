@@ -12,6 +12,7 @@ export class CreateRevenueIngredientService {
         private readonly revenuesIngredientsRepository: RevenuesIngredientsRepository,
     ) { }
     async execute(createRevenueIngredientDto: CreateRevenueIngredientDto[]) {
+    
         
         if (createRevenueIngredientDto && createRevenueIngredientDto.length > 0) {
             const efctiveCreateRevenueIngredientDto:CreateRevenueIngredientDto[] = []
@@ -27,9 +28,13 @@ export class CreateRevenueIngredientService {
                     if (!revenue) {
                         throw new UnauthorizedException("Receita não existente")
                     }
-                    const ingredientAllExistInRevenue = await this.revenuesIngredientsRepository.findOneIngredient(item.fk_ingredient)
 
+                    
+                    const ingredientAllExistInRevenue = await this.revenuesIngredientsRepository.findOneIngredient(item.fk_ingredient, item.fk_revenues)
+         
+                
                     if(!ingredientAllExistInRevenue){
+                        
                         efctiveCreateRevenueIngredientDto.push(item)
                     }
 

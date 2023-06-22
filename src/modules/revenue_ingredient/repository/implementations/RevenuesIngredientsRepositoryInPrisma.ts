@@ -21,10 +21,14 @@ export class RevenuesIngredientsRepositoryInPrisma implements RevenuesIngredient
     }
 
 
-    async findOneIngredient(fk_ingredient: string): Promise<RevenueIngredient> {
+    async findOneIngredient(fk_ingredient: string,fk_revenues:string): Promise<RevenueIngredient> {
        const data = await this.prisma.ingredients_Revenues.findFirst({
             where:{
-             fk_ingredient,
+             AND:{
+                fk_ingredient,
+                fk_revenues
+             }
+
             }
          }).finally(() => {
              this.prisma.$disconnect()
