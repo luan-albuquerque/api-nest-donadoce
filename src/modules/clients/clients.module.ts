@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsController } from './clients.controller';
 import { DatabaseModule } from 'src/shared/config/database/database.module';
-import CreateSessionClientService from './services/create-session-client.service';
 import BCryptHashPassword from '../auth/providers/Hash/implementations/BCryptHashPassword';
 import { expiresIn, secretClient } from 'src/config/jwt/config.jwt';
 import { JwtModule } from '@nestjs/jwt';
@@ -21,7 +20,6 @@ import BCryptHash from './providers/implementations/BCryptHash';
   controllers: [ClientsController],
   providers: [
     CreateClientService,
-    CreateSessionClientService,
     FindAllClientService, 
     FindOneClientService,
     BCryptHash,

@@ -1,7 +1,7 @@
-import { UserRepository } from "src/modules/users/repository/UserRepository";
+
 import RedefinePasswordDTO from "../dtos/RedefinePasswordDTO";
 import Token from "../entities/Token";
-import { TokenRepository } from "../repository/TokenRepository";
+import { TokenRepository } from "../repository/contract/TokenRepository";
 import {
     Inject,
     Injectable,
@@ -13,6 +13,7 @@ import { User } from "src/modules/users/entities/user.entity";
 import { isAfter } from "date-fns";
 import SendEmailConfirmRecoverPasswordService from "src/modules/mail/services/sendEmailConfirmRecoveyPassword.service";
 import BCryptHashPassword from "../providers/Hash/implementations/BCryptHashPassword";
+import { UserRepository } from "src/modules/users/repository/contract/UserRepository";
 
 @Injectable()
 export default class RedefinePasswordService {

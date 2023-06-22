@@ -11,21 +11,47 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(uuid())
-  name        String
-  // username    String    @unique
-  password    String
-  // cpf         String    @unique
-  fone        String?
-  email       String    @unique
-  is_enabled  Boolean   @default(true)
-  is_admin    Boolean   @default(false)
-  is_product  Boolean   @default(false)
-  is_stock    Boolean   @default(false)
-  is_revenues Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updateAt    DateTime?
-  token       Token[]
+  id         String    @id @default(uuid())
+  password   String
+  email      String    @unique
+  is_enabled Boolean   @default(true)
+  is_admin   Boolean   @default(false)
+  is_client  Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updateAt   DateTime?
+  token      Token[]
+  Clients    Client?
+  Person     Person?
+}
+
+model Client {
+  id             String           @id
+  corporate_name String
+  name_fantasy   String
+  cnpj           String           @unique
+  county         String?
+  district       String?
+  ie             String?
+  uf             String?
+  fone           String?
+  address        String
+  cep            String
+  accountable    String
+  createdAt      DateTime         @default(now())
+  updateAt       DateTime?
+  user           User             @relation(fields: [id], references: [id])
+  Client_Company Client_Company[]
+}
+
+model Person {
+  id        String    @id
+  name      String
+  fone      String?
+  address   String
+  cep       String
+  createdAt DateTime  @default(now())
+  updateAt  DateTime?
+  user      User      @relation(fields: [id], references: [id])
 }
 
 model Token {
@@ -93,32 +119,28 @@ model Revenues {
 //   revenues    Revenues @relation(fields: [fk_revenues], references: [id])
 // }
 
-model Clients {
-  id             String    @id @default(uuid())
+model Company {
+  id             String           @id
   corporate_name String
-  cnpj           String    @unique
-  fone           String?
-  email          String    @unique
-  password       String
+  cnpj           String           @unique
+  county         String?
+  district       String?
+  ie             String?
+  uf             String?
   address        String
   cep            String
-  is_enabled     Boolean   @default(true)
-  createdAt      DateTime  @default(now())
+  createdAt      DateTime         @default(now())
   updateAt       DateTime?
-  Company        Company[]
+  Client_Company Client_Company[]
 }
 
-model Company {
-  id             String    @id @default(uuid())
-  corporate_name String
-  cnpj           String    
-  fone           String?
-  email          String    
-  address        String
-  cep            String
-  is_enabled     Boolean   @default(true)
-  fk_clients     String
-  clients        Clients   @relation(fields: [fk_clients], references: [id])
-  createdAt      DateTime  @default(now())
-  updateAt       DateTime?
+model Client_Company {
+  fk_company  String
+  fk_client   String
+  fone        String
+  accountable String
+  clients     Client  @relation(fields: [fk_client], references: [id])
+  company     Company @relation(fields: [fk_company], references: [id])
+
+  @@id([fk_client, fk_company])
 }

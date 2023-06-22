@@ -16,6 +16,7 @@ import { join } from 'path';
 import { CompanyModule } from './modules/company/company.module';
 import { IngredientControlModule } from './modules/ingredient_control/ingredient_control.module';
 import { ClientsModule } from './modules/clients/clients.module';
+import { PersonModule } from './modules/person/person.module';
 
 @Module({
   imports: [
@@ -25,15 +26,16 @@ import { ClientsModule } from './modules/clients/clients.module';
     }),
     ConfigModule.forRoot(),
     DatabaseModule,
-    UsersModule,
     AuthModule,
+    PersonModule,
+    ClientsModule,
+    UsersModule,
     MailModule,
     IngredientsModule,
     RevenueModule,
     RevenueIngredientModule,
     IngredientControlModule,
     CompanyModule,
-    ClientsModule,
 
   ],
   controllers: [],

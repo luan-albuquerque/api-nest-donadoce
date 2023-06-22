@@ -53,9 +53,9 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
                 address: createCompanyDto.address,
                 cep: createCompanyDto.cep,
                 cnpj: createCompanyDto.cnpj,
-                fk_clients: createCompanyDto.fk_clients,
                 fone: createCompanyDto.fone,
                 email: createCompanyDto.email,
+                uf: 
                 is_enabled: true,
                 createdAt: new Date()
             }

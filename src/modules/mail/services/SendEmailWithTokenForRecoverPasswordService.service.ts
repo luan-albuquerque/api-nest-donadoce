@@ -12,7 +12,7 @@ export default class SendEmailWithTokenForRecoverPasswordService {
       from: 'Dona Doce' + process.env.EMAIL_MAIL,
       subject: "Recuperar Senha",
       context: {
-        name: user.name,
+        name: user.email,
         token: token,
         date: dayjs(new Date()).format('DD/MM/YYYY HH:mm:ss')
       },
