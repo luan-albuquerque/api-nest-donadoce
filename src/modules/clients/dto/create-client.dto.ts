@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
+import { Type } from "class-transformer";
+import { IsEmail, IsNotEmpty, IsString, Length, Max } from "class-validator";
+import { CreateUserDto } from "src/modules/users/dto/create-user.dto";
 
 export class CreateClientDto {
     @IsString({ message: 'Esta variável de corporate_name precisa ser string' })
@@ -15,21 +17,32 @@ export class CreateClientDto {
     @ApiProperty({required: false})
     fone?: string
 
-    @IsString({ message: 'Esta variável de e-mail precisa ser string' })
-    @IsEmail()
-    @IsNotEmpty({ message: 'Esta variável de e-mail não pode esvazia' })
+    @IsString({ message: 'Esta variável de name_fantasy precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de name_fantasy não pode esvaziar' })
     @ApiProperty()
-    email: string;
-  
-    @IsString({ message: 'Esta variável de senha precisa ser string' })
-    @IsNotEmpty({ message: 'Esta variável de senha não pode esvaziar' })
-    @Length(4, 50, {
-      message:
-        'Esta variável de senha pode ter no mínimo 4 caracteres ou no máximo 50 caracteres',
-    })
-    @ApiProperty()
-    password: string;
+    name_fantasy: string
 
+    @IsString({ message: 'Esta variável de county precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de county não pode esvaziar' })
+    @ApiProperty()
+    county: string
+
+    @IsString({ message: 'Esta variável de district precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de district não pode esvaziar' })
+    @ApiProperty()
+    district: string
+
+    @IsString({ message: 'Esta variável de ie precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de ie não pode esvaziar' })
+    @ApiProperty()
+    ie: string
+
+    @IsString({ message: 'Esta variável de uf precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de uf não pode esvaziar' })
+    @Length(2,2,{message: "UF deve conter dois caracterís representando um estado"})
+    @ApiProperty()
+    uf: string
+   
     @IsString({ message: 'Esta variável de address precisa ser string' })
     @IsNotEmpty({ message: 'Esta variável de address não pode esvaziar' })
     @ApiProperty()
@@ -40,4 +53,34 @@ export class CreateClientDto {
     @ApiProperty()
     cep: string
 
+    
+    @IsString({ message: 'Esta variável de accountable precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de accountable não pode esvaziar' })
+    @ApiProperty()
+    accountable: string
+
+    
+    // @ApiProperty({
+    //     required: true,
+    //     type: 'object',
+    //     items: {
+    //       example:{
+    //         password : "string",
+    //         email: "string",
+    //         is_enabled: "boolean",
+    //         is_admin: "boolean",
+    //         is_client: "boolean",
+    //       },
+    //       properties: {
+    //         password : { type: 'string' },
+    //         email: { type: 'string' },
+    //         is_enabled: { type: 'boolean' },
+    //         is_admin: { type: 'boolean' },
+    //         is_client: { type: 'boolean' }
+    //       },
+    //     },
+    //   })
+    @ApiProperty({ type: CreateUserDto})
+    @Type(()=> CreateUserDto)
+    createUser: CreateUserDto
 }

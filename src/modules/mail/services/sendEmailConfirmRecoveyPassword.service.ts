@@ -14,7 +14,7 @@ export default class SendEmailConfirmRecoverPasswordService {
               subject: "Senha Redefinida com Sucesso",
               template: "confirmRedefinePassword",
               context:{
-                name: user.name
+                name: user.email
               }
         }).catch((error)=>{
             console.log('ERROR SEND MAIL WITH TOKEN' + error)

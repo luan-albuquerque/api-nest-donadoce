@@ -22,6 +22,11 @@ export class CreateCompanyDto {
     @ApiProperty()
     email: string
 
+    @IsString({ message: 'Esta variável de accountable precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de accountable não pode esvaziar' })
+    @ApiProperty()
+    accountable: string
+
     @IsString({ message: 'Esta variável de address precisa ser string' })
     @IsNotEmpty({ message: 'Esta variável de address não pode esvaziar' })
     @ApiProperty()
@@ -31,9 +36,25 @@ export class CreateCompanyDto {
     @IsPostalCode('BR', { message: 'cep precisa ser no formato XXXXX-XXX'})
     cep: string
 
-    @IsString({ message: 'Esta variável de address precisa ser string' })
-    @IsNotEmpty({ message: 'Esta variável de address não pode esvaziar' })
     @ApiProperty()
-    fk_clients: string
+    @IsString({ message: 'Esta variável de county precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de county não pode esvaziar' })
+    county: string
+
+    @ApiProperty()
+    @IsString({ message: 'Esta variável de district precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de district não pode esvaziar' })
+    district: string
+
+    @ApiProperty()
+    @IsString({ message: 'Esta variável de ie precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de ie não pode esvaziar' })
+    ie: string
+
+    @ApiProperty()
+    @IsString({ message: 'Esta variável de uf precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de uf não pode esvaziar' })
+    uf: string
+    
 
 }

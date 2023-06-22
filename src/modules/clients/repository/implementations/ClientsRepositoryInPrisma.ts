@@ -10,18 +10,31 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
 
     constructor(private prisma: PrismaService) { }
     async create(createClientDto: CreateClientDto): Promise<void> {
-         await this.prisma.clients.create({
+         await this.prisma.client.create({
            data:{
-            email: createClientDto.email,
+            name_fantasy: createClientDto.name_fantasy,
+            county: createClientDto.county,
+            district: createClientDto.district,
+            ie: createClientDto.ie,
             address: createClientDto.address,
             cep: createClientDto.cep,
             cnpj: createClientDto.cnpj,
+            accountable: createClientDto.accountable,
             corporate_name: createClientDto.corporate_name,
-            password: createClientDto.password,
             createdAt: new Date(),
             fone: createClientDto.fone,
-            is_enabled: true,
+            uf: createClientDto.uf,
+            user:{
+                create:{
+                    email: createClientDto.createUser.email,
+                    password: createClientDto.createUser.password,
+                    is_client: createClientDto.createUser.is_client,
+                    is_admin: createClientDto.createUser.is_admin,
+                    is_enabled: createClientDto.createUser.is_enabled,
+                }
+            }
 
+            
            }
         }).finally(() => {
             this.prisma.$disconnect()
@@ -29,7 +42,7 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
 
     }
     async findByCNPJ(cnpj: string): Promise<Client> {
-        const data = await this.prisma.clients.findUnique({
+        const data = await this.prisma.client.findUnique({
             where: {
                 cnpj
             }
@@ -40,27 +53,18 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
         return data;
     }
     async findByAll(): Promise<Client[]> {
-        const data = await this.prisma.clients.findMany({
+        const data = await this.prisma.client.findMany({
 
         }).finally(() => {
             this.prisma.$disconnect()
         })
 
         return data;
-    }
-    async findByMail(email: string): Promise<Client> {
-        const data = await this.prisma.clients.findUnique({
-            where: {
-                email,
-            }
-        }).finally(() => {
-            this.prisma.$disconnect()
-        })
 
-        return data;
     }
+
     async findById(id: string): Promise<Client> {
-        const data = await this.prisma.clients.findUnique({
+        const data = await this.prisma.client.findUnique({
             where: {
                 id,
             }
@@ -69,6 +73,8 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
         })
 
         return data;
+        return null
+
     }
 
 }

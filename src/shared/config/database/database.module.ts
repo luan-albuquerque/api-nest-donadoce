@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
-import { UserRepository } from 'src/modules/users/repository/UserRepository';
-import { UserRepositoryInPrisma } from './prisma/repositories/UserRepositoryInPrisma';
-import { TokenRepository } from 'src/modules/auth/repository/TokenRepository';
-import { TokenRepositoryInPrisma } from './prisma/repositories/TokenRepositoryInPrisma';
+import { UserRepositoryInPrisma } from '../../../modules/users/repository/implementations/UserRepositoryInPrisma';
+import { TokenRepository } from 'src/modules/auth/repository/contract/TokenRepository';
+import { TokenRepositoryInPrisma } from '../../../modules/auth/repository/implementations/TokenRepositoryInPrisma';
 import { IngredientsRepository } from 'src/modules/ingredients/repository/contract/IngredientsRepository';
 import { IngredientsRepositoryInPrisma } from 'src/modules/ingredients/repository/implementations/IngredientsRepositoryInPrisma';
 import { RevenuesRepositoryInPrisma } from 'src/modules/revenue/repository/implementations/RevenuesRepositoryInPrisma';
@@ -16,6 +15,9 @@ import { ClientsRepository } from 'src/modules/clients/repository/contract/Clien
 import { ClientsRepositoryInPrisma } from 'src/modules/clients/repository/implementations/ClientsRepositoryInPrisma';
 import { CompanyRepository } from 'src/modules/company/repository/contract/CompanyRepository';
 import { CompanyRepositoryInPrisma } from 'src/modules/company/repository/implementations/CompanyRepositoryInPrisma';
+import { PersonRepository } from 'src/modules/person/repository/contract/PersonRepository';
+import { PersonRepositoryInPrisma } from 'src/modules/person/repository/implementations/PersonRepositoryInPrisma';
+import { UserRepository } from 'src/modules/users/repository/contract/UserRepository';
 
 
 @Module({
@@ -55,6 +57,10 @@ import { CompanyRepositoryInPrisma } from 'src/modules/company/repository/implem
           {
             provide: CompanyRepository,
             useClass: CompanyRepositoryInPrisma
+          },
+          {
+            provide: PersonRepository,
+            useClass: PersonRepositoryInPrisma,
           }
     ],
     exports: [
@@ -66,6 +72,7 @@ import { CompanyRepositoryInPrisma } from 'src/modules/company/repository/implem
       IngredientControlRepository,
       ClientsRepository,
       CompanyRepository,
+      PersonRepository,
     ]
 })
 export class DatabaseModule { }

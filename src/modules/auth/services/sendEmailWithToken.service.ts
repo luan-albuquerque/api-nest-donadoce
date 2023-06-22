@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { addDays } from 'date-fns';
 import SendEmailWithTokenDTO from 'src/modules/auth/dtos/SendEmailWithTokenDTO';
-import { TokenRepository } from 'src/modules/auth/repository/TokenRepository';
+import { TokenRepository } from 'src/modules/auth/repository/contract/TokenRepository';
 import SendEmailWithTokenForRecoverPasswordService from 'src/modules/mail/services/SendEmailWithTokenForRecoverPasswordService.service';
-import { UserRepository } from 'src/modules/users/repository/UserRepository';
+import { UserRepository } from 'src/modules/users/repository/contract/UserRepository';
+
 
 @Injectable()
 export default class SendEmailWithTokenService {

@@ -1,17 +1,18 @@
-import { Company } from "src/modules/company/entities/company.entity"
+import { User } from "src/modules/users/entities/user.entity"
 
 export class Client {
-
     id: string
     corporate_name: string
+    name_fantasy: string
     cnpj: string
-    fone?: string
-    email: string
-    password: string
+    county: string
+    district: string
+    ie: string
+    uf: string
+    fone: string
     address: string
     cep: string
-    is_enabled: boolean
     createdAt: Date
     updateAt?: Date
-    Company?: Company[]
+    user?: User
 }

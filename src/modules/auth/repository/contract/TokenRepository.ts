@@ -1,5 +1,5 @@
-import CreateTokenDTO from "../dtos/CreateTokenDTO";
-import Token from "../entities/Token";
+import CreateTokenDTO from "../../dtos/CreateTokenDTO";
+import Token from "../../entities/Token";
 
 
 export abstract class TokenRepository {

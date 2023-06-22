@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { TokenRepository } from "src/modules/auth/repository/TokenRepository";
-import { PrismaService } from "../prisma.service";
+import { TokenRepository } from "src/modules/auth/repository/contract/TokenRepository";
+import { PrismaService } from "../../../../shared/config/database/prisma/prisma.service";
 import Token from "src/modules/auth/entities/Token";
 import CreateTokenDTO from "src/modules/auth/dtos/CreateTokenDTO";
 

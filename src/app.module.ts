@@ -16,6 +16,7 @@ import { join } from 'path';
 import { CompanyModule } from './modules/company/company.module';
 import { IngredientControlModule } from './modules/ingredient_control/ingredient_control.module';
 import { ClientsModule } from './modules/clients/clients.module';
+import { PersonModule } from './modules/person/person.module';
 
 @Module({
   imports: [
@@ -25,15 +26,16 @@ import { ClientsModule } from './modules/clients/clients.module';
     }),
     ConfigModule.forRoot(),
     DatabaseModule,
-    UsersModule,
     AuthModule,
+    PersonModule,
+    ClientsModule,
+    UsersModule,
     MailModule,
     IngredientsModule,
     RevenueModule,
     RevenueIngredientModule,
     IngredientControlModule,
     CompanyModule,
-    ClientsModule,
 
   ],
   controllers: [],
@@ -42,18 +44,19 @@ import { ClientsModule } from './modules/clients/clients.module';
   ],
 })
 
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(EnsureAuthenticatedMiddleware)
-      .exclude(
+export class AppModule {}
+//   export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(EnsureAuthenticatedMiddleware)
+//       .exclude(
 
-        { method: RequestMethod.ALL, path: "/img_revenue/(.*)" },
-        { method: RequestMethod.POST, path: "/session" },
-        { method: RequestMethod.POST, path: "/clients/auth" },
-        { method: RequestMethod.POST, path: '/session/send-email' },
-        { method: RequestMethod.POST, path: '/session/redefine-password' }
-      ).forRoutes("*")
-    consumer.apply(EnsureAdminMiddleware).forRoutes("users")
-  }
+//         { method: RequestMethod.ALL, path: "/img_revenue/(.*)" },
+//         { method: RequestMethod.POST, path: "/session" },
+//         { method: RequestMethod.POST, path: "/clients/auth" },
+//         { method: RequestMethod.POST, path: '/session/send-email' },
+//         { method: RequestMethod.POST, path: '/session/redefine-password' }
+//       ).forRoutes("*")
+//     consumer.apply(EnsureAdminMiddleware).forRoutes("users")
+//   }
 
-}
+// }
