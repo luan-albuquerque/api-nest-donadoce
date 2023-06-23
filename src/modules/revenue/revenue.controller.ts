@@ -54,7 +54,8 @@ export class RevenueController {
       yield_per_quantity :Number(bodyform.yield_per_quantity),
       time_in_hours  :Number(bodyform.time_in_hours),
       presumed_profit :Number(bodyform.presumed_profit),
-      ingredients: bodyform.ingredients
+      ingredients: bodyform.ingredients,
+      status: Number(bodyform.status)
     }
  
     return await this.createRevenueService.execute(newData)

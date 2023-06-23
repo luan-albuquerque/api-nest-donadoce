@@ -19,6 +19,7 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
               presumed_profit: createRevenueDto.presumed_profit,
               value: createRevenueDto.value,
               yield_per_quantity: createRevenueDto.yield_per_quantity,
+              status: createRevenueDto.status,
               created_at: new Date(),
             }
         }).finally(() => {
