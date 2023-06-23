@@ -1,5 +1,5 @@
 import { ApiProperty, } from "@nestjs/swagger"
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator"
 import { StatusRevenue } from "../enum/statusRevenue.enum"
 
@@ -47,6 +47,7 @@ export class CreateRevenueDto {
     imagem?: string
 
     @ApiProperty({type: 'number'})
+    @Transform(({ value }) => Number(value))
     @IsEnum(StatusRevenue,{message: 'Status precisa ser 0 ou 1'})
     @IsNotEmpty ({message:'status não pode ser vazio'})
     status: number
