@@ -18,6 +18,8 @@ import { CompanyRepositoryInPrisma } from 'src/modules/company/repository/implem
 import { PersonRepository } from 'src/modules/person/repository/contract/PersonRepository';
 import { PersonRepositoryInPrisma } from 'src/modules/person/repository/implementations/PersonRepositoryInPrisma';
 import { UserRepository } from 'src/modules/users/repository/contract/UserRepository';
+import { ClientsCompanyRepository } from 'src/modules/clients_company/repository/contract/ClientsCompanyRepository';
+import { ClientsCompanyRepositoryInPrisma } from 'src/modules/clients_company/repository/implementations/ClientsCompanyRepositoryInPrisma';
 
 
 @Module({
@@ -61,6 +63,10 @@ import { UserRepository } from 'src/modules/users/repository/contract/UserReposi
           {
             provide: PersonRepository,
             useClass: PersonRepositoryInPrisma,
+          },
+          {
+            provide:ClientsCompanyRepository,
+            useClass: ClientsCompanyRepositoryInPrisma
           }
     ],
     exports: [
@@ -73,6 +79,7 @@ import { UserRepository } from 'src/modules/users/repository/contract/UserReposi
       ClientsRepository,
       CompanyRepository,
       PersonRepository,
+      ClientsCompanyRepository
     ]
 })
 export class DatabaseModule { }

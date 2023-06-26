@@ -17,6 +17,7 @@ import { CompanyModule } from './modules/company/company.module';
 import { IngredientControlModule } from './modules/ingredient_control/ingredient_control.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { PersonModule } from './modules/person/person.module';
+import { ClientsCompanyModule } from './modules/clients_company/clients_company.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PersonModule } from './modules/person/person.module';
     RevenueIngredientModule,
     IngredientControlModule,
     CompanyModule,
+    ClientsCompanyModule
 
   ],
   controllers: [],

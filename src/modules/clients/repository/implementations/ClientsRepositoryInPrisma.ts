@@ -9,8 +9,8 @@ import { CreateClientDto } from "../../dto/create-client.dto";
 export class ClientsRepositoryInPrisma implements ClientsRepository {
 
     constructor(private prisma: PrismaService) { }
-    async create(createClientDto: CreateClientDto): Promise<void> {
-         await this.prisma.client.create({
+    async create(createClientDto: CreateClientDto): Promise<Client> {
+        return await this.prisma.client.create({
            data:{
             name_fantasy: createClientDto.name_fantasy,
             county: createClientDto.county,

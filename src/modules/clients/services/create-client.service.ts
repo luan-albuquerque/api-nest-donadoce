@@ -4,11 +4,16 @@ import { CreateClientDto } from "../dto/create-client.dto";
 import IHash from "../providers/contract/IHash";
 import BCryptHash from "../providers/implementations/BCryptHash";
 import { UserRepository } from "src/modules/users/repository/contract/UserRepository";
+import { CompanyRepository } from "src/modules/company/repository/contract/CompanyRepository";
+import { ClientsCompanyRepository } from "src/modules/clients_company/repository/contract/ClientsCompanyRepository";
+import { CreateClientCompany } from "src/modules/clients_company/dto/create-client-company.dto";
 
 @Injectable()
 class CreateClientService {
     constructor(
         private readonly clientsRepository: ClientsRepository,
+        private readonly companyRepository : CompanyRepository,
+        private readonly clientsCompanyRepository: ClientsCompanyRepository,
         private readonly userRepository:  UserRepository,
         @Inject(BCryptHash) private readonly hashPassword: IHash
 
@@ -31,6 +36,19 @@ class CreateClientService {
   
       const passwordHash: string = await this.hashPassword.generateHash(createClientDto.createUser.password)
   
+      if(createClientDto.createCompany){
+        createClientDto.createCompany.map((item)=>{
+           
+            const company = this.companyRepository.findById( item.fk_company)
+
+            if (!company) {
+              throw new HttpException('Company inexistente', HttpStatus.CONFLICT)
+            }
+        })
+      }
+
+
+      
       const data: CreateClientDto = {
         name_fantasy: createClientDto.name_fantasy,
         county: createClientDto.county,
@@ -49,9 +67,34 @@ class CreateClientService {
           is_client: true,
           is_admin: false,
           is_enabled: true,
-        }
+        },
+        createCompany: null // Save in code button
       }
-      return await this.clientsRepository.create(data);
+      
+      const newClient = await this.clientsRepository.create(data);
+
+      const newData: CreateClientCompany[] = []
+      
+      if(createClientDto.createCompany){
+        Promise.all(
+        createClientDto.createCompany.map((item)=>{
+          newData.push(
+            {
+              accountable: item.accountable,
+              fk_client: newClient.id,
+              fk_company: item.fk_company,
+              fone:item.fone
+            }
+          )
+        
+          
+        })
+        )
+        await this.clientsCompanyRepository.create(newData)
+      }
+
+
+
     }
 }
 

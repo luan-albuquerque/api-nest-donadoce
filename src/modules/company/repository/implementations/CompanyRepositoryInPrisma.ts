@@ -69,6 +69,8 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
             await this.prisma.$disconnect()
         })
     }
+
+    
     async findById(id: string): Promise<Company> {
         const data = await this.prisma.company.findUnique({
             where: {
