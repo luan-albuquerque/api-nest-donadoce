@@ -5,7 +5,7 @@ import { CompanyRepository } from "src/modules/company/repository/contract/Compa
 import { DeleteClientCompany } from "../dto/delete-client-company.dto";
 
 @Injectable()
-class DeleteCompanyService {
+export class DeleteClientCompanyService {
     constructor(
         private readonly clientsCompanyRepository: ClientsCompanyRepository,
         private readonly clientsRepository: ClientsRepository,
@@ -27,4 +27,3 @@ class DeleteCompanyService {
 }
 
 
-export default DeleteCompanyService;

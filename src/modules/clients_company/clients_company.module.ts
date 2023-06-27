@@ -3,8 +3,8 @@ import { DatabaseModule } from 'src/shared/config/database/database.module';
 import { ClientsCompanyController } from './clients_company.controller';
 import FindAllClientCompanyService from './services/find-all-client-company.service';
 import FindOneByClientCompanyService from './services/find-one-by-client-company.service';
-import DeleteCompanyService from './services/delete-company.service';
-import CreateCompanyService from './services/create-company.service';
+import CreateClientCompanyService from './services/create-client-company.service';
+import { DeleteClientCompanyService } from './services/delete-client-company.service';
 
 @Module({
   imports: [DatabaseModule],
@@ -12,8 +12,8 @@ import CreateCompanyService from './services/create-company.service';
   providers: [
     FindAllClientCompanyService,
     FindOneByClientCompanyService,
-    DeleteCompanyService,
-    CreateCompanyService
+    CreateClientCompanyService,
+    DeleteClientCompanyService
   ]
 })
 export class ClientsCompanyModule { }
