@@ -6,6 +6,7 @@ import { User } from "src/modules/users/entities/user.entity";
 import { ClientsRepository } from "src/modules/clients/repository/contract/ClientsRepository";
 import { Client } from "src/modules/clients/entities/client.entity";
 import { ClientsCompanyRepository } from "../repository/contract/ClientsCompanyRepository";
+import { PaginationOptions } from "../dto/pagination-options.dto";
 
 @Injectable()
 class FindAllClientCompanyService {
@@ -13,9 +14,9 @@ class FindAllClientCompanyService {
         private readonly clientsCompanyRepository: ClientsCompanyRepository,
     ) { }
 
-    async execute() {
+    async execute(page: PaginationOptions) {
      
-      return await this.clientsCompanyRepository.findAll();
+      return await this.clientsCompanyRepository.findAll(page);
     }
 }
 
