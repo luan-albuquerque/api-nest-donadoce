@@ -28,8 +28,31 @@ export class ClientsCompanyRepositoryInPrisma implements ClientsCompanyRepositor
             this.prisma.$disconnect()
         })
     }
-    remove(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+
+    async findOneByClient(fk_client: string): Promise<ClientCompany[]> {
+        return await this.prisma.client_Company.findMany({
+          where:{
+            fk_client,
+          },
+          include:{
+            company: true,
+          }
+         }).finally(()=>{
+             this.prisma.$disconnect()
+         })
+     }
+
+    async remove(fk_client: string,fk_company: string): Promise<void> {
+         await this.prisma.client_Company.delete({
+             where:{
+                fk_client_fk_company:{
+                    fk_client,
+                    fk_company
+                }
+             }
+          }).finally(()=>{
+              this.prisma.$disconnect()
+          })
     }
    
 
