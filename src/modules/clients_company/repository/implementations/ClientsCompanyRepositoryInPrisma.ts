@@ -12,8 +12,8 @@ export class ClientsCompanyRepositoryInPrisma implements ClientsCompanyRepositor
     async create(createClientCompany: CreateClientCompany[]): Promise<void> {
        await this.prisma.client_Company.createMany({
             data: createClientCompany
-        }).finally(()=>{
-            this.prisma.$disconnect()
+        }).finally(async ()=>{
+            await this.prisma.$disconnect()
         })
     }
     async findAll(page: PaginationOptions): Promise<ClientCompany[]> {

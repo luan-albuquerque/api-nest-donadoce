@@ -5,7 +5,7 @@ import { CompanyRepository } from "src/modules/company/repository/contract/Compa
 import { CreateClientCompany } from "../dto/create-client-company.dto";
 
 @Injectable()
-class CreateCompanyService {
+class CreateClientCompanyService {
     constructor(
         private readonly clientsCompanyRepository: ClientsCompanyRepository,
         private readonly clientsRepository: ClientsRepository,
@@ -29,4 +29,4 @@ class CreateCompanyService {
  }
 }
 
-export default CreateCompanyService;
+export default CreateClientCompanyService;
