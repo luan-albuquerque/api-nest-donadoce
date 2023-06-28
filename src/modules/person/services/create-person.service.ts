@@ -38,6 +38,9 @@ export class CreatePersonService {
         password: passwordHash,
         is_enabled: true,
         is_admin: false,
+        is_client: false,
+        is_driver: createPersonDto.createUser.is_driver,
+        is_production: createPersonDto.createUser.is_production
       }
     }
 

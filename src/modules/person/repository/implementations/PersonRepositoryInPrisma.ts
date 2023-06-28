@@ -23,8 +23,11 @@ export class PersonRepositoryInPrisma implements PersonRepository {
                 user: {
                     update: {
                         email: updatePersonDto.updateUserDto.email,
-                        is_enabled: updatePersonDto.updateUserDto.is_enabled,
+                        is_client: updatePersonDto.updateUserDto.is_client,
                         is_admin: updatePersonDto.updateUserDto.is_admin,
+                        is_enabled: updatePersonDto.updateUserDto.is_enabled,
+                        is_driver: updatePersonDto.updateUserDto.is_driver,
+                        is_production:updatePersonDto.updateUserDto.is_production,
                         updateAt: new Date()
                     }
 
@@ -78,8 +81,11 @@ export class PersonRepositoryInPrisma implements PersonRepository {
                     create: {
                         email: createPersonDto.createUser.email,
                         password: createPersonDto.createUser.password,
-                        is_enabled: true,
-                        is_admin: false,
+                        is_client: createPersonDto.createUser.is_client,
+                        is_admin: createPersonDto.createUser.is_admin,
+                        is_enabled: createPersonDto.createUser.is_enabled,
+                        is_driver: createPersonDto.createUser.is_driver,
+                        is_production:createPersonDto.createUser.is_production,
                         createdAt: new Date()
                     }
 

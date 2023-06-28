@@ -17,6 +17,8 @@ model User {
   is_enabled Boolean   @default(true)
   is_admin   Boolean   @default(false)
   is_client  Boolean   @default(false)
+  is_driver  Boolean   @default(false)
+  is_production  Boolean   @default(false)
   createdAt  DateTime  @default(now())
   updateAt   DateTime?
   token      Token[]

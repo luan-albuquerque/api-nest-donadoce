@@ -3,12 +3,22 @@ import { Client } from "../../entities/client.entity";
 import { ClientsRepository } from "../contract/ClientsRepository";
 import { Injectable } from "@nestjs/common";
 import { CreateClientDto } from "../../dto/create-client.dto";
+import { UpdateClientDto } from "../../dto/update-client.dto";
 
 
 @Injectable()
 export class ClientsRepositoryInPrisma implements ClientsRepository {
 
     constructor(private prisma: PrismaService) { }
+    async remove(id: string): Promise<void> {
+        await this.prisma.client.findUnique({
+            where: {
+                id
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
     async create(createClientDto: CreateClientDto): Promise<Client> {
         return await this.prisma.client.create({
            data:{
@@ -31,6 +41,10 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
                     is_client: createClientDto.createUser.is_client,
                     is_admin: createClientDto.createUser.is_admin,
                     is_enabled: createClientDto.createUser.is_enabled,
+                    is_driver: createClientDto.createUser.is_driver,
+                    is_production:createClientDto.createUser.is_production,
+                    createdAt: new Date()
+
                 }
             }
 
@@ -41,6 +55,46 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
         })
 
     }
+
+    async update(id: string,updateClientDto: UpdateClientDto): Promise<void> {
+         await this.prisma.client.update({
+            where:{
+              id,
+            },
+           data:{
+            name_fantasy: updateClientDto.name_fantasy,
+            county: updateClientDto.county,
+            district: updateClientDto.district,
+            ie: updateClientDto.ie,
+            address: updateClientDto.address,
+            cep: updateClientDto.cep,
+            cnpj: updateClientDto.cnpj,
+            accountable: updateClientDto.accountable,
+            corporate_name: updateClientDto.corporate_name,
+            updateAt: new Date(),
+            fone: updateClientDto.fone,
+            uf: updateClientDto.uf,
+            user:{
+                update:{
+                    email: updateClientDto.updateUserDto.email,
+                    password: updateClientDto.updateUserDto.password,
+                    is_client: updateClientDto.updateUserDto.is_client,
+                    is_admin: updateClientDto.updateUserDto.is_admin,
+                    is_enabled: updateClientDto.updateUserDto.is_enabled,
+                    is_driver: updateClientDto.updateUserDto.is_driver,
+                    is_production:updateClientDto.updateUserDto.is_production,
+                    updateAt: new Date()
+                }
+            }
+
+            
+           }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+    }
+
     async findByCNPJ(cnpj: string): Promise<Client> {
         const data = await this.prisma.client.findUnique({
             where: {

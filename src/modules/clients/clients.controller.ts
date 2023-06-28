@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
 
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
@@ -6,13 +6,17 @@ import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@n
 import FindAllClientService from './services/find-all-client.service';
 import FindOneClientService from './services/find-one-client.service';
 import CreateClientService from './services/create-client.service';
+import DeleteClientService from './services/delete-client.service';
+import UpdateClientService from './services/update-client.service';
 @ApiTags("Clients")
 @Controller('clients')
 export class ClientsController {
   constructor(
     private readonly findAllClientService: FindAllClientService,
     private readonly findOneClientService: FindOneClientService,
-    private readonly createClientService: CreateClientService
+    private readonly createClientService: CreateClientService,
+    private readonly deleteClientService:DeleteClientService,
+    private readonly updateClientService: UpdateClientService
   ) { }
 
 
@@ -53,13 +57,21 @@ export class ClientsController {
     return this.findOneClientService.execute(id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
-  //   return this.clientsService.update(+id, updateClientDto);
-  // }
+  @Put(':id')
+  @ApiOperation({
+    summary: "EndPoint para atualizar  Client",
+    description: "Atualiza apenas dados do cliente e usuario"
+  })
+  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
+    return this.updateClientService.execute(id, updateClientDto);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.clientsService.remove(+id);
-  // }
+  @Delete(':id')
+  @ApiOperation({
+    summary: "EndPoint para deletar  Client",
+    description: "Deleta Cliente, Empresas assosiadas nele e usuario de login de acesso"
+  })
+  remove(@Param('id') id: string) {
+    return this.deleteClientService.execute(id);
+  }
 }

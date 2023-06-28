@@ -7,4 +7,5 @@ export abstract class ClientsCompanyRepository {
     abstract findAll(page: PaginationOptions): Promise<ClientCompany[]>
     abstract findOneByClient(fk_client: string): Promise<ClientCompany[]>
     abstract remove(fk_client: string,fk_company: string): Promise<void>
+    abstract removeAll(fk_client: string): Promise<void>
 }

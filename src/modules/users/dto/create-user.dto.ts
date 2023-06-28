@@ -32,6 +32,17 @@ export class CreateUserDto {
     @ApiProperty()
     @IsBoolean({ message: 'O status da is_product precisa ser um boolean' })
     is_client?: boolean
+
+        
+    @ApiProperty()
+    @IsBoolean({ message: 'O status da is_driver precisa ser um boolean' })
+    is_driver?: boolean
+
+        
+    @ApiProperty()
+    @IsBoolean({ message: 'O status da is_production precisa ser um boolean' })
+    is_production?: boolean
+    
      
  
 }

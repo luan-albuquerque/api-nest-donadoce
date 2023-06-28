@@ -67,6 +67,8 @@ class CreateClientService {
           is_client: true,
           is_admin: false,
           is_enabled: true,
+          is_driver: false,
+          is_production: false
         },
         createCompany: null // Save in code button
       }
