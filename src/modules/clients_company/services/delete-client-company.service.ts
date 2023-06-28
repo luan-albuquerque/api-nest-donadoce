@@ -22,7 +22,7 @@ export class DeleteClientCompanyService {
       if(!client){
         throw new NotFoundException("Client not found")
       } 
-      return await this.clientsCompanyRepository.remove(fk_client,fk_client)
+      return await this.clientsCompanyRepository.remove(fk_client,fk_company)
     }
 }
 
