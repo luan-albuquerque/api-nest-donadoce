@@ -8,6 +8,8 @@ import FindAllClientService from './services/find-all-client.service';
 import FindOneClientService from './services/find-one-client.service';
 import CreateClientService from './services/create-client.service';
 import BCryptHash from './providers/implementations/BCryptHash';
+import DeleteClientService from './services/delete-client.service';
+import UpdateClientService from './services/update-client.service';
 
 @Module({
   imports: [DatabaseModule, 
@@ -22,6 +24,8 @@ import BCryptHash from './providers/implementations/BCryptHash';
     CreateClientService,
     FindAllClientService, 
     FindOneClientService,
+    DeleteClientService,
+    UpdateClientService,
     BCryptHash,
     BCryptHashPassword,
   ]
