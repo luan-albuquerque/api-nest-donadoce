@@ -61,6 +61,8 @@ export class PersonRepositoryInPrisma implements PersonRepository {
                         is_admin: true,
                         is_client: true,
                         is_enabled: true,
+                        is_driver: true,
+                        is_production: true,
                     }
                 }
             }
