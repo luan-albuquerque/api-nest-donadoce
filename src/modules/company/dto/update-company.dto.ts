@@ -20,6 +20,12 @@ export class UpdateCompanyDto   {
     @ApiProperty()
     email: string
 
+    @IsString({ message: 'Esta variável de fone precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de fone não pode esvaziar' })
+    @ApiProperty()
+    @IsPhoneNumber('BR', { message: 'telefone precisa ser no formato'})
+    fone: string
+
     @IsString({ message: 'Esta variável de accountable precisa ser string' })
     @IsNotEmpty({ message: 'Esta variável de accountable não pode esvaziar' })
     @ApiProperty()

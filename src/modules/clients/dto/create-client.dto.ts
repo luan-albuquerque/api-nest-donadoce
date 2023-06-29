@@ -19,6 +19,11 @@ class CreateCompany {
     @IsNotEmpty({ message: 'Esta variável de accountable não pode esvaziar' })
     @ApiProperty()
     accountable: string
+
+    @IsString({ message: 'Esta variável de email precisa ser string' })
+    @IsNotEmpty({ message: 'Esta variável de email não pode esvaziar' })
+    @ApiProperty()
+    email: string
 }
 export class CreateClientDto {
     @IsString({ message: 'Esta variável de corporate_name precisa ser string' })

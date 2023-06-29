@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Inject, InternalServerErrorException, UnauthorizedException } from "@nestjs/common";
+import { HttpException, NotFoundException, HttpStatus, Injectable, Inject, InternalServerErrorException, UnauthorizedException } from "@nestjs/common";
 import { ClientsRepository } from "src/modules/clients/repository/contract/ClientsRepository";
 import { CreateClientDto } from "../dto/create-client.dto";
 import IHash from "../providers/contract/IHash";
@@ -14,6 +14,7 @@ class UpdateClientService {
     constructor(
         private readonly clientsRepository: ClientsRepository,
         private readonly userRepository:  UserRepository,
+        private readonly companyRepository:  CompanyRepository,
         @Inject(BCryptHash) private readonly hashPassword: IHash
 
     ) { }
@@ -26,10 +27,15 @@ class UpdateClientService {
         throw new HttpException('Email já existente', HttpStatus.CONFLICT)
       }
 
-      const clientFindByCNPJ= await this.clientsRepository.findByCNPJ(updateClientDto.cnpj);
+      const findByEmailInClient = await this.companyRepository.findByEmail(clientFindByMail.email);
+      if (findByEmailInClient) {
+        throw new NotFoundException(`Este email: ${clientFindByMail.email} está sendo utilizado por uma empresa.`)
+      }
 
+      const clientFindByCNPJ= await this.clientsRepository.findByCNPJ(updateClientDto.cnpj);
+      const clientFindByCNPJInCompany = await this.companyRepository.findByCNPJ(updateClientDto.cnpj);
   
-      if (clientFindByCNPJ && updateClientDto.cnpj != clientFindByCNPJ.cnpj) {
+      if (clientFindByCNPJ && updateClientDto.cnpj != clientFindByCNPJ.cnpj || clientFindByCNPJInCompany) {
         throw new HttpException('CNPJ já existente', HttpStatus.CONFLICT)
       }
   

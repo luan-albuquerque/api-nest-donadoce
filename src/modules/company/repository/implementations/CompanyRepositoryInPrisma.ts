@@ -8,8 +8,38 @@ import { UpdateCompanyDto } from "../../dto/update-company.dto";
 @Injectable()
 export class CompanyRepositoryInPrisma implements CompanyRepository {
     constructor(private prisma: PrismaService) { }
-    findByEmail(email: string): Promise<Company> {
-        throw new Error("Method not implemented.");
+    async findByFone(fone: string): Promise<Company> {
+        const data = await this.prisma.company.findFirst({
+            where: {
+                fone,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
+    async findByIE(ie: string): Promise<Company> {
+        const data = await this.prisma.company.findUnique({
+            where: {
+                ie,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
+    async findByEmail(email: string): Promise<Company> {
+        const data = await this.prisma.company.findUnique({
+            where: {
+                email,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data
     }
 
     async findAll(): Promise<Company[]> {
@@ -63,6 +93,8 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
                 district:createCompanyDto.district,
                 ie: createCompanyDto.ie,
                 uf: createCompanyDto.uf,
+                email: createCompanyDto.email,
+                fone: createCompanyDto.fone,
                 createdAt: new Date()
             }
         }).catch(async (error) => {

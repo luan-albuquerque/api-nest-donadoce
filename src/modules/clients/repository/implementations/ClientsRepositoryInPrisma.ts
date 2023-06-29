@@ -10,8 +10,27 @@ import { UpdateClientDto } from "../../dto/update-client.dto";
 export class ClientsRepositoryInPrisma implements ClientsRepository {
 
     constructor(private prisma: PrismaService) { }
+    async findByIE(Ie: string): Promise<Client> {
+        return await this.prisma.client.findFirst({
+            where: {
+                ie: Ie,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
+    async findByFone(fone: string): Promise<Client> {
+        return await this.prisma.client.findUnique({
+            where: {
+                fone
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
+  
     async remove(id: string): Promise<void> {
-        await this.prisma.client.findUnique({
+        await this.prisma.client.delete({
             where: {
                 id
             }
@@ -108,7 +127,9 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
     }
     async findByAll(): Promise<Client[]> {
         const data = await this.prisma.client.findMany({
-
+            orderBy: {
+                createdAt: "desc"
+            }
         }).finally(() => {
             this.prisma.$disconnect()
         })
