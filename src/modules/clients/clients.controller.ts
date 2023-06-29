@@ -58,11 +58,11 @@ export class ClientsController {
   }
 
   @Put(':id')
-  @ApiBody({type: UpdateClientDto})
   @ApiOperation({
-    summary: "EndPoint para atualizar  Client",
+    summary: "EndPoint para atualizar Cliente",
     description: "Atualiza apenas dados do cliente e usuario"
   })
+  @ApiBody({type: UpdateClientDto})
   update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
     return this.updateClientService.execute(id, updateClientDto);
   }

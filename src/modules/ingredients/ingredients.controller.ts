@@ -8,7 +8,7 @@ import { FindAllIngredientsService } from './services/find-all-ingredients.servi
 import { FindOneIngredientsService } from './services/find-one-ingredients.service';
 import { DeleteIngredientsService } from './services/delete-ingredients.service';
 import { PaginationOptions } from './dto/pagination-options.dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("Ingredients")
 @ApiBearerAuth()
@@ -29,6 +29,16 @@ export class IngredientsController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+  })
   @ApiOperation({ summary: "EndPoint para listagem de todos os ingredientes", description: "Nescessario niveis administrador e (a definir)" })
   async findAll(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
