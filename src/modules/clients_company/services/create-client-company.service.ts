@@ -3,30 +3,44 @@ import { ClientsCompanyRepository } from "../repository/contract/ClientsCompanyR
 import { ClientsRepository } from "src/modules/clients/repository/contract/ClientsRepository";
 import { CompanyRepository } from "src/modules/company/repository/contract/CompanyRepository";
 import { CreateClientCompany } from "../dto/create-client-company.dto";
+import { UserRepository } from "src/modules/users/repository/contract/UserRepository";
 
 @Injectable()
 class CreateClientCompanyService {
-    constructor(
-        private readonly clientsCompanyRepository: ClientsCompanyRepository,
-        private readonly clientsRepository: ClientsRepository,
-        private readonly companyRepository: CompanyRepository,
-    ) { }
+  constructor(
+    private readonly clientsCompanyRepository: ClientsCompanyRepository,
+    private readonly clientsRepository: ClientsRepository,
+    private readonly companyRepository: CompanyRepository,
+    private readonly userRepository: UserRepository,
+  ) { }
 
-    async execute(data: CreateClientCompany[]) { 
-      await Promise.all(   
-      data.map(async (item)=>{
-      const company = await this.companyRepository.findById(item.fk_company);
-      if(!company){
-        throw new NotFoundException("Company not found")
-      } 
+  async execute(data: CreateClientCompany[]) {
+    await Promise.all(
+      data.map(async (item) => {
+        const company = await this.companyRepository.findById(item.fk_company);
+        if (!company) {
+          throw new NotFoundException("Empresa não encontrado")
+        }
 
-      const client = await this.clientsRepository.findById(item.fk_client);
-      if(!client){
-        throw new NotFoundException("Client not found")
-      } 
-  }))
-  await this.clientsCompanyRepository.create(data)  
- }
+        const client = await this.clientsRepository.findById(item.fk_client);
+        if (!client) {
+          throw new NotFoundException("Cliente não encontrado.")
+        }
+       
+        const findByFoneInCompany = await this.companyRepository.findByFone(item.fone);
+        if (findByFoneInCompany) {
+          throw new NotFoundException("Fone Empresa já cadastrado")
+        }
+
+        const findByFoneInClient = await this.clientsRepository.findByFone(item.fone);
+        if (findByFoneInClient) {
+          throw new NotFoundException("Fone Cliente já cadastrado")
+        }
+        
+
+      }))
+    await this.clientsCompanyRepository.create(data)
+  }
 }
 
 export default CreateClientCompanyService;

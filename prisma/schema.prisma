@@ -30,12 +30,12 @@ model Client {
   id             String           @id
   corporate_name String
   name_fantasy   String
-  cnpj           String           @unique
+  cnpj           String          @unique
   county         String?
   district       String?
-  ie             String?
+  ie             String        
   uf             String?
-  fone           String?
+  fone           String?         @unique
   address        String
   cep            String
   accountable    String
@@ -114,21 +114,16 @@ model Revenues {
   // recipe_steps         Recipe_steps[]
 }
 
-// Removido 
-// model Recipe_steps {
-//   id          String   @id @default(uuid())
-//   text        String
-//   fk_revenues String
-//   revenues    Revenues @relation(fields: [fk_revenues], references: [id])
-// }
 
 model Company {
   id             String           @id @default(uuid())
   corporate_name String
   cnpj           String           @unique
+  email          String           @unique
+  fone           String
   county         String?
   district       String?
-  ie             String?
+  ie             String           @unique
   uf             String?
   address        String
   cep            String
@@ -140,8 +135,9 @@ model Company {
 model Client_Company {
   fk_company  String
   fk_client   String
-  fone        String
+  fone        String           @unique
   accountable String
+  createdAt   DateTime         @default(now())
   clients     Client  @relation(fields: [fk_client], references: [id])
   company     Company @relation(fields: [fk_company], references: [id])
 

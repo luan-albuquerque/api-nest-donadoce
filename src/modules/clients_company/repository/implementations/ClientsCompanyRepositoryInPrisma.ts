@@ -9,6 +9,7 @@ import { PaginationOptions } from "../../dto/pagination-options.dto";
 @Injectable()
 export class ClientsCompanyRepositoryInPrisma implements ClientsCompanyRepository {
     constructor(private prisma: PrismaService) { }
+ 
     async removeAll(fk_client: string): Promise<void> {
         await this.prisma.client_Company.deleteMany({
             where:{

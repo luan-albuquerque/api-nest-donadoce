@@ -58,6 +58,7 @@ export class ClientsController {
   }
 
   @Put(':id')
+  @ApiBody({type: UpdateClientDto})
   @ApiOperation({
     summary: "EndPoint para atualizar  Client",
     description: "Atualiza apenas dados do cliente e usuario"

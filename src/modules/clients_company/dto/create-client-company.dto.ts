@@ -21,4 +21,5 @@ export class CreateClientCompany {
     @IsNotEmpty({ message: 'Esta variável de accountable não pode esvaziar' })
     @ApiProperty()
     accountable: string
+
 }
