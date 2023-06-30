@@ -17,7 +17,7 @@ export class CreateCompanyService {
   async execute(createCompanyDto: CreateCompanyDto) {
 
     const findByEmail = await this.companyRepository.findByEmail(createCompanyDto.email);
-    if (!findByEmail) {
+    if (findByEmail) {
       throw new NotFoundException("Email já Existe")
     }
 
