@@ -36,15 +36,7 @@ export class CreateCompanyService {
       throw new NotFoundException("CNPJ utilizado por um cliente.")
     }
 
-    const findByIE = await this.companyRepository.findByIE(createCompanyDto.ie);
-    if (findByIE) {
-      throw new NotFoundException("Inscrição Estadual já Existe.")
-    }
-
-    const findByIEInCliente = await this.clientsRepository.findByIE(createCompanyDto.ie);
-    if (findByIEInCliente) {
-      throw new NotFoundException("Inscrição Estadual utilizada por um cliente.")
-    }
+   
 
     const findByFone = await this.companyRepository.findByFone(createCompanyDto.fone);
     if (findByFone) {
@@ -63,9 +55,7 @@ export class CreateCompanyService {
       cnpj: createCompanyDto.cnpj,
       county: createCompanyDto.cep,
       email: createCompanyDto.email,
-      accountable: createCompanyDto.accountable,
       district: createCompanyDto.district,
-      ie: createCompanyDto.ie,
       uf: createCompanyDto.uf,
       fone: createCompanyDto.fone,
     }

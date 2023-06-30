@@ -41,12 +41,6 @@ export class UpdateCompanyService {
       throw new NotFoundException("Fone já Existe.")
     }
 
-    const findByIEInClient = await this.clientsRepository.findByIE(updateCompanyDto.ie);
-    const findByIE = await this.companyRepository.findByIE(updateCompanyDto.ie);
-    if (findByIE && updateCompanyDto.ie != findByIE.ie || findByIEInClient) {
-      throw new NotFoundException("Inscrição Estadual já Existe.")
-    }
-
   
     const create: UpdateCompanyDto = {
       corporate_name: updateCompanyDto.corporate_name,
@@ -55,9 +49,7 @@ export class UpdateCompanyService {
       cnpj: updateCompanyDto.cnpj,
       email: updateCompanyDto.email,
       fone: updateCompanyDto.fone,
-      accountable: updateCompanyDto.accountable,
       district: updateCompanyDto.district,
-      ie: updateCompanyDto.ie,
       uf: updateCompanyDto.uf,
       county: updateCompanyDto.county
     }

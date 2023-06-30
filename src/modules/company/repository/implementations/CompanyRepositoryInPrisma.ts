@@ -19,17 +19,7 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
 
         return data;
     }
-    async findByIE(ie: string): Promise<Company> {
-        const data = await this.prisma.company.findUnique({
-            where: {
-                ie,
-            }
-        }).finally(() => {
-            this.prisma.$disconnect()
-        })
-
-        return data;
-    }
+   
     async findByEmail(email: string): Promise<Company> {
         const data = await this.prisma.company.findUnique({
             where: {
@@ -63,7 +53,6 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
                 cnpj: updateCompanyDto.cnpj,
                 county: updateCompanyDto.county,
                 district:updateCompanyDto.district,
-                ie: updateCompanyDto.ie,
                 uf: updateCompanyDto.uf,
                 updateAt: new Date(),
                 
@@ -91,7 +80,6 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
                 cnpj: createCompanyDto.cnpj,
                 county: createCompanyDto.county,
                 district:createCompanyDto.district,
-                ie: createCompanyDto.ie,
                 uf: createCompanyDto.uf,
                 email: createCompanyDto.email,
                 fone: createCompanyDto.fone,

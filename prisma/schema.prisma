@@ -123,7 +123,6 @@ model Company {
   fone           String
   county         String?
   district       String?
-  ie             String           @unique
   uf             String?
   address        String
   cep            String

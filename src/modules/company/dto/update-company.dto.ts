@@ -23,13 +23,8 @@ export class UpdateCompanyDto   {
     @IsString({ message: 'Esta variável de fone precisa ser string' })
     @IsNotEmpty({ message: 'Esta variável de fone não pode esvaziar' })
     @ApiProperty()
-    @IsPhoneNumber('BR', { message: 'telefone precisa ser no formato'})
+    @IsPhoneNumber('BR')
     fone: string
-
-    @IsString({ message: 'Esta variável de accountable precisa ser string' })
-    @IsNotEmpty({ message: 'Esta variável de accountable não pode esvaziar' })
-    @ApiProperty()
-    accountable: string
 
     @IsString({ message: 'Esta variável de address precisa ser string' })
     @IsNotEmpty({ message: 'Esta variável de address não pode esvaziar' })
@@ -50,10 +45,6 @@ export class UpdateCompanyDto   {
     @IsNotEmpty({ message: 'Esta variável de district não pode esvaziar' })
     district: string
 
-    @ApiProperty()
-    @IsString({ message: 'Esta variável de ie precisa ser string' })
-    @IsNotEmpty({ message: 'Esta variável de ie não pode esvaziar' })
-    ie: string
 
     @ApiProperty()
     @IsString({ message: 'Esta variável de uf precisa ser string' })

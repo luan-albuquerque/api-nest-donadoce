@@ -8,7 +8,6 @@ export class Company {
     district: string
     email: string
     fone: string
-    ie: string
     uf: string
     address: string
     cep: string
