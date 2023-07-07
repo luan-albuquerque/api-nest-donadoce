@@ -11,31 +11,31 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  password   String
-  email      String    @unique
-  is_enabled Boolean   @default(true)
-  is_admin   Boolean   @default(false)
-  is_client  Boolean   @default(false)
-  is_driver  Boolean   @default(false)
-  is_production  Boolean   @default(false)
-  createdAt  DateTime  @default(now())
-  updateAt   DateTime?
-  token      Token[]
-  Clients    Client?
-  Person     Person?
+  id            String    @id @default(uuid())
+  password      String
+  email         String    @unique
+  is_enabled    Boolean   @default(true)
+  is_admin      Boolean   @default(false)
+  is_client     Boolean   @default(false)
+  is_driver     Boolean   @default(false)
+  is_production Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updateAt      DateTime?
+  token         Token[]
+  Clients       Client?
+  Person        Person?
 }
 
 model Client {
   id             String           @id
   corporate_name String
   name_fantasy   String
-  cnpj           String          @unique
+  cnpj           String           @unique
   county         String?
   district       String?
-  ie             String        
+  ie             String
   uf             String?
-  fone           String?         @unique
+  fone           String?          @unique
   address        String
   cep            String
   accountable    String
@@ -109,11 +109,11 @@ model Revenues {
   imagem               String?
   created_at           DateTime               @default(now())
   updated_t            DateTime?
-  status               Int                    
+  status               Int
   ingredients_Revenues Ingredients_Revenues[]
   // recipe_steps         Recipe_steps[]
+  ItemMenu             ItemMenu[]
 }
-
 
 model Company {
   id             String           @id @default(uuid())
@@ -134,11 +134,35 @@ model Company {
 model Client_Company {
   fk_company  String
   fk_client   String
-  fone        String           @unique
+  fone        String   @unique
   accountable String
-  createdAt   DateTime         @default(now())
-  clients     Client  @relation(fields: [fk_client], references: [id])
-  company     Company @relation(fields: [fk_company], references: [id])
+  createdAt   DateTime @default(now())
+  clients     Client   @relation(fields: [fk_client], references: [id])
+  company     Company  @relation(fields: [fk_company], references: [id])
 
   @@id([fk_client, fk_company])
+}
+
+model Menu {
+  id         String     @id @default(uuid())
+  is_enabled Boolean    @default(true)
+  dateMenu   DateTime
+  itemMenu   ItemMenu[]
+}
+
+model ItemMenu {
+  id                       String   @id @default(uuid())
+  fk_revenues              String
+  fk_menu                  String
+  fk_category              String
+  revenue_value_on_the_day Float
+  categoryMenuItem                 CategoryMenuItem @relation(fields: [fk_category], references: [id])
+  menu                     Menu     @relation(fields: [fk_menu], references: [id])
+  revenues                 Revenues @relation(fields: [fk_revenues], references: [id])
+}
+
+model CategoryMenuItem {
+  id          String     @id @default(uuid())
+  description String
+  itemMenu    ItemMenu[]
 }

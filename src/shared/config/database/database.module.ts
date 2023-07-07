@@ -20,66 +20,80 @@ import { PersonRepositoryInPrisma } from 'src/modules/person/repository/implemen
 import { UserRepository } from 'src/modules/users/repository/contract/UserRepository';
 import { ClientsCompanyRepository } from 'src/modules/clients_company/repository/contract/ClientsCompanyRepository';
 import { ClientsCompanyRepositoryInPrisma } from 'src/modules/clients_company/repository/implementations/ClientsCompanyRepositoryInPrisma';
+import { MenuRepository } from 'src/modules/menu/repository/contract/MenuRepository';
+import { MenuRepositoryInPrisma } from 'src/modules/menu/repository/implementations/MenuRepositoryInPrisma';
+import { CategoryMenuItemRepository } from 'src/modules/category_menu_items/repository/contract/CategoryMenuItemRepository';
+import { CategoryMenuItemRepositoryInPrisma } from 'src/modules/category_menu_items/repository/implementations/CategoryMenuItemRepositoryInPrisma';
 
 
 @Module({
-    providers: [
-        PrismaService,
-        {
-            provide: UserRepository,
-            useClass: UserRepositoryInPrisma,
-        },
-        {
-          provide: TokenRepository,
-          useClass: TokenRepositoryInPrisma
-        },
-        {
-            provide: IngredientsRepository,
-            useClass: IngredientsRepositoryInPrisma
-          },
-          {
-            provide: RevenuesRepository,
-            useClass: RevenuesRepositoryInPrisma
-          },
-          {
-            provide: RevenuesIngredientsRepository,
-            useClass: RevenuesIngredientsRepositoryInPrisma
+  providers: [
+    PrismaService,
+    {
+      provide: CategoryMenuItemRepository,
+      useClass: CategoryMenuItemRepositoryInPrisma
+    },
+    {
+      provide: MenuRepository,
+      useClass: MenuRepositoryInPrisma,
+    },
+    {
+      provide: UserRepository,
+      useClass: UserRepositoryInPrisma,
+    },
+    {
+      provide: TokenRepository,
+      useClass: TokenRepositoryInPrisma
+    },
+    {
+      provide: IngredientsRepository,
+      useClass: IngredientsRepositoryInPrisma
+    },
+    {
+      provide: RevenuesRepository,
+      useClass: RevenuesRepositoryInPrisma
+    },
+    {
+      provide: RevenuesIngredientsRepository,
+      useClass: RevenuesIngredientsRepositoryInPrisma
 
-          },
-          {
-            provide: IngredientControlRepository,
-            useClass: IngredientControlRepositoryInPrisma
+    },
+    {
+      provide: IngredientControlRepository,
+      useClass: IngredientControlRepositoryInPrisma
 
-          },
-          {
-            provide: ClientsRepository,
-            useClass: ClientsRepositoryInPrisma,
+    },
+    {
+      provide: ClientsRepository,
+      useClass: ClientsRepositoryInPrisma,
 
-          },
-          {
-            provide: CompanyRepository,
-            useClass: CompanyRepositoryInPrisma
-          },
-          {
-            provide: PersonRepository,
-            useClass: PersonRepositoryInPrisma,
-          },
-          {
-            provide:ClientsCompanyRepository,
-            useClass: ClientsCompanyRepositoryInPrisma
-          }
-    ],
-    exports: [
-      UserRepository, 
-      TokenRepository,
-      IngredientsRepository,
-      RevenuesRepository,
-      RevenuesIngredientsRepository,
-      IngredientControlRepository,
-      ClientsRepository,
-      CompanyRepository,
-      PersonRepository,
-      ClientsCompanyRepository
-    ]
+    },
+    {
+      provide: CompanyRepository,
+      useClass: CompanyRepositoryInPrisma
+    },
+    {
+      provide: PersonRepository,
+      useClass: PersonRepositoryInPrisma,
+    },
+    {
+      provide: ClientsCompanyRepository,
+      useClass: ClientsCompanyRepositoryInPrisma
+    }
+  ],
+  exports: [
+    CategoryMenuItemRepository,
+    MenuRepository,
+    UserRepository,
+    TokenRepository,
+    IngredientsRepository,
+    RevenuesRepository,
+    RevenuesIngredientsRepository,
+    IngredientControlRepository,
+    ClientsRepository,
+    CompanyRepository,
+    PersonRepository,
+    ClientsCompanyRepository
+  ]
 })
 export class DatabaseModule { }

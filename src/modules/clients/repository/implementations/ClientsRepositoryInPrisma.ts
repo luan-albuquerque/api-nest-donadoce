@@ -4,6 +4,7 @@ import { ClientsRepository } from "../contract/ClientsRepository";
 import { Injectable } from "@nestjs/common";
 import { CreateClientDto } from "../../dto/create-client.dto";
 import { UpdateClientDto } from "../../dto/update-client.dto";
+import { PaginationOptions } from "../../dto/pagination-options.dto";
 
 
 @Injectable()
@@ -125,8 +126,13 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
 
         return data;
     }
-    async findByAll(): Promise<Client[]> {
+    async findByAll(pagination?: PaginationOptions): Promise<Client[]> {
         const data = await this.prisma.client.findMany({
+            where:{
+                corporate_name: {
+                    contains: pagination.corporate_name
+                }
+            },
             orderBy: {
                 createdAt: "desc"
             }

@@ -18,6 +18,9 @@ import { IngredientControlModule } from './modules/ingredient_control/ingredient
 import { ClientsModule } from './modules/clients/clients.module';
 import { PersonModule } from './modules/person/person.module';
 import { ClientsCompanyModule } from './modules/clients_company/clients_company.module';
+import { MenuModule } from './modules/menu/menu.module';
+import { MenuItemsModule } from './modules/menu_items/menu_items.module';
+import { CategoryMenuItemsModule } from './modules/category_menu_items/category_menu_items.module';
 
 @Module({
   imports: [
@@ -37,7 +40,10 @@ import { ClientsCompanyModule } from './modules/clients_company/clients_company.
     RevenueIngredientModule,
     IngredientControlModule,
     CompanyModule,
-    ClientsCompanyModule
+    ClientsCompanyModule,
+    MenuModule,
+    MenuItemsModule,
+    CategoryMenuItemsModule
 
   ],
   controllers: [],

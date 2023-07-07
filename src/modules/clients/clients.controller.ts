@@ -1,13 +1,14 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
 
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
-import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import FindAllClientService from './services/find-all-client.service';
 import FindOneClientService from './services/find-one-client.service';
 import CreateClientService from './services/create-client.service';
 import DeleteClientService from './services/delete-client.service';
 import UpdateClientService from './services/update-client.service';
+import { PaginationOptions } from './dto/pagination-options.dto';
 @ApiTags("Clients")
 @Controller('clients')
 export class ClientsController {
@@ -37,14 +38,40 @@ export class ClientsController {
 
   }
 
+
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'corporate_name',
+    required: false,
+    type: String,
+  })
   @Get()
   @ApiBearerAuth()
   @ApiOperation({
     summary: "EndPoint para Lista de Clients",
     description: "Nescessario ter token de sistema"
   })
-  async findAll() {
-    return await this.findAllClientService.execute();
+  async findAll(
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('corporate_name') corporate_name,
+    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
+  ) {
+    limit = limit > 10 ? 10 : limit;
+
+    return await this.findAllClientService.execute({
+      limit,
+      skip,
+      corporate_name
+    });
   }
 
   @Get(':id')
