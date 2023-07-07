@@ -151,7 +151,6 @@ model Menu {
 }
 
 model ItemMenu {
-  id                       String   @id @default(uuid())
   fk_revenues              String
   fk_menu                  String
   fk_category              String
@@ -159,6 +158,8 @@ model ItemMenu {
   categoryMenuItem                 CategoryMenuItem @relation(fields: [fk_category], references: [id])
   menu                     Menu     @relation(fields: [fk_menu], references: [id])
   revenues                 Revenues @relation(fields: [fk_revenues], references: [id])
+  @@id([fk_revenues, fk_menu, fk_category])
+
 }
 
 model CategoryMenuItem {

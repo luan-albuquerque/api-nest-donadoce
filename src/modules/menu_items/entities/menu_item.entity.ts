@@ -2,7 +2,6 @@ import { CategoryMenuItem } from "src/modules/category_menu_items/entities/categ
 import { Revenue } from "src/modules/revenue/entities/revenue.entity"
 
 export class MenuItem {
-    id?: string
     fk_revenues: string
     fk_menu?: string
     fk_category: string
