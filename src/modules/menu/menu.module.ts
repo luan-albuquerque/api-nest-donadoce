@@ -5,6 +5,7 @@ import { CreateMenuService } from './services/create-menu.service';
 import { FindAllMenuService } from './services/find-all-menu.service';
 import { FindOneMenuService } from './services/find-one-menu.service';
 import { RemoveOneMenuService } from './services/remove-one-menu.service';
+import { RecreateMenuService } from './services/recreate-menu.service';
 
 @Module({
   imports:[
@@ -16,6 +17,7 @@ import { RemoveOneMenuService } from './services/remove-one-menu.service';
     FindAllMenuService,
     FindOneMenuService,
     RemoveOneMenuService,
+    RecreateMenuService
   ]
 })
 export class MenuModule {}

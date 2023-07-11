@@ -32,7 +32,7 @@ export class CreateMenuDto {
     @IsArray({message: 'createItensMenu precisa ser um array' })
     @ValidateNested({each: true})
     @Type(()=> CreateItensMenuDto)
-    // @ArrayMinSize(4,{ message: "Array menor que 4 elementos"})
-    // @ArrayMaxSize(4, { message: "Array maior que 4 elementos"})
+    @ArrayMinSize(4,{ message: "Array menor que 4 elementos"})
+    @ArrayMaxSize(4, { message: "Array maior que 4 elementos"})
     createItensMenu: CreateItensMenuDto[]
 }
