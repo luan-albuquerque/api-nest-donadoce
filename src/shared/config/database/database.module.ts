@@ -88,6 +88,7 @@ import { MenuItemRepositoryInPrisma } from 'src/modules/menu_items/repository/im
     }
   ],
   exports: [
+    MenuItemRepository,
     CategoryMenuItemRepository,
     MenuRepository,
     UserRepository,
