@@ -8,7 +8,21 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class RevenuesRepositoryInPrisma implements RevenuesRepository {
+
     constructor(private prisma: PrismaService) { }
+    
+    async putStatus(id:string): Promise<void> {
+        await this.prisma.revenues.update({
+            data:{
+                is_enabled: false
+            },
+            where:{
+             id,
+            },
+         }).finally(() => {
+             this.prisma.$disconnect()
+         })
+    }
 
     async create(createRevenueDto: CreateRevenueDto): Promise<Revenue> {
         const data = await this.prisma.revenues.create({
@@ -69,6 +83,9 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
     
     async findByAll(): Promise<Revenue[]> {
         const data = await this.prisma.revenues.findMany({
+            where:{
+                is_enabled: true,
+            }
          }).finally(() => {
              this.prisma.$disconnect()
          })

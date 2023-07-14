@@ -110,6 +110,7 @@ model Revenues {
   created_at           DateTime               @default(now())
   updated_t            DateTime?
   status               Int
+  is_enabled           Boolean              @default(true)
   ingredients_Revenues Ingredients_Revenues[]
   // recipe_steps         Recipe_steps[]
   ItemMenu             ItemMenu[]

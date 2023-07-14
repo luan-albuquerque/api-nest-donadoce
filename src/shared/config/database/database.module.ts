@@ -24,6 +24,8 @@ import { MenuRepository } from 'src/modules/menu/repository/contract/MenuReposit
 import { MenuRepositoryInPrisma } from 'src/modules/menu/repository/implementations/MenuRepositoryInPrisma';
 import { CategoryMenuItemRepository } from 'src/modules/category_menu_items/repository/contract/CategoryMenuItemRepository';
 import { CategoryMenuItemRepositoryInPrisma } from 'src/modules/category_menu_items/repository/implementations/CategoryMenuItemRepositoryInPrisma';
+import { MenuItemRepository } from 'src/modules/menu_items/repository/contract/MenuItemRepository';
+import { MenuItemRepositoryInPrisma } from 'src/modules/menu_items/repository/implementations/MenuItemRepositoryInPrisma';
 
 
 @Module({
@@ -79,6 +81,10 @@ import { CategoryMenuItemRepositoryInPrisma } from 'src/modules/category_menu_it
     {
       provide: ClientsCompanyRepository,
       useClass: ClientsCompanyRepositoryInPrisma
+    },
+    {
+      provide: MenuItemRepository,
+      useClass: MenuItemRepositoryInPrisma
     }
   ],
   exports: [
