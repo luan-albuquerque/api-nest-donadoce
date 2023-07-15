@@ -34,13 +34,23 @@ class CreateSessionService {
             }
 
 
-            return await this.jwt.sign({
+            const token = await this.jwt.sign({
                 id: user.id,
                 email: user.email,
                 is_enabled: user.is_enabled,
                 is_admin: user.is_admin,
                 is_client: user.is_client,
             })
+
+            return {
+                token,
+                email: user.email,
+                is_enabled: user.is_enabled,
+                is_admin: user.is_admin,
+                is_client: user.is_client,
+            }
+
+            
         } catch (error) {
             if (error) throw error;
             throw new InternalServerErrorException(
