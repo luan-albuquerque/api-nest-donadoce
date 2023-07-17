@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, Request, Put } from '@nestjs/common';;
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, Request, Put, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';;
 import { CreateRevenueService } from './services/create-revenue.service';
 import {
   ApiBearerAuth,
-ApiBody, ApiConsumes, ApiOperation, ApiTags,
+ApiBody, ApiConsumes, ApiOperation, ApiQuery, ApiTags,
 } from '@nestjs/swagger';
 import { FindAllRevenueService } from './services/find-all-revenue.service';
 import { FindOneRevenueWithIngredientService } from './services/find-one-revenue-with-ingredients.service';
@@ -12,6 +12,7 @@ import { multerOptions } from 'src/shared/http/middlewares/multerRevenue.middlew
 import { CreateRevenueDto } from './dto/create-revenue.dto';
 import { UpdateRevenueService } from './services/update-revenue.service';
 import { UpdateRevenueDto } from './dto/update-revenue.dto';
+import { FindAllRevenuesSummarizedService } from './services/find-all-revenues-summarized.service';
 @Controller('revenue')
 @ApiTags("Revenue")
 @ApiBearerAuth()
@@ -23,6 +24,7 @@ export class RevenueController {
     private readonly findOneRevenueWithIngredientService: FindOneRevenueWithIngredientService,
     private readonly deleteRevenueService: DeleteRevenueService,
     private readonly updateRevenueService: UpdateRevenueService,
+    private readonly findAllRevenuesSummarizedService: FindAllRevenuesSummarizedService
     ) {}
 
   @Post()
@@ -61,12 +63,64 @@ export class RevenueController {
     return await this.createRevenueService.execute(newData)
     
   }
-
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'description',
+    required: false,
+    type: String,
+  })
   @ApiOperation({ summary: "EndPoint de listagem de todas as receitas.", description: "Obs: Listagem geral resumida " })
   @Get()
-  async findAll() {
-    return await this.findAllRevenueService.execute();
+  async findAll(
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
+    @Query('description') description = undefined,
+  ) {
+    return await this.findAllRevenueService.execute({
+      description,
+      skip,
+      take: limit
+    });
   }
+
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'description',
+    required: false,
+    type: String,
+  })
+  @ApiOperation({ summary: "EndPoint de listagem de todas as receitas de forma resumida.", description: "Obs: Listagem geral resumida " })
+  @Get("v2")
+  async findAllSummarized(
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
+    @Query('description') description = undefined,
+  ) {
+    return await this.findAllRevenuesSummarizedService.execute({
+      description,
+      skip,
+      take: limit
+    });
+  }
+
 
   @ApiOperation({ summary: "EndPoint de listagem de receita especifica com todos os ingredientes compostos nela.", description: "Obs: Ignora dados dentro de item 'ingredient' usar apenas a descrição e id " })
   @Get('ingredients/:id')

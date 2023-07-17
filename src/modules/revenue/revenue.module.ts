@@ -6,12 +6,14 @@ import { FindAllRevenueService } from './services/find-all-revenue.service';
 import { FindOneRevenueWithIngredientService } from './services/find-one-revenue-with-ingredients.service';
 import { DeleteRevenueService } from './services/delete-revenue.service';
 import { UpdateRevenueService } from './services/update-revenue.service';
+import { FindAllRevenuesSummarizedService } from './services/find-all-revenues-summarized.service';
 
 
 @Module({
   imports:[DatabaseModule],
   controllers: [RevenueController],
   providers: [
+    FindAllRevenuesSummarizedService,
     CreateRevenueService, 
     FindAllRevenueService, 
     FindOneRevenueWithIngredientService, 

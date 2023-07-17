@@ -4,37 +4,68 @@ import { UpdateRevenueDto } from "../../dto/update-revenue.dto";
 import { RevenuesRepository } from "../contract/RevenuesRepository";
 import { Revenue } from "../../entities/revenue.entity";
 import { Injectable } from "@nestjs/common";
+import { FindAllRevenueSummarized } from "../../dto/find-all-revenue-summarized.entity";
+import { FiltersRevenueDTO } from "../../dto/filters-revenue.dto";
 
 
 @Injectable()
 export class RevenuesRepositoryInPrisma implements RevenuesRepository {
 
     constructor(private prisma: PrismaService) { }
-    
-    async putStatus(id:string): Promise<void> {
+    async findByAllSummarized({ description, skip, take }: FiltersRevenueDTO): Promise<FindAllRevenueSummarized[]> {
+        const data = await this.prisma.revenues.findMany({
+            select: {
+                id: true,
+                description: true,
+                imagem: true,
+                value: true,
+                presumed_profit: true,
+                yield_per_quantity: true,
+
+            },
+            where: {
+                is_enabled: true,
+                description:{
+                    contains: description,
+                    mode: "insensitive"
+                }
+            },
+            take,
+            skip,
+            orderBy: {
+                created_at: "asc"
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data
+    }
+
+    async putStatus(id: string): Promise<void> {
         await this.prisma.revenues.update({
-            data:{
+            data: {
                 is_enabled: false
             },
-            where:{
-             id,
+            where: {
+                id,
             },
-         }).finally(() => {
-             this.prisma.$disconnect()
-         })
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
     }
 
     async create(createRevenueDto: CreateRevenueDto): Promise<Revenue> {
         const data = await this.prisma.revenues.create({
             data: {
-              time_in_hours: createRevenueDto.time_in_hours,
-              description: createRevenueDto.description,
-              imagem: createRevenueDto.imagem,
-              presumed_profit: createRevenueDto.presumed_profit,
-              value: createRevenueDto.value,
-              yield_per_quantity: createRevenueDto.yield_per_quantity,
-              status: createRevenueDto.status,
-              created_at: new Date(),
+                time_in_hours: createRevenueDto.time_in_hours,
+                description: createRevenueDto.description,
+                imagem: createRevenueDto.imagem,
+                presumed_profit: createRevenueDto.presumed_profit,
+                value: createRevenueDto.value,
+                yield_per_quantity: createRevenueDto.yield_per_quantity,
+                status: createRevenueDto.status,
+                created_at: new Date(),
             }
         }).finally(() => {
             this.prisma.$disconnect()
@@ -43,66 +74,72 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
         return data
     }
     async remove(id: string): Promise<void> {
-       await this.prisma.revenues.delete({
-           where:{
-            id,
-           },
-           include:{
-            ingredients_Revenues:{
-                where:{
-                    fk_revenues: id
+        await this.prisma.revenues.delete({
+            where: {
+                id,
+            },
+            include: {
+                ingredients_Revenues: {
+                    where: {
+                        fk_revenues: id
+                    }
                 }
             }
-           }
         }).finally(() => {
             this.prisma.$disconnect()
         })
     }
     async findByOne(id: string): Promise<Revenue> {
         const data = await this.prisma.revenues.findUnique({
-            where:{
-             id,
+            where: {
+                id,
             },
-         }).finally(() => {
-             this.prisma.$disconnect()
-         })
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
 
-         return data
+        return data
     }
     async findByDescription(description: string): Promise<Revenue> {
-  
+
         const data = await this.prisma.revenues.findFirst({
-            where:{
+            where: {
                 description,
             },
-         }).finally(() => {
-             this.prisma.$disconnect()
-         })
-         return data
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+        return data
     }
-    
-    async findByAll(): Promise<Revenue[]> {
+
+    async findByAll({ description, skip, take }: FiltersRevenueDTO): Promise<Revenue[]> {
         const data = await this.prisma.revenues.findMany({
-            where:{
+            where: {
                 is_enabled: true,
+                description:{
+                    contains: description,
+                    mode: "insensitive"
+                }
             },
-            orderBy:{
+            take,
+            skip,
+            orderBy: {
                 created_at: "asc"
             }
-         }).finally(() => {
-             this.prisma.$disconnect()
-         })
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
 
-         return data
+        return data
     }
     async findByOneWithIngredients(id: string): Promise<Revenue> {
         const data = await this.prisma.revenues.findUnique({
-            where:{
+            where: {
                 id
-            }, 
-            include:{
+            },
+            include: {
                 ingredients_Revenues: {
-                    include:{
+                    include: {
                         ingredients: true,
                     }
                 },
@@ -115,15 +152,15 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
     }
     async update(id: string, updateRevenueDto: UpdateRevenueDto): Promise<void> {
         await this.prisma.revenues.update({
-            where:{
+            where: {
                 id
-            }, 
-            data:{
+            },
+            data: {
                 description: updateRevenueDto.description,
                 imagem: updateRevenueDto.imagem,
                 presumed_profit: updateRevenueDto.presumed_profit,
                 value: updateRevenueDto.value,
-                time_in_hours:updateRevenueDto.time_in_hours,
+                time_in_hours: updateRevenueDto.time_in_hours,
                 yield_per_quantity: updateRevenueDto.yield_per_quantity,
                 updated_t: new Date(),
             }
