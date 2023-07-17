@@ -85,6 +85,9 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
         const data = await this.prisma.revenues.findMany({
             where:{
                 is_enabled: true,
+            },
+            orderBy:{
+                created_at: "asc"
             }
          }).finally(() => {
              this.prisma.$disconnect()
