@@ -17,18 +17,17 @@ export class FindAllRevenueOfMenuByCategoryService {
     if (!menu) {
         throw new NotFoundException("Receita não encontrada")
     }
-    console.log({fk_menu});
     
     const category = await this.categoryOrderItemRepository.findAll()
     const itensMenu = await this.menuItemRepository.findItensByMenu(fk_menu)
     
-    // await Promise.all(
-    // category.map((item)=>{
-    //   item['itensMenu'] = itensMenu
-    // })
-    // );
+    await Promise.all(
+    category.map((item)=>{
+      item['itensMenu'] = itensMenu
+    })
+    );
 
-    return itensMenu
+    return category
 
   }
 

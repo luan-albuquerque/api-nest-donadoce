@@ -4,7 +4,7 @@ import { ApiOperation, ApiResponseProperty, ApiTags } from '@nestjs/swagger';
 import { FindAllRevenueOfMenuByCategoryService } from './services/find-all-revenue-of-menu-by-category.service';
 
 @ApiTags("CategoryMenuItems")
-@Controller('category-menu-items')
+@Controller('category-order-items')
 export class CategoryOrderItemsController {
   constructor(
     private readonly findAllCategoryMenuItemsService: FindAllCategoryMenuItemsService,
