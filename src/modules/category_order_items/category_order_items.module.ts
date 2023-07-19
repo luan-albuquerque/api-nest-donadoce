@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CategoryMenuItemsController } from './category_menu_items.controller';
+import { CategoryOrderItemsController } from './category_order_items.controller';
 import { FindAllCategoryMenuItemsService } from './services/find-all-category-menu-items.service';
 import { DatabaseModule } from 'src/shared/config/database/database.module';
 import { FindAllRevenueOfMenuByCategoryService } from './services/find-all-revenue-of-menu-by-category.service';
@@ -8,10 +8,10 @@ import { FindAllRevenueOfMenuByCategoryService } from './services/find-all-reven
   imports:[
     DatabaseModule
   ],
-  controllers: [CategoryMenuItemsController],
+  controllers: [CategoryOrderItemsController],
   providers: [
     FindAllCategoryMenuItemsService, 
     FindAllRevenueOfMenuByCategoryService
   ]
 })
-export class CategoryMenuItemsModule {}
+export class CategoryOrderItemsModule {}

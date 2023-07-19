@@ -5,22 +5,21 @@ import { FindAllRevenueOfMenuByCategoryService } from './services/find-all-reven
 
 @ApiTags("CategoryMenuItems")
 @Controller('category-menu-items')
-export class CategoryMenuItemsController {
+export class CategoryOrderItemsController {
   constructor(
     private readonly findAllCategoryMenuItemsService: FindAllCategoryMenuItemsService,
     private readonly findAllRevenueOfMenuByCategoryService: FindAllRevenueOfMenuByCategoryService
   ) { }
 
-  @Get("findAllRevenueOfMenuByCategory/:fk_menu")
+  @Get(":fk_menu")
   @ApiOperation({ summary: "Listagem de Receitas de menu especifico por categoria" })
-  @ApiResponseProperty({ type: [CategoryMenuItemsController] })
+  @ApiResponseProperty()
   async findAllRevenueOfMenuByCategory(@Param('fk_menu') fk_menu: string) {
     return await this.findAllRevenueOfMenuByCategoryService.execute(fk_menu);
   }
 
   @Get()
   @ApiOperation({ summary: "Listagem de Categorias" })
-  @ApiResponseProperty({ type: [CategoryMenuItemsController] })
   async findAll() {
     return await this.findAllCategoryMenuItemsService.execute();
   }

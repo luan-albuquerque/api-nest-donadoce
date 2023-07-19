@@ -22,18 +22,18 @@ import { ClientsCompanyRepository } from 'src/modules/clients_company/repository
 import { ClientsCompanyRepositoryInPrisma } from 'src/modules/clients_company/repository/implementations/ClientsCompanyRepositoryInPrisma';
 import { MenuRepository } from 'src/modules/menu/repository/contract/MenuRepository';
 import { MenuRepositoryInPrisma } from 'src/modules/menu/repository/implementations/MenuRepositoryInPrisma';
-import { CategoryMenuItemRepository } from 'src/modules/category_menu_items/repository/contract/CategoryMenuItemRepository';
-import { CategoryMenuItemRepositoryInPrisma } from 'src/modules/category_menu_items/repository/implementations/CategoryMenuItemRepositoryInPrisma';
 import { MenuItemRepository } from 'src/modules/menu_items/repository/contract/MenuItemRepository';
 import { MenuItemRepositoryInPrisma } from 'src/modules/menu_items/repository/implementations/MenuItemRepositoryInPrisma';
+import { CategoryOrderItemRepository } from 'src/modules/category_order_items/repository/contract/CategoryOrderItemRepository';
+import { CategoryOrderItemRepositoryInPrisma } from 'src/modules/category_order_items/repository/implementations/CategoryOrderItemRepositoryInPrisma';
 
 
 @Module({
   providers: [
     PrismaService,
     {
-      provide: CategoryMenuItemRepository,
-      useClass: CategoryMenuItemRepositoryInPrisma
+      provide: CategoryOrderItemRepository,
+      useClass: CategoryOrderItemRepositoryInPrisma
     },
     {
       provide: MenuRepository,
@@ -89,7 +89,7 @@ import { MenuItemRepositoryInPrisma } from 'src/modules/menu_items/repository/im
   ],
   exports: [
     MenuItemRepository,
-    CategoryMenuItemRepository,
+    CategoryOrderItemRepository,
     MenuRepository,
     UserRepository,
     TokenRepository,

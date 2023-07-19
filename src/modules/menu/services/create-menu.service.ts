@@ -2,8 +2,6 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateMenuDto } from "../dto/create-menu.dto";
 import { MenuRepository } from "../repository/contract/MenuRepository";
 import { RevenuesRepository } from "src/modules/revenue/repository/contract/RevenuesRepository";
-import { CategoryMenuItemRepository } from "src/modules/category_menu_items/repository/contract/CategoryMenuItemRepository";
-import { ItemsMenuCategoryUtils } from "src/shared/utils/ItemsMenuCategory.utils";
 
 @Injectable()
 export class CreateMenuService {

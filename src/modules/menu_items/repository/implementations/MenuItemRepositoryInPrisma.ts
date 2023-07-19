@@ -7,9 +7,7 @@ export class MenuItemRepositoryInPrisma implements MenuItemRepository {
     constructor(private prisma: PrismaService) { }
     async findItensByMenu(fk_menu: string): Promise<MenuItem[]> {
         const data = await this.prisma.itemMenu.findMany({
-            where: {
-              fk_menu,
-            },
+       
         }).finally(() => {
             this.prisma.$disconnect()
         })
