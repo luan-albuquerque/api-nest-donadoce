@@ -9,7 +9,9 @@ export class UpdateRevenueService {
     ) { }
 
     async execute(id: string, updateRevenueDto: UpdateRevenueDto) {
-
+     
+        updateRevenueDto.description = updateRevenueDto.description.toUpperCase()
+        
         const revenue = await this.revenuesRepository.findByOne(id)
 
         if (!revenue) {

@@ -110,26 +110,29 @@ model Revenues {
   created_at           DateTime               @default(now())
   updated_t            DateTime?
   status               Int
-  is_enabled           Boolean              @default(true)
+  is_enabled           Boolean                @default(true)
   ingredients_Revenues Ingredients_Revenues[]
   // recipe_steps         Recipe_steps[]
   ItemMenu             ItemMenu[]
+  OrderItem            OrderItem[]
+  RevenuePerCompany    RevenuePerCompany[]
 }
 
 model Company {
-  id             String           @id @default(uuid())
-  corporate_name String
-  cnpj           String           @unique
-  email          String           @unique
-  fone           String
-  county         String?
-  district       String?
-  uf             String?
-  address        String
-  cep            String
-  createdAt      DateTime         @default(now())
-  updateAt       DateTime?
-  Client_Company Client_Company[]
+  id                String              @id @default(uuid())
+  corporate_name    String
+  cnpj              String              @unique
+  email             String              @unique
+  fone              String
+  county            String?
+  district          String?
+  uf                String?
+  address           String
+  cep               String
+  createdAt         DateTime            @default(now())
+  updateAt          DateTime?
+  Client_Company    Client_Company[]
+  RevenuePerCompany RevenuePerCompany[]
 }
 
 model Client_Company {
@@ -154,17 +157,54 @@ model Menu {
 model ItemMenu {
   fk_revenues              String
   fk_menu                  String
-  fk_category              String
   revenue_value_on_the_day Float
-  categoryMenuItem                 CategoryMenuItem @relation(fields: [fk_category], references: [id])
   menu                     Menu     @relation(fields: [fk_menu], references: [id])
   revenues                 Revenues @relation(fields: [fk_revenues], references: [id])
-  @@id([fk_revenues, fk_menu, fk_category])
 
+  @@id([fk_revenues, fk_menu])
 }
 
-model CategoryMenuItem {
-  id          String     @id @default(uuid())
+model CategoryOrderItem {
+  id          String      @id @default(uuid())
   description String
-  itemMenu    ItemMenu[]
+  OrderItem   OrderItem[]
+}
+
+model Order {
+  id             String      @id @default(uuid())
+  dateOrder      DateTime    @default(now())
+  valueOrder     Float
+  fk_orderstatus String
+  orderStatus    OrderStatus @relation(fields: [fk_orderstatus], references: [id])
+  orderItem      OrderItem[]
+}
+
+model OrderStatus {
+  id          String  @id @default(uuid())
+  description String
+  order       Order[]
+}
+
+model OrderItem {
+  fk_order             String
+  fk_revenue           String
+  fk_categoryOrderItem String
+  valueOrderItem       Float
+  dateOrderItem        DateTime          @default(now())
+  amountItem           Int
+  categoryOrderItem    CategoryOrderItem @relation(fields: [fk_categoryOrderItem], references: [id])
+  order                Order             @relation(fields: [fk_order], references: [id])
+  revenues             Revenues          @relation(fields: [fk_revenue], references: [id])
+
+  @@id([fk_revenue, fk_order])
+}
+
+model RevenuePerCompany {
+  fk_revenue   String
+  fk_company   String
+  unique_value Float
+  company      Company  @relation(fields: [fk_company], references: [id])
+  revenues     Revenues @relation(fields: [fk_revenue], references: [id])
+
+  @@id([fk_revenue, fk_company])
 }

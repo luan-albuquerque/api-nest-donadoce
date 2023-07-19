@@ -16,6 +16,8 @@ export class CreateCompanyService {
 
   async execute(createCompanyDto: CreateCompanyDto) {
 
+    createCompanyDto.corporate_name = createCompanyDto.corporate_name.toUpperCase();
+
     const findByEmail = await this.companyRepository.findByEmail(createCompanyDto.email);
     if (findByEmail) {
       throw new NotFoundException("Email já Existe")

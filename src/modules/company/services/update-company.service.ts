@@ -15,7 +15,8 @@ export class UpdateCompanyService {
   ){}
 
   async execute(id: string, updateCompanyDto: UpdateCompanyDto) {
- 
+    
+    updateCompanyDto.corporate_name = updateCompanyDto.corporate_name.toUpperCase();
   
     const company = await this.companyRepository.findById(id)
 

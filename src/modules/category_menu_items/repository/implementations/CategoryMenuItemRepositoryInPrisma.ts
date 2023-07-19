@@ -1,15 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { CategoryMenuItemRepository } from "../contract/CategoryMenuItemRepository";
 import { PrismaService } from "src/shared/config/database/prisma/prisma.service";
-import { CategoryMenuItem } from "../../entities/category_menu_item.entity";
+import { CategoryOrderItem } from "../../entities/category_menu_item.entity";
+
 
 @Injectable()
 export class CategoryMenuItemRepositoryInPrisma implements CategoryMenuItemRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
-    async findAll(): Promise<CategoryMenuItem[]> {
-        return await this.prisma.categoryMenuItem.findMany({
+  
+    async findAll(): Promise<CategoryOrderItem[]> {
+        return await this.prisma.categoryOrderItem.findMany({
             orderBy: {
                 description: "asc"
             }
@@ -17,8 +19,8 @@ export class CategoryMenuItemRepositoryInPrisma implements CategoryMenuItemRepos
             this.prisma.$disconnect()
         })
     }
-    async findOne(id: string): Promise<CategoryMenuItem> {
-        return await this.prisma.categoryMenuItem.findUnique({
+    async findOne(id: string): Promise<CategoryOrderItem> {
+        return await this.prisma.categoryOrderItem.findUnique({
             where: {
                 id
             }

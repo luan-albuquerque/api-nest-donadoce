@@ -5,6 +5,17 @@ import { MenuItemRepository } from "../contract/MenuItemRepository";
 
 export class MenuItemRepositoryInPrisma implements MenuItemRepository {
     constructor(private prisma: PrismaService) { }
+    async findItensByMenu(fk_menu: string): Promise<MenuItem[]> {
+        const data = await this.prisma.itemMenu.findMany({
+            where: {
+              fk_menu,
+            },
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data
+    }
 
     async findOne(id: string): Promise<MenuItem[]> {
         const data = await this.prisma.itemMenu.findMany({
@@ -17,6 +28,7 @@ export class MenuItemRepositoryInPrisma implements MenuItemRepository {
 
         return data
     }
+
 
 
 }

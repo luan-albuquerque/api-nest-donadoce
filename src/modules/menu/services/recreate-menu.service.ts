@@ -12,7 +12,6 @@ export class RecreateMenuService {
     constructor(
         private readonly menuRepository: MenuRepository,
         private readonly revenuesRepository: RevenuesRepository,
-        private readonly categoryMenuItemRepository: CategoryMenuItemRepository,
     ) { }
 
     async execute(id: string, {recreateItensMenu}: RecreateMenuDto) {
@@ -24,8 +23,7 @@ export class RecreateMenuService {
             
         }
         
-        const category = await this.categoryMenuItemRepository.findAll();
-        await ItemsMenuCategoryUtils().verifyCategory(category, recreateItensMenu)
+
         await Promise.all(
             recreateItensMenu.map(async (item) => {
                 const revenue = await this.revenuesRepository.findByOne(item.fk_revenues)
@@ -35,17 +33,10 @@ export class RecreateMenuService {
                 }
                 // Valor de Receita atual
                 item.revenue_value_on_the_day = revenue.value
-                const category = await this.categoryMenuItemRepository.findOne(item.fk_category)
-          
-                
-                if (!category) {
-                    throw new NotFoundException(`Category não encontrada - fk_category: ${item.fk_category}`)
-                }
-
+        
             })
 
         )
-
 
 
         await this.menuRepository.create({dateMenu: menu.dateMenu, createItensMenu: recreateItensMenu})

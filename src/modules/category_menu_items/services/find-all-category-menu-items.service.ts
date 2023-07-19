@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CategoryMenuItem } from '../entities/category_menu_item.entity';
 import { CategoryMenuItemRepository } from '../repository/contract/CategoryMenuItemRepository';
+import { CategoryOrderItem } from '../entities/category_menu_item.entity';
+
 
 @Injectable()
 export class FindAllCategoryMenuItemsService {
@@ -8,7 +9,7 @@ export class FindAllCategoryMenuItemsService {
   constructor(
     private readonly categoryMenuItemRepository: CategoryMenuItemRepository
   ) { }
-  async execute(): Promise<CategoryMenuItem[]> {
+  async execute(): Promise<CategoryOrderItem[]> {
     return await this.categoryMenuItemRepository.findAll()
   }
 

@@ -8,11 +8,6 @@ class RecreateItensMenuDto {
     @ApiProperty()
     fk_revenues: string
 
-    @IsString({ message: 'Campo de categoria precisa ser um uuid' })
-    @IsNotEmpty({ message: 'Campo de categoria não pode ser vazio' })
-    @ApiProperty()
-    fk_category: string
-
     revenue_value_on_the_day: number
 
 }
@@ -23,7 +18,7 @@ export class RecreateMenuDto {
     @IsArray({message: 'RecreateItensMenuDto precisa ser um array' })
     @ValidateNested({each: true})
     @Type(()=> RecreateItensMenuDto)
-    @ArrayMinSize(4,{ message: "Array menor que 4 elementos"})
+    // @ArrayMinSize(4,{ message: "Array menor que 4 elementos"})
     @ArrayMaxSize(4, { message: "Array maior que 4 elementos"})
     recreateItensMenu: RecreateItensMenuDto[]
 }

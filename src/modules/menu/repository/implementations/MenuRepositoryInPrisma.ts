@@ -38,7 +38,6 @@ export class MenuRepositoryInPrisma implements MenuRepository {
                 itemMenu: {
                     include:{
                         revenues: itensMenu,
-                        categoryMenuItem: itensMenu,
                     }
                 },
             },
@@ -63,7 +62,6 @@ export class MenuRepositoryInPrisma implements MenuRepository {
                 itemMenu: {
                     include:{
                         revenues: true,
-                        categoryMenuItem: true,
                     }
                 },
             },

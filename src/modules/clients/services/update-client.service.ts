@@ -20,7 +20,8 @@ class UpdateClientService {
     ) { }
 
     async execute(id: string,updateClientDto: UpdateClientDto) {
-
+      updateClientDto.corporate_name = updateClientDto.corporate_name.toUpperCase();
+      
       const clientFindByMail = await this.userRepository.findByMail(updateClientDto.updateUserDto.email);
 
       if (clientFindByMail && updateClientDto.updateUserDto.email != clientFindByMail.email) {

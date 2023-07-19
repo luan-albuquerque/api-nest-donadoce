@@ -17,14 +17,16 @@ export class CreateRevenueService {
     async execute(createRevenueDto: CreateRevenueDto) {
 
         const createRevenueIngredientDto: CreateRevenueIngredientDto[] = []
-
+        
+        createRevenueDto.description = createRevenueDto.description.toUpperCase()
 
         const revenue = await this.revenuesRepository.findByDescription(createRevenueDto.description)
 
         if (revenue) {
             throw new UnauthorizedException("Descrição já existente em outra receita")
         }
-    
+
+
      
         if (createRevenueDto.ingredients) {
             const convertIngredients = JSON.parse(String(createRevenueDto.ingredients))

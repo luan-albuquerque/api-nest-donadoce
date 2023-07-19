@@ -1,6 +1,9 @@
-import { CategoryMenuItem } from "../../entities/category_menu_item.entity";
+import { CategoryOrderItem } from "../../entities/category_menu_item.entity";
 
 export abstract class CategoryMenuItemRepository {
-    abstract findAll(): Promise<CategoryMenuItem[]>
-    abstract findOne(id: string): Promise<CategoryMenuItem>
+    abstract findAll(): Promise<CategoryOrderItem[]>
+    abstract findOne(id: string): Promise<CategoryOrderItem>
+
+
+    
 }

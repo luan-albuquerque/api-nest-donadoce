@@ -1,4 +1,4 @@
-export class CategoryMenuItem {
+export class CategoryOrderItem {
     id: string
     description: string
     

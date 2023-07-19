@@ -21,6 +21,8 @@ class CreateClientService {
 
   async execute(createClientDto: CreateClientDto) {
 
+    createClientDto.corporate_name = createClientDto.corporate_name.toUpperCase();
+
     const clientFindByMail = await this.userRepository.findByMail(createClientDto.createUser.email);
 
     if (clientFindByMail) {

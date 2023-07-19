@@ -12,6 +12,9 @@ export class CreateIngredientsService {
     if (verifyNewDescription) {
       throw new UnauthorizedException("Descrição já existente em outro ingrediente")
     }
+    
+    createIngredientDto.description = createIngredientDto.description.toUpperCase()
+
     await this.ingredientsRepository.create(createIngredientDto)
 
   }

@@ -16,7 +16,9 @@ export class CreatePersonService {
   ) { }
 
   async execute(createPersonDto: CreatePersonDto) {
-
+   
+    createPersonDto.name = createPersonDto.name.toUpperCase();
+    
     delete createPersonDto.createUser.is_admin
 
     const userFindByMail = await this.userRepository.findByMail(createPersonDto.createUser.email);
