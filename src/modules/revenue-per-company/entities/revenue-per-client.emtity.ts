@@ -1,10 +1,9 @@
 import { Company } from "src/modules/company/entities/company.entity"
 import { Revenue } from "src/modules/revenue/entities/revenue.entity"
 
-export class RevenuePerCompany {
+export class RevenuePerClient {
     fk_revenue: string
-    fk_company: string
+    fk_client: string
     unique_value: number
-    company?: Company
     revenues?: Revenue
 }

@@ -26,8 +26,8 @@ import { MenuItemRepository } from 'src/modules/menu_items/repository/contract/M
 import { MenuItemRepositoryInPrisma } from 'src/modules/menu_items/repository/implementations/MenuItemRepositoryInPrisma';
 import { CategoryOrderItemRepository } from 'src/modules/category_order_items/repository/contract/CategoryOrderItemRepository';
 import { CategoryOrderItemRepositoryInPrisma } from 'src/modules/category_order_items/repository/implementations/CategoryOrderItemRepositoryInPrisma';
-import { RevenuePerCompanyRepositoryInPrisma } from 'src/modules/revenue-per-company/repository/implementations/RevenuePerCompanyRepositoryInPrisma';
-import { RevenuePerCompanyRepository } from 'src/modules/revenue-per-company/repository/contract/RevenuePerCompanyRepository';
+import { RevenuePerClientRepositoryInPrisma } from 'src/modules/revenue-per-company/repository/implementations/RevenuePerClientRepositoryInPrisma';
+import { RevenuePerClientRepository } from 'src/modules/revenue-per-company/repository/contract/RevenuePerClientRepository';
 
 
 @Module({
@@ -89,12 +89,12 @@ import { RevenuePerCompanyRepository } from 'src/modules/revenue-per-company/rep
       useClass: MenuItemRepositoryInPrisma
     },
     {
-      provide: RevenuePerCompanyRepository,
-      useClass: RevenuePerCompanyRepositoryInPrisma
+      provide: RevenuePerClientRepository,
+      useClass: RevenuePerClientRepositoryInPrisma
     }
   ],
   exports: [
-    RevenuePerCompanyRepository,
+    RevenuePerClientRepository,
     MenuItemRepository,
     CategoryOrderItemRepository,
     MenuRepository,

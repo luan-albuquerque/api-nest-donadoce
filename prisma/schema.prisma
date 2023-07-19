@@ -115,24 +115,24 @@ model Revenues {
   // recipe_steps         Recipe_steps[]
   ItemMenu             ItemMenu[]
   OrderItem            OrderItem[]
-  RevenuePerCompany    RevenuePerCompany[]
+  RevenuePerClient     RevenuePerClient[]
 }
 
 model Company {
-  id                String              @id @default(uuid())
-  corporate_name    String
-  cnpj              String              @unique
-  email             String              @unique
-  fone              String
-  county            String?
-  district          String?
-  uf                String?
-  address           String
-  cep               String
-  createdAt         DateTime            @default(now())
-  updateAt          DateTime?
-  Client_Company    Client_Company[]
-  RevenuePerCompany RevenuePerCompany[]
+  id               String             @id @default(uuid())
+  corporate_name   String
+  cnpj             String             @unique
+  email            String             @unique
+  fone             String
+  county           String?
+  district         String?
+  uf               String?
+  address          String
+  cep              String
+  createdAt        DateTime           @default(now())
+  updateAt         DateTime?
+  Client_Company   Client_Company[]
+  RevenuePerClient RevenuePerClient[]
 }
 
 model Client_Company {
@@ -199,12 +199,12 @@ model OrderItem {
   @@id([fk_revenue, fk_order])
 }
 
-model RevenuePerCompany {
+model RevenuePerClient {
   fk_revenue   String
-  fk_company   String
+  fk_client    String
   unique_value Float
-  company      Company  @relation(fields: [fk_company], references: [id])
+  client       Company  @relation(fields: [fk_client], references: [id])
   revenues     Revenues @relation(fields: [fk_revenue], references: [id])
 
-  @@id([fk_revenue, fk_company])
+  @@id([fk_revenue, fk_client])
 }

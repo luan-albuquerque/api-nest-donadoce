@@ -1,10 +1,8 @@
-export class FindAllRevenuePerCompany {
+export class FindAllRevenuePerClient {
 
-    company: {
-
+    client: {
         corporate_name: string;
-
-    };
+    }
     revenues: {
 
         description: string;
