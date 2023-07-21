@@ -26,8 +26,8 @@ import { MenuItemRepository } from 'src/modules/menu_items/repository/contract/M
 import { MenuItemRepositoryInPrisma } from 'src/modules/menu_items/repository/implementations/MenuItemRepositoryInPrisma';
 import { CategoryOrderItemRepository } from 'src/modules/category_order_items/repository/contract/CategoryOrderItemRepository';
 import { CategoryOrderItemRepositoryInPrisma } from 'src/modules/category_order_items/repository/implementations/CategoryOrderItemRepositoryInPrisma';
-import { RevenuePerClientRepositoryInPrisma } from 'src/modules/revenue-per-company/repository/implementations/RevenuePerClientRepositoryInPrisma';
-import { RevenuePerClientRepository } from 'src/modules/revenue-per-company/repository/contract/RevenuePerClientRepository';
+import { RevenuePerClientRepository } from 'src/modules/revenue-per-client/repository/contract/RevenuePerClientRepository';
+import { RevenuePerClientRepositoryInPrisma } from 'src/modules/revenue-per-client/repository/implementations/RevenuePerClientRepositoryInPrisma';
 
 
 @Module({

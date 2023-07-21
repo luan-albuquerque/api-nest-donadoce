@@ -10,7 +10,7 @@ import { FindAllRevenuePerClientService } from './services/find-all-revenue-per-
 @Controller('revenue-per-client')
 @ApiBearerAuth()
 @ApiTags("RevenuePerClient")
-export class RevenuePerCompanyController {
+export class RevenuePerClientController {
   constructor(
     private readonly createRevenuePerClientService: CreateRevenuePerClientService,
     private readonly patchRevenuePerClientService: PatchRevenuePerClientService,

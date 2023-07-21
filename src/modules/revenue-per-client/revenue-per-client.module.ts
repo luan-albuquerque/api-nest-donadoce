@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { RevenuePerCompanyController } from './revenue-per-client.controller';
+import { RevenuePerClientController  } from './revenue-per-client.controller';
 import { CreateRevenuePerClientService } from './services/create-revenue-per-client.service';
 import { PatchRevenuePerClientService } from './services/patch-revenue-per-client.service';
 import { RemoveRevenuePerClientService } from './services/remove-revenue-per-client.service';
@@ -8,7 +8,7 @@ import { FindAllRevenuePerClientService } from './services/find-all-revenue-per-
 
 @Module({
   imports:[DatabaseModule],
-  controllers: [RevenuePerCompanyController],
+  controllers: [RevenuePerClientController],
   providers: [
     CreateRevenuePerClientService, 
     PatchRevenuePerClientService,
@@ -16,4 +16,4 @@ import { FindAllRevenuePerClientService } from './services/find-all-revenue-per-
     FindAllRevenuePerClientService
   ]
 })
-export class RevenuePerCompanyModule {}
+export class RevenuePerClientModule {}

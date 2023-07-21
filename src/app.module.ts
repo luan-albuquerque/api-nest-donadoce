@@ -22,8 +22,8 @@ import { MenuModule } from './modules/menu/menu.module';
 import { MenuItemsModule } from './modules/menu_items/menu_items.module';
 import { OrderModule } from './modules/order/order.module';
 import { OrderItemModule } from './modules/order-item/order-item.module';
-import { RevenuePerCompanyModule } from './modules/revenue-per-company/revenue-per-client.module';
 import { CategoryOrderItemsModule } from './modules/category_order_items/category_order_items.module';
+import { RevenuePerClientModule } from './modules/revenue-per-client/revenue-per-client.module';
 
 @Module({
   imports: [
@@ -49,7 +49,7 @@ import { CategoryOrderItemsModule } from './modules/category_order_items/categor
     CategoryOrderItemsModule,
     OrderModule,
     OrderItemModule,
-    RevenuePerCompanyModule
+    RevenuePerClientModule
 
   ],
   controllers: [],
