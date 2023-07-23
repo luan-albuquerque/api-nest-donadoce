@@ -28,6 +28,8 @@ import { CategoryOrderItemRepository } from 'src/modules/category_order_items/re
 import { CategoryOrderItemRepositoryInPrisma } from 'src/modules/category_order_items/repository/implementations/CategoryOrderItemRepositoryInPrisma';
 import { RevenuePerClientRepository } from 'src/modules/revenue-per-client/repository/contract/RevenuePerClientRepository';
 import { RevenuePerClientRepositoryInPrisma } from 'src/modules/revenue-per-client/repository/implementations/RevenuePerClientRepositoryInPrisma';
+import { OrderRepository } from 'src/modules/order/repository/contract/OrderRepository';
+import { OrderRepositoryInPrisma } from 'src/modules/order/repository/implemantations/OrderRepositoryInPrisma';
 
 
 @Module({
@@ -91,9 +93,14 @@ import { RevenuePerClientRepositoryInPrisma } from 'src/modules/revenue-per-clie
     {
       provide: RevenuePerClientRepository,
       useClass: RevenuePerClientRepositoryInPrisma
+    },
+    {
+      provide: OrderRepository,
+      useClass: OrderRepositoryInPrisma
     }
   ],
   exports: [
+    OrderRepository,
     RevenuePerClientRepository,
     MenuItemRepository,
     CategoryOrderItemRepository,

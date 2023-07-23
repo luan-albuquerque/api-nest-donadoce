@@ -24,6 +24,7 @@ model User {
   token         Token[]
   Clients       Client?
   Person        Person?
+  Order         Order[]
 }
 
 model Client {
@@ -172,9 +173,12 @@ model CategoryOrderItem {
 
 model Order {
   id             String      @id @default(uuid())
+  numberOrder    Int         @default(autoincrement())
   dateOrder      DateTime    @default(now())
   valueOrder     Float
   fk_orderstatus String
+  fk_user        String
+  user           User        @relation(fields: [fk_user], references: [id])
   orderStatus    OrderStatus @relation(fields: [fk_orderstatus], references: [id])
   orderItem      OrderItem[]
 }

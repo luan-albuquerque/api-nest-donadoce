@@ -3,12 +3,13 @@ import { CreateMenuDto } from './dto/create-menu.dto';
 import { CreateMenuService } from './services/create-menu.service';
 import { FindAllMenuService } from './services/find-all-menu.service';
 import { FindOneMenuService } from './services/find-one-menu.service';
-import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { RemoveOneMenuService } from './services/remove-one-menu.service';
 import { RecreateMenuDto } from './dto/recreate-menu.dto';
 import { RecreateMenuService } from './services/recreate-menu.service';
 
 @ApiTags("Menu")
+@ApiBearerAuth()
 @Controller('menu')
 export class MenuController {
   constructor(
