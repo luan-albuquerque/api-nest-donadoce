@@ -17,8 +17,10 @@ export class CreateOrderService {
     private readonly categoryOrderItemRepository: CategoryOrderItemRepository
   ) { }
 
+  
   async execute(fk_user: string, createOrderDto: CreateOrderDto) {
-    const createOrderAlternativeDto: CreateOrderAlternativeDto = null;
+    const createOrderItemDtoAlt = []
+    
     var valueTotal = 0
     const data = new Date();
     if (createOrderDto.createOrderItemDto) {
@@ -44,7 +46,7 @@ export class CreateOrderService {
 
           valueTotal = value + valueTotal;
 
-          createOrderAlternativeDto.createOrderItemDto.push({
+          createOrderItemDtoAlt.push({
             amountItem: item.amountItem,
             dateOrderItem: data,
             fk_categoryOrderItem: item.fk_categoryOrderItem,
@@ -54,15 +56,19 @@ export class CreateOrderService {
 
         })
       );
-     // Em processamento
-      createOrderAlternativeDto.fk_orderstatus = "022ac120002-1c69-11ee-be56-0242ac120002"
-      createOrderAlternativeDto.dateOrder = data,
-      createOrderAlternativeDto.valueOrder = valueTotal
-      createOrderAlternativeDto.fk_user = fk_user
 
+    const createOrderAlternativeDto: CreateOrderAlternativeDto = {
+      fk_orderstatus: "022ac120002-1c69-11ee-be56-0242ac120002",
+      dateOrder: data,
+      valueOrder: valueTotal,
+      fk_user: fk_user,
+      createOrderItemDto: createOrderItemDtoAlt
+    }
 
+     
       await this.orderRepository.create(createOrderAlternativeDto)
     
+
 
     } else {
       throw new NotFoundException(`Itens não encontrado`)

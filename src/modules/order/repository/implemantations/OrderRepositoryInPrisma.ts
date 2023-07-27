@@ -31,7 +31,6 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
     }
     async findManyByClient({ fk_user, numberOrder, skip, take }: ListByClientOrderDTO): Promise<OrderAlternative[]> {
-         console.log({oi: "oudpiiwhdjkladhkjhd"});
          
         const data = await this.prisma.order.findMany({
             select: {

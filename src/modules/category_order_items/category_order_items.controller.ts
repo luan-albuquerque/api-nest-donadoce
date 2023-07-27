@@ -1,9 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { FindAllCategoryMenuItemsService } from './services/find-all-category-menu-items.service';
-import { ApiOperation, ApiResponseProperty, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponseProperty, ApiTags } from '@nestjs/swagger';
 import { FindAllRevenueOfMenuByCategoryService } from './services/find-all-revenue-of-menu-by-category.service';
 
 @ApiTags("CategoryMenuItems")
+@ApiBearerAuth()
 @Controller('category-order-items')
 export class CategoryOrderItemsController {
   constructor(
