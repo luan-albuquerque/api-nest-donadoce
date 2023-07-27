@@ -44,6 +44,7 @@ model Client {
   updateAt       DateTime?
   user           User             @relation(fields: [id], references: [id])
   Client_Company Client_Company[]
+  RevenuePerClient RevenuePerClient[]
 }
 
 model Person {
@@ -133,7 +134,6 @@ model Company {
   createdAt        DateTime           @default(now())
   updateAt         DateTime?
   Client_Company   Client_Company[]
-  RevenuePerClient RevenuePerClient[]
 }
 
 model Client_Company {
@@ -207,7 +207,7 @@ model RevenuePerClient {
   fk_revenue   String
   fk_client    String
   unique_value Float
-  client       Company  @relation(fields: [fk_client], references: [id])
+  client       Client  @relation(fields: [fk_client], references: [id])
   revenues     Revenues @relation(fields: [fk_revenue], references: [id])
 
   @@id([fk_revenue, fk_client])
