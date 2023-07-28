@@ -1,8 +1,12 @@
-export class OrderAlternative {
+export class OrderAdmin {
     id: string;
     dateOrder: Date;
     numberOrder: number;
-
+    user: {
+        Clients: {
+            corporate_name: string
+        }
+    }
     orderItem: {
         categoryOrderItem: {
             description: string;

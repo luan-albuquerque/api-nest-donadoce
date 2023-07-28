@@ -5,6 +5,7 @@ import { PrismaService } from "src/shared/config/database/prisma/prisma.service"
 import { ListByClientOrderDTO } from "../../dto/list-by-client-order.dto";
 import { OrderAlternative } from "../../entities/order-alternative.entity";
 import { ListByAdminOrderDTO } from "../../dto/list-by-admin-order.dto";
+import { OrderAdmin } from "../../entities/order-admin.entity";
 
 
 @Injectable()
@@ -12,12 +13,22 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
-    async findMany({ desc_user, numberOrder, skip, take }: ListByAdminOrderDTO): Promise<OrderAlternative[]> {
+    async findMany({ desc_user, numberOrder, skip, take }: ListByAdminOrderDTO): Promise<OrderAdmin[]> {
         const data = await this.prisma.order.findMany({
             select: {
                 id: true,
                 dateOrder: true,
                 numberOrder: true,
+                user:{
+                    
+                    select:{
+                        Clients:{
+                            select:{
+                                corporate_name: true
+                            }
+                        }
+                    }  
+                },
                 orderItem: {
                     select: {
                         categoryOrderItem: {
