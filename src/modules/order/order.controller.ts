@@ -49,6 +49,12 @@ export class OrderController {
     type: String,
   })
 
+  @ApiQuery({
+    name: 'statusOrder',
+    required: false,
+    type: Number,
+  })
+
   @Get("all")
   @ApiOperation({ summary: "EndPoint em desenvolvimento", description: "" })
   async findAll(
@@ -56,8 +62,10 @@ export class OrderController {
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
     @Query('numberOrder') numberOrder = undefined,
     @Query('desc_user_or_client') desc_user = undefined,
+    @Query('statusOrder') statusOrder = undefined,
+
   ) {
-    return await this.findManyOrderService.execute({ desc_user, numberOrder, skip, take: limit })
+    return await this.findManyOrderService.execute({ desc_user, numberOrder, skip, take: limit, order_status: statusOrder })
   }
 
   @ApiQuery({
@@ -76,6 +84,12 @@ export class OrderController {
     type: Number,
   })
 
+  @ApiQuery({
+    name: 'statusOrder',
+    required: false,
+    type: Number,
+  })
+
   @Get("client")
   @ApiOperation({ summary: "EndPoint para listagem de pedidos", description: "Listagem de pedidos, obs: esta listando os do admin também por questões de resjuste" })
   async findAllByClient(
@@ -83,12 +97,14 @@ export class OrderController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
     @Query('numberOrder') numberOrder = undefined,
+    @Query('statusOrder') statusOrder = undefined,
   ) {
     return await this.findManyOrderByClientService.execute({
       fk_user: req.user.id,
       numberOrder,
       skip,
-      take: limit
+      take: limit,
+      order_status: statusOrder,
     });
 
   }

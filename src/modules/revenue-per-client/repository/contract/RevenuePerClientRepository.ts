@@ -9,6 +9,7 @@ export abstract class RevenuePerClientRepository {
     abstract remove(fk_revenue: string, fk_client: string): Promise<void>
     abstract patchStatus(data: UpdateRevenuePerClientStatusDTO): Promise<void>
     abstract findAll(data: FiltersRevenuePerClientDTO): Promise<FindAllRevenuePerClient[]>
+    abstract findAllNoFilter(): Promise<RevenuePerClient[]>
     abstract findOne(fk_revenue: string, fk_client: string): Promise<RevenuePerClient>
 
 }

@@ -13,7 +13,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
-    async findMany({ desc_user, numberOrder, skip, take }: ListByAdminOrderDTO): Promise<OrderAdmin[]> {
+    async findMany({ desc_user, numberOrder, skip, take, order_status }: ListByAdminOrderDTO): Promise<OrderAdmin[]> {
         const data = await this.prisma.order.findMany({
             select: {
                 id: true,
@@ -57,6 +57,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             skip,
             take,
             where: {
+               fk_orderstatus:order_status,
                 user: {
                     OR: [
                         {
@@ -108,7 +109,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         })
 
     }
-    async findManyByClient({ fk_user, numberOrder, skip, take }: ListByClientOrderDTO): Promise<OrderAlternative[]> {
+    async findManyByClient({ fk_user, numberOrder, skip, take, order_status }: ListByClientOrderDTO): Promise<OrderAlternative[]> {
 
         const data = await this.prisma.order.findMany({
             select: {
@@ -143,6 +144,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             skip,
             take,
             where: {
+                fk_orderstatus:order_status,
                 fk_user,
                 numberOrder,
             },

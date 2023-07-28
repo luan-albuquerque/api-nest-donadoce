@@ -10,10 +10,10 @@ export class FindManyOrderByClientService {
     private readonly orderRepository: OrderRepository
   ) { }
 
-  async execute({ fk_user, numberOrder, skip, take }: ListByClientOrderDTO) {
+  async execute({ fk_user, numberOrder, skip, take, order_status }: ListByClientOrderDTO) {
      
      try {
-      return await this.orderRepository.findManyByClient({ fk_user, numberOrder, skip, take })
+      return await this.orderRepository.findManyByClient({ fk_user, numberOrder, skip, take, order_status })
       
      } catch (error) {
         throw new InternalServerErrorException("Erro no servidor")
