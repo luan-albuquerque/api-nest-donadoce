@@ -6,6 +6,19 @@ import { UserRepository } from '../contract/UserRepository';
 @Injectable()
 export class UserRepositoryInPrisma implements UserRepository {
     constructor(private prisma: PrismaService) { }
+    async finInforUser(id: string): Promise<User> {
+        const data = await this.prisma.user.findUnique({
+            include:{
+              Clients: true,
+              Person: true,
+            },
+            where: {
+                id
+            },
+
+        })
+        return data;
+    }
     async remove(id: string): Promise<void> {
         await this.prisma.user.delete({
             where:{
