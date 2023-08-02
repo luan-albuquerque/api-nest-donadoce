@@ -10,6 +10,17 @@ import { FindAllRevenuePerClient } from '../../dto/find-all-revenue-per-client.d
 @Injectable()
 export class RevenuePerClientRepositoryInPrisma implements RevenuePerClientRepository {
     constructor(private prisma: PrismaService) { }
+    async findAllByUser(fk_client: string): Promise<RevenuePerClient[]> {
+        const data = await this.prisma.revenuePerClient.findMany({
+            where: {
+               fk_client,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data
+    }
     async findAllNoFilter(): Promise<RevenuePerClient[]> {
         const data = await this.prisma.revenuePerClient.findMany({
             select: {

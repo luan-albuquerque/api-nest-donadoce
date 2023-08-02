@@ -12,6 +12,14 @@ import { FiltersRevenueDTO } from "../../dto/filters-revenue.dto";
 export class RevenuesRepositoryInPrisma implements RevenuesRepository {
 
     constructor(private prisma: PrismaService) { }
+    
+    async findByAllNotFilter(): Promise<Revenue[]> {
+        const data = await this.prisma.revenues.findMany().finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data
+    }
     async findByAllSummarized({ description, skip, take }: FiltersRevenueDTO): Promise<FindAllRevenueSummarized[]> {
         const data = await this.prisma.revenues.findMany({
             select: {

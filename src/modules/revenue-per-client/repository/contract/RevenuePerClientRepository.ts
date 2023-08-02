@@ -11,5 +11,6 @@ export abstract class RevenuePerClientRepository {
     abstract findAll(data: FiltersRevenuePerClientDTO): Promise<FindAllRevenuePerClient[]>
     abstract findAllNoFilter(): Promise<RevenuePerClient[]>
     abstract findOne(fk_revenue: string, fk_client: string): Promise<RevenuePerClient>
+    abstract findAllByUser(fk_client: string): Promise<RevenuePerClient[]>
 
 }

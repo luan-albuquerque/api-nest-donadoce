@@ -24,21 +24,22 @@ export class CreateOrderService {
     var valueTotal = 0
     const data = new Date();
     if (createOrderDto.createOrderItemDto) {
+      const revenueAll = await this.revenuesRepository.findByAll();
+      const categoryAll = await this.categoryOrderItemRepository.findAll();;
+      const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user)
       await Promise.all(
         createOrderDto.createOrderItemDto.map(async (item) => {
-          const revenue = await this.revenuesRepository.findByOne(item.fk_revenue)
-
+          
+          const revenue = revenueAll.find((iRevenue) => iRevenue.id === item.fk_revenue);
           if (!revenue) {
             throw new NotFoundException(`Receita não encontrada - fk_revenue: ${item.fk_revenue}`)
           }
 
-          const category = await this.categoryOrderItemRepository.findOne(item.fk_categoryOrderItem)
-
+          const category = categoryAll.find((iCategory) => iCategory.id === item.fk_categoryOrderItem);
           if (!category) {
             throw new NotFoundException(`Category não encontrada - fk_category: ${item.fk_categoryOrderItem}`)
           }
-
-          const inter = await this.revenuePerClientRepository.findOne(item.fk_revenue, fk_user)
+          const inter = interAll.find((iInter) => iInter.fk_revenue === item.fk_revenue);
           var value = revenue.value
           if (inter) {
             value = inter.unique_value;
