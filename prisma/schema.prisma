@@ -200,7 +200,7 @@ model OrderItem {
   order                Order             @relation(fields: [fk_order], references: [id])
   revenues             Revenues          @relation(fields: [fk_revenue], references: [id])
 
-  @@id([fk_revenue, fk_order])
+  @@id([fk_revenue, fk_order, fk_categoryOrderItem])
 }
 
 model RevenuePerClient {

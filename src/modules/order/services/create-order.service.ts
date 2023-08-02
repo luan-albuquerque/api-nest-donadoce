@@ -24,7 +24,7 @@ export class CreateOrderService {
     var valueTotal = 0
     const data = new Date();
     if (createOrderDto.createOrderItemDto) {
-      const revenueAll = await this.revenuesRepository.findByAll();
+      const revenueAll = await this.revenuesRepository.findByAllNotFilter();
       const categoryAll = await this.categoryOrderItemRepository.findAll();;
       const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user)
       await Promise.all(
@@ -65,7 +65,7 @@ export class CreateOrderService {
       fk_user: fk_user,
       createOrderItemDto: createOrderItemDtoAlt
     }
-
+       
      
       await this.orderRepository.create(createOrderAlternativeDto)
     
