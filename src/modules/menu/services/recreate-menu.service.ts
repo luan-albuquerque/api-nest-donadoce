@@ -32,7 +32,7 @@ export class RecreateMenuService {
                     throw new NotFoundException(`Receita não encontrada - fk_revenue: ${item.fk_revenues}`)
                 }
                 // Valor de Receita atual
-                item.revenue_value_on_the_day = revenue.value
+                item.revenue_value_on_the_day = Number(revenue.value)
         
             })
 
