@@ -1,5 +1,5 @@
 import { ApiProperty  } from "@nestjs/swagger"
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import { IsArray, IsNotEmpty, IsString, ValidateNested, ArrayMaxSize, ArrayMinSize } from "class-validator"
 
 class RecreateItensMenuDto {
@@ -8,6 +8,7 @@ class RecreateItensMenuDto {
     @ApiProperty()
     fk_revenues: string
 
+    @Transform(({ value }) => Number(value))
     revenue_value_on_the_day: number
 
 }

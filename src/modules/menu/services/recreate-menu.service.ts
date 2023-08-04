@@ -20,11 +20,13 @@ export class RecreateMenuService {
             throw new NotFoundException(`Menu não encontrado`)
             
         }
+
+        const revenueAll = await this.revenuesRepository.findByAllNotFilter();
         
 
         await Promise.all(
             recreateItensMenu.map(async (item) => {
-                const revenue = await this.revenuesRepository.findByOne(item.fk_revenues)
+                const revenue = revenueAll.find((iRevenue)=> iRevenue.id == item.fk_revenues)
 
                 if (!revenue) {
                     throw new NotFoundException(`Receita não encontrada - fk_revenue: ${item.fk_revenues}`)
