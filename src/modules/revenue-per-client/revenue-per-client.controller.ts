@@ -6,6 +6,7 @@ import { UpdateRevenuePerClientStatusDTO } from './dto/update-revenue-per-client
 import { PatchRevenuePerClientService } from './services/patch-revenue-per-client.service';
 import { RemoveRevenuePerClientService } from './services/remove-revenue-per-client.service';
 import { FindAllRevenuePerClientService } from './services/find-all-revenue-per-client.service';
+import { FindOneRevenuePerClientService } from './services/find-one-revenue-per-client.service';
 
 @Controller('revenue-per-client')
 @ApiBearerAuth()
@@ -15,7 +16,8 @@ export class RevenuePerClientController {
     private readonly createRevenuePerClientService: CreateRevenuePerClientService,
     private readonly patchRevenuePerClientService: PatchRevenuePerClientService,
     private readonly removeRevenuePerClientService: RemoveRevenuePerClientService,
-    private readonly findAllRevenuePerClientService: FindAllRevenuePerClientService
+    private readonly findAllRevenuePerClientService: FindAllRevenuePerClientService,
+    private readonly findOneRevenuePerClientService: FindOneRevenuePerClientService
     ) {}
 
     
@@ -73,6 +75,32 @@ export class RevenuePerClientController {
      client_corporate_name,
      description_revenue
     });
+  }
+
+  @Get("inter")
+
+  @ApiQuery({
+    name: 'fk_client',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+  })
+  @ApiOperation({ summary: "EndPoint para listar todas os vinculo de receitas e também com todas as receitas cadastradas por cliente " })
+  async findOne(
+    @Query('fk_client') fk_client = undefined,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
+  ) {
+    return await this.findOneRevenuePerClientService.execute(fk_client, skip, limit);
   }
 
   @ApiOperation({ summary: "EndPoint para remover vinculo de receitas com receitas e definir valores especificos" })

@@ -5,6 +5,7 @@ import { PatchRevenuePerClientService } from './services/patch-revenue-per-clien
 import { RemoveRevenuePerClientService } from './services/remove-revenue-per-client.service';
 import { DatabaseModule } from 'src/shared/config/database/database.module';
 import { FindAllRevenuePerClientService } from './services/find-all-revenue-per-client.service';
+import { FindOneRevenuePerClientService } from './services/find-one-revenue-per-client.service';
 
 @Module({
   imports:[DatabaseModule],
@@ -13,7 +14,8 @@ import { FindAllRevenuePerClientService } from './services/find-all-revenue-per-
     CreateRevenuePerClientService, 
     PatchRevenuePerClientService,
     RemoveRevenuePerClientService,
-    FindAllRevenuePerClientService
+    FindAllRevenuePerClientService,
+    FindOneRevenuePerClientService
   ]
 })
 export class RevenuePerClientModule {}

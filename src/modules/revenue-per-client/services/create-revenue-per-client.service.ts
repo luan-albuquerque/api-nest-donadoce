@@ -29,10 +29,6 @@ export class CreateRevenuePerClientService {
             throw new UnauthorizedException("Receita não encontrada")
         }
 
-        if (revenuePerCompany) {
-            throw new BadRequestException("Ja existe um cliente vinculado a está receita")
-        }
-
         await this.revenuePerClientRepository.create({
             fk_client,
             fk_revenue,

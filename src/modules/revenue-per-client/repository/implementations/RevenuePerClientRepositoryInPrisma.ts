@@ -6,14 +6,27 @@ import { CreateRevenuePerClientStatusDTO } from '../../dto/create-revenue-per-cl
 import { FiltersRevenuePerClientDTO } from '../../dto/filters-revenue-per-client.dto';
 import { UpdateRevenuePerClientStatusDTO } from '../../dto/update-revenue-per-client-status.dto';
 import { FindAllRevenuePerClient } from '../../dto/find-all-revenue-per-client.dto';
+import { ListCrossJoinRevenueByClient } from '../../dto/list-cross-join-revenue-by-client.dto';
 
 @Injectable()
 export class RevenuePerClientRepositoryInPrisma implements RevenuePerClientRepository {
     constructor(private prisma: PrismaService) { }
+    async findRevenuesByClient(fk_client: string, skip: number, take: number): Promise<ListCrossJoinRevenueByClient[]> {
+
+        const data: ListCrossJoinRevenueByClient[] = await this.prisma.$queryRaw`
+       select c.id as "fk_client",c.corporate_name,r.id as "fk_revenue",r.description,r.value as "revenue_value",rpc.unique_value,(case when rpc.unique_value > 0 then  rpc.unique_value else r.value  end) AS "sale_value" from "Client" c 
+       cross join "Revenues" r 
+       left join "RevenuePerClient" rpc on c.id = rpc.fk_client and r.id = rpc.fk_revenue
+       where c.id  = ${fk_client}
+       order  by r.description asc offset ${skip} limit ${take};`
+
+        return data
+
+    }
     async findAllByUser(fk_client: string): Promise<RevenuePerClient[]> {
         const data = await this.prisma.revenuePerClient.findMany({
             where: {
-               fk_client,
+                fk_client,
             }
         }).finally(() => {
             this.prisma.$disconnect()
@@ -90,12 +103,24 @@ export class RevenuePerClientRepositoryInPrisma implements RevenuePerClientRepos
         return data
     }
     async create({ fk_client, fk_revenue, unique_value }: CreateRevenuePerClientStatusDTO): Promise<void> {
-        await this.prisma.revenuePerClient.create({
-            data: {
+        await this.prisma.revenuePerClient.upsert({
+            where: {
+                fk_revenue_fk_client: {
+                    fk_client,
+                    fk_revenue,
+                }
+            },
+            update: {
                 fk_client,
                 fk_revenue,
                 unique_value,
-            }
+            },
+            create: {
+                fk_client,
+                fk_revenue,
+                unique_value,
+            },
+
         }).finally(() => {
             this.prisma.$disconnect()
         })
