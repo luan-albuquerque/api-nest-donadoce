@@ -61,6 +61,7 @@ export class CreateOrderService {
             of_menu: true,
             amountItem: item.amountItem,
             dateOrderItem: data,
+            homologate: "APROVADO",
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             fk_revenue: item.fk_revenue,
             valueOrderItem: value
@@ -97,6 +98,7 @@ export class CreateOrderService {
 
           createOrderItemDtoAlt.push({
             of_menu: false,
+            homologate: "EM_HOMOLOGACAO",
             amountItem: item.amountItem,
             dateOrderItem: data,
             fk_categoryOrderItem: item.fk_categoryOrderItem,
