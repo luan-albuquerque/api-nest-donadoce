@@ -24,9 +24,17 @@ class CreateOrderItemDto {
 
 export class CreateOrderDto {
 
-
+    @IsString({ message: 'Variável fk_menu precisa ser string' })
+    @IsNotEmpty({ message: 'Variável fk_menu não pode esvaziar' })
+    @ApiProperty()
+    fk_menu: string;
+    
     @ApiProperty({ type: CreateOrderItemDto, isArray: true})
     @Type(()=> CreateOrderItemDto)
     createOrderItemDto: CreateOrderItemDto[]
+
+    @ApiProperty({ type: CreateOrderItemDto, isArray: true})
+    @Type(()=> CreateOrderItemDto)
+    createOrderNotMenuItemDto: CreateOrderItemDto[]
 
 }

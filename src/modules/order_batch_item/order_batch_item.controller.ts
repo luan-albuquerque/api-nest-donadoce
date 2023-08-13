@@ -1,36 +1,17 @@
 import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
-import { CreateOrderService } from './services/create-order.service';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { FindManyOrderByClientService } from './services/find-many-order-by-client.service';
-import { FindManyOrderService } from './services/find-many-order.service';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @Controller('order')
 @ApiBearerAuth()
 @ApiTags("Order")
-export class OrderController {
+export class OrderBatchItemController {
   constructor(
-    private readonly createOrderService: CreateOrderService,
-    private readonly findManyOrderByClientService: FindManyOrderByClientService,
-    private readonly findManyOrderService: FindManyOrderService
   ) { }
 
-
-  @ApiBody({
-    type: CreateOrderDto,
-  })
   @Post()
-  @ApiOperation({ summary: "EndPoint para criação de pedidos", description: "" })
+  @ApiOperation({ summary: "EndPoint para criação de lotes", description: "" })
   async create(
-    @Body() createOrderDto: CreateOrderDto,
-    @Req() req
-  ) {
-    return await this.createOrderService.execute(
-      req.user.id,
-      createOrderDto
-    );
-  }
+  ) { }
 
   @ApiQuery({
     name: 'limit',
@@ -59,8 +40,8 @@ export class OrderController {
     type: Number,
   })
 
-  @Get("all")
-  @ApiOperation({ summary: "EndPoint em desenvolvimento", description: "" })
+  @Get("")
+  @ApiOperation({ summary: "EndPoint ", description: "" })
   async findAll(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
@@ -69,7 +50,6 @@ export class OrderController {
     @Query('statusOrder') statusOrder = undefined,
 
   ) {
-    return await this.findManyOrderService.execute({ desc_user, numberOrder, skip, take: limit, order_status: statusOrder })
   }
 
   @ApiQuery({
@@ -103,13 +83,8 @@ export class OrderController {
     @Query('numberOrder') numberOrder = undefined,
     @Query('statusOrder') statusOrder = undefined,
   ) {
-    return await this.findManyOrderByClientService.execute({
-      fk_user: req.user.id,
-      numberOrder,
-      skip,
-      take: limit,
-      order_status: statusOrder,
-    });
+   
+
 
   }
 

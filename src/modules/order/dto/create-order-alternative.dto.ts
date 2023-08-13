@@ -6,6 +6,7 @@ class CreateOrderItemDto {
 
     fk_revenue: string;
     fk_categoryOrderItem: string
+    of_menu: boolean
     valueOrderItem: number;
     dateOrderItem: Date
     amountItem: number

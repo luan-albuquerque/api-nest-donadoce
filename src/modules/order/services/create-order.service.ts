@@ -5,6 +5,7 @@ import { RevenuesRepository } from 'src/modules/revenue/repository/contract/Reve
 import { CategoryOrderItemRepository } from 'src/modules/category_order_items/repository/contract/CategoryOrderItemRepository';
 import { RevenuePerClientRepository } from 'src/modules/revenue-per-client/repository/contract/RevenuePerClientRepository';
 import { CreateOrderAlternativeDto } from '../dto/create-order-alternative.dto';
+import { MenuRepository } from 'src/modules/menu/repository/contract/MenuRepository';
 
 
 @Injectable()
@@ -14,6 +15,7 @@ export class CreateOrderService {
     private readonly orderRepository: OrderRepository,
     private readonly revenuesRepository: RevenuesRepository,
     private readonly revenuePerClientRepository: RevenuePerClientRepository,
+    private readonly menuRepository: MenuRepository,
     private readonly categoryOrderItemRepository: CategoryOrderItemRepository
   ) { }
 
@@ -26,13 +28,21 @@ export class CreateOrderService {
     if (createOrderDto.createOrderItemDto) {
       const revenueAll = await this.revenuesRepository.findByAllNotFilter();
       const categoryAll = await this.categoryOrderItemRepository.findAll();;
-      const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user)
+      const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
+      const menuSeleted = await this.menuRepository.findOne(createOrderDto.fk_menu);
+
       await Promise.all(
         createOrderDto.createOrderItemDto.map(async (item) => {
           
           const revenue = revenueAll.find((iRevenue) => iRevenue.id === item.fk_revenue);
           if (!revenue) {
             throw new NotFoundException(`Receita não encontrada - fk_revenue: ${item.fk_revenue}`)
+          }
+
+          const menu = menuSeleted.itemMenu.map((menuItemS)=> menuItemS.fk_revenues === item.fk_revenue)
+
+          if(!menu){
+            throw new NotFoundException(`Item não está no menu - fk_revenue: ${item.fk_revenue}`)
           }
 
           const category = categoryAll.find((iCategory) => iCategory.id === item.fk_categoryOrderItem);
@@ -48,6 +58,45 @@ export class CreateOrderService {
           valueTotal = value + valueTotal;
 
           createOrderItemDtoAlt.push({
+            of_menu: true,
+            amountItem: item.amountItem,
+            dateOrderItem: data,
+            fk_categoryOrderItem: item.fk_categoryOrderItem,
+            fk_revenue: item.fk_revenue,
+            valueOrderItem: value
+          })
+
+        })
+      );
+
+      await Promise.all(
+        createOrderDto.createOrderNotMenuItemDto.map(async (item) => {
+          
+          const revenue = revenueAll.find((iRevenue) => iRevenue.id === item.fk_revenue);
+          if (!revenue) {
+            throw new NotFoundException(`Receita não encontrada em itens fora do Menu - fk_revenue: ${item.fk_revenue}`)
+          }
+
+          const menu = menuSeleted.itemMenu.map((menuItemS)=> menuItemS.fk_revenues === item.fk_revenue)
+
+          if(menu){
+            throw new NotFoundException(`Item está no menu, verifique a lista de pedidos em Menu`)
+          }
+
+          const category = categoryAll.find((iCategory) => iCategory.id === item.fk_categoryOrderItem);
+          if (!category) {
+            throw new NotFoundException(`Category não encontrada em itens fora do Menu - fk_category: ${item.fk_categoryOrderItem}`)
+          }
+          const inter = interAll.find((iInter) => iInter.fk_revenue === item.fk_revenue);
+          var value = revenue.value
+          if (inter) {
+            value = inter.unique_value;
+          }
+
+          valueTotal = value + valueTotal;
+
+          createOrderItemDtoAlt.push({
+            of_menu: false,
             amountItem: item.amountItem,
             dateOrderItem: data,
             fk_categoryOrderItem: item.fk_categoryOrderItem,

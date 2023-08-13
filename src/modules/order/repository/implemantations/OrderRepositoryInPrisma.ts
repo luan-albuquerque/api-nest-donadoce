@@ -6,6 +6,7 @@ import { ListByClientOrderDTO } from "../../dto/list-by-client-order.dto";
 import { OrderAlternative } from "../../entities/order-alternative.entity";
 import { ListByAdminOrderDTO } from "../../dto/list-by-admin-order.dto";
 import { OrderAdmin } from "../../entities/order-admin.entity";
+import { Order } from "../../entities/order.entity";
 
 
 @Injectable()
@@ -13,21 +14,60 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async findManyOrderByClientNotOrderBatch(fk_client: string): Promise<Order[]> {
+        const data = await this.prisma.order.findMany({
+            where: {
+                AND: {
+                    fk_user: fk_client,
+                    OrderBatchItem: null,
+                }
+            },
+            include: {
+                OrderBatchItem: {
+                    include: {
+                        orderBatch: true,
+                    }
+                },
+            },
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
+    async findOne(numberOrder: number): Promise<Order[]> {
+        const data = await this.prisma.order.findMany({
+            where: {
+                numberOrder,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
+    async findManyNotFilter(): Promise<Order[]> {
+        const data = await this.prisma.order.findMany().finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
     async findMany({ desc_user, numberOrder, skip, take, order_status }: ListByAdminOrderDTO): Promise<OrderAdmin[]> {
         const data = await this.prisma.order.findMany({
             select: {
                 id: true,
                 dateOrder: true,
                 numberOrder: true,
-                user:{
-                    
-                    select:{
-                        Clients:{
-                            select:{
+                user: {
+
+                    select: {
+                        Clients: {
+                            select: {
                                 corporate_name: true
                             }
                         }
-                    }  
+                    }
                 },
                 orderItem: {
                     select: {
@@ -57,7 +97,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             skip,
             take,
             where: {
-               fk_orderstatus:order_status,
+                fk_orderstatus: order_status,
                 user: {
                     OR: [
                         {
@@ -144,7 +184,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             skip,
             take,
             where: {
-                fk_orderstatus:order_status,
+                fk_orderstatus: order_status,
                 fk_user,
                 numberOrder,
             },

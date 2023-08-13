@@ -11,39 +11,40 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String       @id @default(uuid())
   password      String
-  email         String    @unique
-  is_enabled    Boolean   @default(true)
-  is_admin      Boolean   @default(false)
-  is_client     Boolean   @default(false)
-  is_driver     Boolean   @default(false)
-  is_production Boolean   @default(false)
-  createdAt     DateTime  @default(now())
+  email         String       @unique
+  is_enabled    Boolean      @default(true)
+  is_admin      Boolean      @default(false)
+  is_client     Boolean      @default(false)
+  is_driver     Boolean      @default(false)
+  is_production Boolean      @default(false)
+  createdAt     DateTime     @default(now())
   updateAt      DateTime?
   token         Token[]
   Clients       Client?
   Person        Person?
   Order         Order[]
+  OrderBatch    OrderBatch[]
 }
 
 model Client {
-  id             String           @id
-  corporate_name String
-  name_fantasy   String
-  cnpj           String           @unique
-  county         String?
-  district       String?
-  ie             String
-  uf             String?
-  fone           String?          @unique
-  address        String
-  cep            String
-  accountable    String
-  createdAt      DateTime         @default(now())
-  updateAt       DateTime?
-  user           User             @relation(fields: [id], references: [id])
-  Client_Company Client_Company[]
+  id               String             @id
+  corporate_name   String
+  name_fantasy     String
+  cnpj             String             @unique
+  county           String?
+  district         String?
+  ie               String
+  uf               String?
+  fone             String?            @unique
+  address          String
+  cep              String
+  accountable      String
+  createdAt        DateTime           @default(now())
+  updateAt         DateTime?
+  user             User               @relation(fields: [id], references: [id])
+  Client_Company   Client_Company[]
   RevenuePerClient RevenuePerClient[]
 }
 
@@ -121,19 +122,19 @@ model Revenues {
 }
 
 model Company {
-  id               String             @id @default(uuid())
-  corporate_name   String
-  cnpj             String             @unique
-  email            String             @unique
-  fone             String
-  county           String?
-  district         String?
-  uf               String?
-  address          String
-  cep              String
-  createdAt        DateTime           @default(now())
-  updateAt         DateTime?
-  Client_Company   Client_Company[]
+  id             String           @id @default(uuid())
+  corporate_name String
+  cnpj           String           @unique
+  email          String           @unique
+  fone           String
+  county         String?
+  district       String?
+  uf             String?
+  address        String
+  cep            String
+  createdAt      DateTime         @default(now())
+  updateAt       DateTime?
+  Client_Company Client_Company[]
 }
 
 model Client_Company {
@@ -172,15 +173,16 @@ model CategoryOrderItem {
 }
 
 model Order {
-  id             String      @id @default(uuid())
-  numberOrder    Int         @default(autoincrement())
-  dateOrder      DateTime    @default(now())
+  id             String          @id @default(uuid())
+  numberOrder    Int             @unique() @default(autoincrement())
+  dateOrder      DateTime        @default(now())
   valueOrder     Float
   fk_orderstatus String
   fk_user        String
-  user           User        @relation(fields: [fk_user], references: [id])
-  orderStatus    OrderStatus @relation(fields: [fk_orderstatus], references: [id])
+  user           User            @relation(fields: [fk_user], references: [id])
+  orderStatus    OrderStatus     @relation(fields: [fk_orderstatus], references: [id])
   orderItem      OrderItem[]
+  OrderBatchItem OrderBatchItem?
 }
 
 model OrderStatus {
@@ -194,6 +196,8 @@ model OrderItem {
   fk_revenue           String
   fk_categoryOrderItem String
   valueOrderItem       Float
+  of_menu              Boolean
+  homologate           Homologate?       @default(EM_HOMOLOGACAO)
   dateOrderItem        DateTime          @default(now())
   amountItem           Int
   categoryOrderItem    CategoryOrderItem @relation(fields: [fk_categoryOrderItem], references: [id])
@@ -203,12 +207,35 @@ model OrderItem {
   @@id([fk_revenue, fk_order, fk_categoryOrderItem])
 }
 
+enum Homologate {
+  EM_HOMOLOGACAO
+  APROVADO
+  REPROVADO
+}
+
 model RevenuePerClient {
   fk_revenue   String
   fk_client    String
   unique_value Float
-  client       Client  @relation(fields: [fk_client], references: [id])
+  client       Client   @relation(fields: [fk_client], references: [id])
   revenues     Revenues @relation(fields: [fk_revenue], references: [id])
 
   @@id([fk_revenue, fk_client])
+}
+
+model OrderBatch {
+  id               String           @id @default(uuid())
+  invoice_file     String
+  invoice_number   String
+  numberOrderBatch Int              @default(autoincrement())
+  fk_client        String
+  user             User             @relation(fields: [fk_client], references: [id])
+  OrderBatchItem   OrderBatchItem[]
+}
+
+model OrderBatchItem {
+  fk_order      String     @id
+  fk_orderBatch String
+  order         Order      @relation(fields: [fk_order], references: [id])
+  orderBatch    OrderBatch @relation(fields: [fk_orderBatch], references: [id])
 }
