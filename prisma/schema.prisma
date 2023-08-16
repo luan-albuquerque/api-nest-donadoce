@@ -71,9 +71,17 @@ model Token {
   user       User      @relation(fields: [user_id], references: [id])
 }
 
+enum Unit_of_measurement {
+  ml
+  l 
+  g
+  kg
+}
+
 model Ingredients {
   id                   String                 @id @default(uuid())
   description          String                 @unique
+  unit_of_measurement  Unit_of_measurement
   value                Float
   amount_actual        Int?
   created_at           DateTime               @default(now())
@@ -159,6 +167,8 @@ model Menu {
 model ItemMenu {
   fk_revenues              String
   fk_menu                  String
+  max_amount               Int?
+  min_amount               Int?
   revenue_value_on_the_day Float
   menu                     Menu     @relation(fields: [fk_menu], references: [id])
   revenues                 Revenues @relation(fields: [fk_revenues], references: [id])

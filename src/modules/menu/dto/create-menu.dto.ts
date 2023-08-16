@@ -8,6 +8,13 @@ class CreateItensMenuDto {
     @ApiProperty()
     fk_revenues: string
 
+    @IsNotEmpty({ message: 'Campo de max_amount não pode ser vazio' })
+    @ApiProperty()
+    max_amount: number
+
+    @IsNotEmpty({ message: 'Campo de min_amount não pode ser vazio' })
+    @ApiProperty()
+    min_amount: number 
     // @IsString({ message: 'Campo de receita precisa ser string' })
     // @IsNotEmpty({ message: 'Campo de receita não pode ser vazio' })
     // @ApiProperty()

@@ -8,7 +8,7 @@ import { FindAllIngredientsService } from './services/find-all-ingredients.servi
 import { FindOneIngredientsService } from './services/find-one-ingredients.service';
 import { DeleteIngredientsService } from './services/delete-ingredients.service';
 import { PaginationOptions } from './dto/pagination-options.dto';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("Ingredients")
 @ApiBearerAuth()

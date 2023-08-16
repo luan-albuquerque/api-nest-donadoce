@@ -1,4 +1,4 @@
-import { ApiProperty  } from "@nestjs/swagger"
+import { ApiProperty } from "@nestjs/swagger"
 import { Transform, Type } from "class-transformer"
 import { IsArray, IsNotEmpty, IsString, ValidateNested, ArrayMaxSize, ArrayMinSize } from "class-validator"
 
@@ -7,19 +7,27 @@ class RecreateItensMenuDto {
     @IsNotEmpty({ message: 'Campo de receita não pode ser vazio' })
     @ApiProperty()
     fk_revenues: string
+    
+    @IsNotEmpty({ message: 'Campo de max_amount não pode ser vazio' })
+    @ApiProperty()
+    max_amount: number
 
+    @IsNotEmpty({ message: 'Campo de min_amount não pode ser vazio' })
+    @ApiProperty()
+    min_amount: number
     @Transform(({ value }) => Number(value))
+
     revenue_value_on_the_day: number
 
 }
 
 export class RecreateMenuDto {
 
-    @ApiProperty({ type: RecreateItensMenuDto, isArray: true, required: true, minLength: 4, maxLength: 4})
-    @IsArray({message: 'RecreateItensMenuDto precisa ser um array' })
-    @ValidateNested({each: true})
-    @Type(()=> RecreateItensMenuDto)
+    @ApiProperty({ type: RecreateItensMenuDto, isArray: true, required: true, minLength: 4, maxLength: 4 })
+    @IsArray({ message: 'RecreateItensMenuDto precisa ser um array' })
+    @ValidateNested({ each: true })
+    @Type(() => RecreateItensMenuDto)
     // @ArrayMinSize(4,{ message: "Array menor que 4 elementos"})
-    @ArrayMaxSize(4, { message: "Array maior que 4 elementos"})
+    @ArrayMaxSize(4, { message: "Array maior que 4 elementos" })
     recreateItensMenu: RecreateItensMenuDto[]
 }

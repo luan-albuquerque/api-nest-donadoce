@@ -40,6 +40,7 @@ export class CreateIngredientFluxoService {
         await this.ingredientControlRepository.createFluxoIngredient(createIngredientControlDto).then(async ()=>{
 
             await this.ingredientsRepository.update(findIngredient.id, {
+                unit_of_measurement: findIngredient.unit_of_measurement,
                 description: findIngredient.description,
                 value: newValue,
                 amount_actual: actulQtd,
