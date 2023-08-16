@@ -7,7 +7,10 @@ export class OrderAdmin {
             corporate_name: string
         }
     }
+
     orderItem: {
+        homologate: string
+        of_menu: boolean
         categoryOrderItem: {
             description: string;
         },

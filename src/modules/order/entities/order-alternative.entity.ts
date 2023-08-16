@@ -4,6 +4,8 @@ export class OrderAlternative {
     numberOrder: number;
 
     orderItem: {
+        homologate: string
+        of_menu: boolean
         categoryOrderItem: {
             description: string;
         },

@@ -71,6 +71,8 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 },
                 orderItem: {
                     select: {
+                        homologate: true,
+                        of_menu: true,
                         categoryOrderItem: {
                             select: {
                                 description: true,
@@ -163,6 +165,8 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                                 description: true,
                             }
                         },
+                        homologate: true,
+                        of_menu: true,
                         amountItem: true,
                         dateOrderItem: true,
                         revenues: {
