@@ -12,7 +12,7 @@ export class CreateMenuService {
     ) { }
 
     async execute({ dateMenu, createItensMenu }: CreateMenuDto) {
-        
+
         await Promise.all(
             createItensMenu.map(async (item) => {
                 const revenue = await this.revenuesRepository.findByOne(item.fk_revenues)
@@ -22,7 +22,12 @@ export class CreateMenuService {
                 }
                 // Valor de Receita atual
                 item.revenue_value_on_the_day = revenue.value
-       
+                if (item.max_amount <= 0) {
+                    item.max_amount = revenue.base_max_amount
+                }
+                if (item.max_amount <= 0) {
+                    item.min_amount = revenue.base_min_amount
+                }
 
             })
 
@@ -30,7 +35,7 @@ export class CreateMenuService {
 
 
 
-        await this.menuRepository.create({dateMenu, createItensMenu})
+        await this.menuRepository.create({ dateMenu, createItensMenu })
     }
 
 }

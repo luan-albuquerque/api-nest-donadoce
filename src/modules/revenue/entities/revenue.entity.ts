@@ -6,6 +6,8 @@ export class Revenue {
     value: number
     yield_per_quantity: number
     presumed_profit: number
+    base_max_amount?: number
+    base_min_amount?: number
     imagem: string
     created_at: Date
     updated_t?: Date

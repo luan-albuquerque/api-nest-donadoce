@@ -39,6 +39,8 @@ export class UpdateRevenueService {
             description: updateRevenueDto.description,
             value: updateRevenueDto.value,
             imagem: newimagen,
+            base_max_amount: updateRevenueDto.base_max_amount,
+            base_min_amount: updateRevenueDto.base_min_amount,
             old_imagem: null,
             presumed_profit: updateRevenueDto.presumed_profit,
             time_in_hours: updateRevenueDto.time_in_hours,

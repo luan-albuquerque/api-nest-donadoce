@@ -73,6 +73,8 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
                 value: createRevenueDto.value,
                 yield_per_quantity: createRevenueDto.yield_per_quantity,
                 status: createRevenueDto.status,
+                base_max_amount: createRevenueDto.base_max_amount,
+                base_min_amount: createRevenueDto.base_min_amount,
                 created_at: new Date(),
             }
         }).finally(() => {
@@ -168,6 +170,8 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
                 imagem: updateRevenueDto.imagem,
                 presumed_profit: updateRevenueDto.presumed_profit,
                 value: updateRevenueDto.value,
+                base_max_amount: updateRevenueDto.base_max_amount,
+                base_min_amount: updateRevenueDto.base_min_amount,
                 time_in_hours: updateRevenueDto.time_in_hours,
                 yield_per_quantity: updateRevenueDto.yield_per_quantity,
                 updated_t: new Date(),

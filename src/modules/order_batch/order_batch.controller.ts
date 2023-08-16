@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors } from '@nestjs/common';
+import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateOrderBatch } from './dto/create_order_batch.dto';
 import { FindManyOrderBatchService } from './services/find-many-order-batch.service';
 import { CreateOrderBatchService } from './services/create-order-batch.service';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from 'src/shared/http/middlewares/multerRevenue.middleware';
 
 
 @Controller('order_batch')
@@ -16,9 +18,17 @@ export class OrderBatchController {
 
 
   @Post()
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: "" }
+      ],
+      multerOptions,
+    )
+  )
+  @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: "EndPoint de lotes", description: "" })
   async create(@Body() createOrderBatch: CreateOrderBatch) {
-
     await this.createOrderBatchService.execute(createOrderBatch);
 
   }

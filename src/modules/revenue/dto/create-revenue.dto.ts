@@ -33,6 +33,16 @@ export class CreateRevenueDto {
     @Type(()=> Number)
     yield_per_quantity?: number
 
+    @ApiProperty({required: false})
+    @IsNumber()
+    @Type(()=> Number)
+    base_max_amount?: number
+
+    @ApiProperty({required: false})
+    @IsNumber()
+    @Type(()=> Number)
+    base_min_amount?: number
+
     @IsNumber()
     @Type(()=> Number)
     @ApiProperty({required: false})

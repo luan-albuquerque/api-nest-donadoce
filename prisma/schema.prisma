@@ -116,6 +116,8 @@ model Revenues {
   value                Float
   yield_per_quantity   Int?
   time_in_hours        Int?
+  base_max_amount      Int
+  base_min_amount      Int
   presumed_profit      Float?
   imagem               String?
   created_at           DateTime               @default(now())
