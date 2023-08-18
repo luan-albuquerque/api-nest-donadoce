@@ -8,7 +8,7 @@ export const multerConfig = {
   dest: process.cwd() + "/uploads/order_batch",
 };
 
-export const multerOptions = {
+export const multerOptionsOrderBatch = {
   fileFilter: (req, file, cb) => {
     if (file.mimetype.match(/\/(pdf|xml|jpg|jpeg|png)$/)) {
       cb(null, true);

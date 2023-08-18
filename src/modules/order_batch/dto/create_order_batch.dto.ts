@@ -8,10 +8,11 @@ export class CreateOrderBatch {
     @IsNotEmpty({ message: 'fk_client não pode esvaziar' })
     @ApiProperty()
     fk_client: string
+  
 
-    @IsString({ message: 'invoice_file precisa ser string' })
-    @IsNotEmpty({ message: 'invoice_file não pode esvaziar' })
-    @ApiProperty()
+    @ApiProperty({ type: 'string', format: 'binary', required: false })
+    _file?: string
+
     invoice_file: string
 
     @IsString({ message: 'invoice_number precisa ser string' })

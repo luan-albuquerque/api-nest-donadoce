@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, Upl
 import { CreateRevenueService } from './services/create-revenue.service';
 import {
   ApiBearerAuth,
-ApiBody, ApiConsumes, ApiOperation, ApiQuery, ApiTags,
+  ApiBody, ApiConsumes, ApiOperation, ApiQuery, ApiTags,
 } from '@nestjs/swagger';
 import { FindAllRevenueService } from './services/find-all-revenue.service';
 import { FindOneRevenueWithIngredientService } from './services/find-one-revenue-with-ingredients.service';
@@ -25,7 +25,7 @@ export class RevenueController {
     private readonly deleteRevenueService: DeleteRevenueService,
     private readonly updateRevenueService: UpdateRevenueService,
     private readonly findAllRevenuesSummarizedService: FindAllRevenuesSummarizedService
-    ) {}
+  ) { }
 
   @Post()
   @ApiOperation({ summary: "EndPoint de Criar receita com ou sem ingredientes compostos nela.", description: "Obs: No campo ingredients deve se criar apena um item que vai ser um array dentro, o que deve ser manipulado são os seus objetos, dependendo da quantidade de igredientes, deve ser criado um objeto e adicionardo fk_ingredient que no caso é o id do ingrediente e amount_ingredient que é a quantidade relativa a aquele ingrediente" })
@@ -35,33 +35,35 @@ export class RevenueController {
         { name: 'imagem', maxCount: 1 },
       ],
       multerOptions,
-      ),
-      )
+    ),
+  )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     type: CreateRevenueDto,
   })
   async create(
     @Body() body: CreateRevenueDto,
-   @UploadedFiles() files: any,
+    @UploadedFiles() files: any,
   ) {
-    
-    const imagem =  files ? files.imagem ? files.imagem[0].filename : null : null;
+
+    const imagem = files ? files.imagem ? files.imagem[0].filename : null : null;
     const bodyform = Object(body)
-    
-    const newData: CreateRevenueDto =  {
+
+    const newData: CreateRevenueDto = {
       imagem,
+      base_max_amount: Number(bodyform.base_max_amount),
+      base_min_amount: Number(bodyform.base_min_amount),
       description: bodyform.description,
       value: Number(bodyform.value),
-      yield_per_quantity :Number(bodyform.yield_per_quantity),
-      time_in_hours  :Number(bodyform.time_in_hours),
-      presumed_profit :Number(bodyform.presumed_profit),
+      yield_per_quantity: Number(bodyform.yield_per_quantity),
+      time_in_hours: Number(bodyform.time_in_hours),
+      presumed_profit: Number(bodyform.presumed_profit),
       ingredients: bodyform.ingredients,
       status: Number(bodyform.status)
     }
- 
+
     return await this.createRevenueService.execute(newData)
-    
+
   }
   @ApiQuery({
     name: 'limit',
@@ -125,7 +127,7 @@ export class RevenueController {
   @ApiOperation({ summary: "EndPoint de listagem de receita especifica com todos os ingredientes compostos nela.", description: "Obs: Ignora dados dentro de item 'ingredient' usar apenas a descrição e id " })
   @Get('ingredients/:id')
   async findOne(@Param('id') id: string) {
-  
+
     return await this.findOneRevenueWithIngredientService.execute(id);
   }
 
@@ -142,35 +144,35 @@ export class RevenueController {
         { name: 'imagem', maxCount: 1 },
       ],
       multerOptions,
-      ),
-      )
+    ),
+  )
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     type: UpdateRevenueDto,
   })
   async update(
-     @Param('id') id: string, 
+    @Param('id') id: string,
     @UploadedFiles() files: any,
-     @Body() updateRevenueDto: UpdateRevenueDto
-     ) {
+    @Body() updateRevenueDto: UpdateRevenueDto
+  ) {
 
-    const imagem =  files.imagem ? files.imagem[0].filename : null;
+    const imagem = files.imagem ? files.imagem[0].filename : null;
     const bodyform = Object(updateRevenueDto)
-    
-    const newData: UpdateRevenueDto =  {
+
+    const newData: UpdateRevenueDto = {
       imagem,
       description: bodyform.description,
       value: Number(bodyform.value),
       old_imagem: bodyform.old_imagem,
-      yield_per_quantity :Number(bodyform.yield_per_quantity),
-      time_in_hours  :Number(bodyform.time_in_hours),
-      presumed_profit :Number(bodyform.presumed_profit)
+      yield_per_quantity: Number(bodyform.yield_per_quantity),
+      time_in_hours: Number(bodyform.time_in_hours),
+      presumed_profit: Number(bodyform.presumed_profit)
     }
     await this.updateRevenueService.execute(id, newData)
   }
 
   @Delete(':fk_revenue')
-  @ApiOperation({ summary: "EndPoint de deletar receita com todos os ingredientes compostos nela.", description: ""})
+  @ApiOperation({ summary: "EndPoint de deletar receita com todos os ingredientes compostos nela.", description: "" })
   async remove(@Param('fk_revenue') fk_revenue: string) {
     await this.deleteRevenueService.execute(fk_revenue);
   }
