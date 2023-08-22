@@ -18,7 +18,8 @@ export class CreateOrderBatchService {
 
 
   async execute(createOrderBatch: CreateOrderBatch) {
-
+   console.log({createOrderBatch});
+   
     const orderAll: Order[] = await this.orderRepository.findManyNotFilter();
     const orderSemOrderBatch = await this.orderRepository.findManyOrderByClientNotOrderBatch(createOrderBatch.fk_client)
 
@@ -39,7 +40,7 @@ export class CreateOrderBatchService {
       })
     )
 
-    await this.orderBatchRepository.create(createOrderBatch);
+    // await this.orderBatchRepository.create(createOrderBatch);
  
   }
 }

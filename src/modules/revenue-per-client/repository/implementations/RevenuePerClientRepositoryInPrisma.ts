@@ -14,7 +14,7 @@ export class RevenuePerClientRepositoryInPrisma implements RevenuePerClientRepos
     async findRevenuesByClient(fk_client: string, skip: number, take: number): Promise<ListCrossJoinRevenueByClient[]> {
 
         const data: ListCrossJoinRevenueByClient[] = await this.prisma.$queryRaw`
-       select c.id as "fk_client",c.corporate_name,r.id as "fk_revenue",r.description,r.value as "revenue_value",rpc.unique_value,(case when rpc.unique_value > 0 then  rpc.unique_value else r.value  end) AS "sale_value" from "Client" c 
+       select c.id as "fk_client",c.corporate_name,r.id as "fk_revenue", r.status  as "revenue_status",r.description,r.value as "revenue_value",rpc.unique_value,(case when rpc.unique_value > 0 then  rpc.unique_value else r.value  end) AS "sale_value" from "Client" c 
        cross join "Revenues" r 
        left join "RevenuePerClient" rpc on c.id = rpc.fk_client and r.id = rpc.fk_revenue
        where c.id  = ${fk_client}

@@ -25,11 +25,11 @@ export class CreateOrderService {
     
     var valueTotal = 0
     const data = new Date();
+    const revenueAll = await this.revenuesRepository.findByAllNotFilter();
+    const categoryAll = await this.categoryOrderItemRepository.findAll();;
+    const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
+    const menuSeleted = await this.menuRepository.findOne(createOrderDto.fk_menu);
     if (createOrderDto.createOrderItemDto) {
-      const revenueAll = await this.revenuesRepository.findByAllNotFilter();
-      const categoryAll = await this.categoryOrderItemRepository.findAll();;
-      const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
-      const menuSeleted = await this.menuRepository.findOne(createOrderDto.fk_menu);
 
       await Promise.all(
         createOrderDto.createOrderItemDto.map(async (item) => {
@@ -39,7 +39,7 @@ export class CreateOrderService {
             throw new NotFoundException(`Receita não encontrada - fk_revenue: ${item.fk_revenue}`)
           }
 
-          const menu = menuSeleted.itemMenu.map((menuItemS)=> menuItemS.fk_revenues === item.fk_revenue)
+          const menu = menuSeleted.itemMenu.find((menuItemS)=> menuItemS.fk_revenues === item.fk_revenue)
 
           if(!menu){
             throw new NotFoundException(`Item não está no menu - fk_revenue: ${item.fk_revenue}`)
@@ -77,9 +77,10 @@ export class CreateOrderService {
           if (!revenue) {
             throw new NotFoundException(`Receita não encontrada em itens fora do Menu - fk_revenue: ${item.fk_revenue}`)
           }
-
-          const menu = menuSeleted.itemMenu.map((menuItemS)=> menuItemS.fk_revenues === item.fk_revenue)
-
+          console.log({itenMenu: menuSeleted.itemMenu});
+          
+          const menu = menuSeleted.itemMenu.find((menuItemS)=> menuItemS.fk_revenues === item.fk_revenue)
+     
           if(menu){
             throw new NotFoundException(`Item está no menu, verifique a lista de pedidos em Menu`)
           }
@@ -114,8 +115,11 @@ export class CreateOrderService {
       dateOrder: data,
       valueOrder: valueTotal,
       fk_user: fk_user,
-      createOrderItemDto: createOrderItemDtoAlt
+      createOrderItemDto: createOrderItemDtoAlt,
     }
+
+    console.log({createOrderAlternativeDto});
+    
        
      
       await this.orderRepository.create(createOrderAlternativeDto)
