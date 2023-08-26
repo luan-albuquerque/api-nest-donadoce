@@ -6,7 +6,7 @@ import { OrderBatchRepository } from '../repository/contract/OrderBatchRepositor
 import { OrderRepository } from 'src/modules/order/repository/contract/OrderRepository';
 import { CreateOrderBatch } from '../dto/create_order_batch.dto';
 import { Order } from 'src/modules/order/entities/order.entity';
-
+import * as fs from 'fs/promises';
 
 @Injectable()
 export class CreateOrderBatchService {
@@ -18,29 +18,38 @@ export class CreateOrderBatchService {
 
 
   async execute(createOrderBatch: CreateOrderBatch) {
-   console.log({createOrderBatch});
-   
+
     const orderAll: Order[] = await this.orderRepository.findManyNotFilter();
     const orderSemOrderBatch = await this.orderRepository.findManyOrderByClientNotOrderBatch(createOrderBatch.fk_client)
+    console.log({ createOrderBatch });
 
     await Promise.all(
       createOrderBatch.createOrderBatchItem.map(async (item) => {
         var orderAlReadyExist = orderAll.find((order) => order.id === item.fk_order);
 
         if (!orderAlReadyExist) {
+          fs.access(createOrderBatch.file_absolute).then(() => {
+            fs.unlink(createOrderBatch.file_absolute)
+
+          })
           throw new NotFoundException('Pedido ' + item.fk_order + ' não encontrado.')
         }
 
         var orderSem = orderSemOrderBatch.find((t) => t.id === item.fk_order)
-        if (orderSem.OrderBatchItem != null) {
-          throw new NotFoundException('Pedido ' + orderSem.numberOrder + 'ja vinculado a lote ' + orderSem.OrderBatchItem.orderBatch.numberOrderBatch)
+
+        if (!orderSem) {
+
+          fs.access(createOrderBatch.file_absolute).then(() => {
+            fs.unlink(createOrderBatch.file_absolute)
+
+          })
+          throw new NotFoundException('Pedido possivelmente está vinculado a um lote - fk_order: ' + item.fk_order);
 
         }
-
       })
     )
 
-    // await this.orderBatchRepository.create(createOrderBatch);
- 
+    await this.orderBatchRepository.create(createOrderBatch);
+
   }
 }

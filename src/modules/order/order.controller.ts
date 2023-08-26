@@ -1,10 +1,14 @@
-import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, ParseIntPipe, Patch, Param, Put } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { CreateOrderService } from './services/create-order.service';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { FindManyOrderByClientService } from './services/find-many-order-by-client.service';
 import { FindManyOrderService } from './services/find-many-order.service';
+import { PatchOrderDto } from './dto/patch-order.dto';
+import { PatchOrderService } from './services/patch-order.service';
+import { PatchStatusOrderItemService } from './services/patch-status-order-item.service';
+import { PatchStatusOrderItemDto } from './dto/patch-status-order-item.';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -13,7 +17,9 @@ export class OrderController {
   constructor(
     private readonly createOrderService: CreateOrderService,
     private readonly findManyOrderByClientService: FindManyOrderByClientService,
-    private readonly findManyOrderService: FindManyOrderService
+    private readonly findManyOrderService: FindManyOrderService,
+    private readonly patchOrderService: PatchOrderService,
+    private readonly patchStatusOrderItemService: PatchStatusOrderItemService
   ) { }
 
 
@@ -118,10 +124,20 @@ export class OrderController {
   //   return this.orderService.findOne(+id);
   // }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-  //   return this.orderService.update(+id, updateOrderDto);
-  // }
+  @Patch(':id')
+  @ApiOperation({ summary: "EndPoint para atualizar status de pedidos" })
+  async update(@Param('id') id: string, @Body() patchOrderDto: PatchOrderDto) {
+
+    await this.patchOrderService.execute(id, patchOrderDto.fk_orderstatus);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: "EndPoint para atualizar status de item de pedidos extra que estão 'EM_HOMOLOGACAO'" })
+  async updateOrderItem(@Param('id') id: string, @Body() data: PatchStatusOrderItemDto) {
+    
+    await this.patchStatusOrderItemService.execute(id, data);
+  }
+
 
   // @Delete(':id')
   // remove(@Param('id') id: string) {

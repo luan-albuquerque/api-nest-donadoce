@@ -8,5 +8,5 @@ export class Order {
     valueOrder: number
     fk_orderstatus: string
     fk_user: string
-    OrderBatchItem?: OrderBatchItem
+    orderBatchItem?: OrderBatchItem
 }

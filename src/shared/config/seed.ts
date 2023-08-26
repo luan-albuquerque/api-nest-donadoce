@@ -48,11 +48,23 @@ async function main() {
     data: [
       {
         id: "022ac120002-1c69-11ee-be56-0242ac120002",
-        description: "Em processamento"
+        description: "Solicitado"
       },
       {
         id: "11ee6828-1c69-11ee-be56-c691200020241",
-        description: "Em rota de entrega"
+        description: "Agendado"
+      },
+      {
+        id: "314e2828-1c69-11ee-be56-c691200020241",
+        description: "Pré-Produção"
+      },
+      {
+        id: "45690813-1c69-11ee-be56-c691200020241",
+        description: "Em Processamento"
+      },
+      {
+        id: "789850813-1c69-11ee-be56-c691200020241",
+        description: "Em Entrega"
       },
       {
         id: "1c69c120002-575f34-1c69-be56-0242ac1201c69",

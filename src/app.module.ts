@@ -24,6 +24,7 @@ import { OrderModule } from './modules/order/order.module';
 import { CategoryOrderItemsModule } from './modules/category_order_items/category_order_items.module';
 import { RevenuePerClientModule } from './modules/revenue-per-client/revenue-per-client.module';
 import { OrderBatchModule } from './modules/order_batch/order_batch.module';
+import { OrderBatchItemModule } from './modules/order_batch_item/order_batch_item.module';
 
 @Module({
   imports: [
@@ -47,9 +48,10 @@ import { OrderBatchModule } from './modules/order_batch/order_batch.module';
     MenuModule,
     MenuItemsModule,
     CategoryOrderItemsModule,
-    OrderModule,
     RevenuePerClientModule,
-    OrderBatchModule
+    OrderModule,
+    OrderBatchModule,
+    OrderBatchItemModule
 
   ],
   controllers: [],

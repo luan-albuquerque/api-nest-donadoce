@@ -73,7 +73,7 @@ model Token {
 
 enum Unit_of_measurement {
   ml
-  l 
+  l
   g
   kg
 }
@@ -185,16 +185,17 @@ model CategoryOrderItem {
 }
 
 model Order {
-  id             String          @id @default(uuid())
-  numberOrder    Int             @unique() @default(autoincrement())
-  dateOrder      DateTime        @default(now())
+  id             String           @id @default(uuid())
+  numberOrder    Int              @unique() @default(autoincrement())
+  dateOrder      DateTime         @default(now())
   valueOrder     Float
+  
   fk_orderstatus String
   fk_user        String
-  user           User            @relation(fields: [fk_user], references: [id])
-  orderStatus    OrderStatus     @relation(fields: [fk_orderstatus], references: [id])
+  user           User             @relation(fields: [fk_user], references: [id])
+  orderStatus    OrderStatus      @relation(fields: [fk_orderstatus], references: [id])
   orderItem      OrderItem[]
-  OrderBatchItem OrderBatchItem?
+  orderBatchItem OrderBatchItem?
 }
 
 model OrderStatus {
@@ -244,10 +245,11 @@ model OrderBatch {
   user             User             @relation(fields: [fk_client], references: [id])
   OrderBatchItem   OrderBatchItem[]
 }
-
 model OrderBatchItem {
-  fk_order      String     @id
+  fk_order      String     @unique
   fk_orderBatch String
   order         Order      @relation(fields: [fk_order], references: [id])
   orderBatch    OrderBatch @relation(fields: [fk_orderBatch], references: [id])
+
+  @@id([fk_order, fk_orderBatch])
 }

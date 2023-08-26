@@ -117,9 +117,7 @@ export class CreateOrderService {
       fk_user: fk_user,
       createOrderItemDto: createOrderItemDtoAlt,
     }
-
-    console.log({createOrderAlternativeDto});
-    
+  
        
      
       await this.orderRepository.create(createOrderAlternativeDto)

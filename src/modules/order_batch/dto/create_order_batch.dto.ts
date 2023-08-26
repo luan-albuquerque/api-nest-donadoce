@@ -15,6 +15,8 @@ export class CreateOrderBatch {
 
     invoice_file: string
 
+    file_absolute?: string
+
     @IsString({ message: 'invoice_number precisa ser string' })
     @IsNotEmpty({ message: 'invoice_number não pode esvaziar' })
     @ApiProperty()

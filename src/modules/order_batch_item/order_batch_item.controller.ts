@@ -1,105 +1,35 @@
-import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, ParseIntPipe, Delete, Param } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { CreateOrderBatchItemManual } from './dto/create_order_batch_item_manual.dto';
+import { CreateOrderBatchItemService } from './services/create-order-batch-item.service';
+import { RemoveOrderBatchItemService } from './services/remove-order-batch-item.service';
 
-@Controller('order')
+@Controller('order_batch_item')
 @ApiBearerAuth()
-@ApiTags("Order")
+@ApiTags("Order Batch Item")
 export class OrderBatchItemController {
   constructor(
+    private readonly createOrderBatchItemService: CreateOrderBatchItemService,
+    private readonly removeOrderBatchItemService: RemoveOrderBatchItemService
   ) { }
 
   @Post()
-  @ApiOperation({ summary: "EndPoint para criação de lotes", description: "" })
-  async create(
-  ) { }
-
-  @ApiQuery({
-    name: 'limit',
-    required: false,
-    type: Number,
+  @ApiBody({
+    type: CreateOrderBatchItemManual,
+    isArray: true,
   })
-  @ApiQuery({
-    name: 'skip',
-    required: false,
-    type: Number,
-  })
-  @ApiQuery({
-    name: 'numberOrder',
-    required: false,
-    type: Number,
-  })
-  @ApiQuery({
-    name: 'desc_user_or_client',
-    required: false,
-    type: String,
-  })
-
-  @ApiQuery({
-    name: 'statusOrder',
-    required: false,
-    type: Number,
-  })
-
-  @Get("")
-  @ApiOperation({ summary: "EndPoint ", description: "" })
-  async findAll(
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
-    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
-    @Query('numberOrder') numberOrder = undefined,
-    @Query('desc_user_or_client') desc_user = undefined,
-    @Query('statusOrder') statusOrder = undefined,
-
-  ) {
+  @ApiOperation({ summary: "EndPoint para adicionar pedidos em lote", description: "" })
+  async create(@Body() data: CreateOrderBatchItemManual[]) {
+    await this.createOrderBatchItemService.execute(data);
   }
 
-  @ApiQuery({
-    name: 'limit',
-    required: false,
-    type: Number,
-  })
-  @ApiQuery({
-    name: 'skip',
-    required: false,
-    type: Number,
-  })
-  @ApiQuery({
-    name: 'numberOrder',
-    required: false,
-    type: Number,
-  })
-
-  @ApiQuery({
-    name: 'statusOrder',
-    required: false,
-    type: Number,
-  })
-
-  @Get("client")
-  @ApiOperation({ summary: "EndPoint para listagem de pedidos", description: "Listagem de pedidos, obs: esta listando os do admin também por questões de resjuste" })
-  async findAllByClient(
-    @Req() req,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
-    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
-    @Query('numberOrder') numberOrder = undefined,
-    @Query('statusOrder') statusOrder = undefined,
+  
+  @Delete(':fk_order/:fk_orderBatch')
+  @ApiOperation({ summary: "EndPoint para remover pedidos em lote", description: "" })
+  async remove(
+    @Param('fk_order') fk_order: string,
+    @Param('fk_orderBatch') fk_orderBatch: string
   ) {
-   
-
-
+    await this.removeOrderBatchItemService.execute({ fk_order, fk_orderBatch })
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.orderService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-  //   return this.orderService.update(+id, updateOrderDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.orderService.remove(+id);
-  // }
 }

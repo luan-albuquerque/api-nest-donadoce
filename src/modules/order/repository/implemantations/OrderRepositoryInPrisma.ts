@@ -7,6 +7,7 @@ import { OrderAlternative } from "../../entities/order-alternative.entity";
 import { ListByAdminOrderDTO } from "../../dto/list-by-admin-order.dto";
 import { OrderAdmin } from "../../entities/order-admin.entity";
 import { Order } from "../../entities/order.entity";
+import { PatchStatusOrderItemDto } from "../../dto/patch-status-order-item.";
 
 
 @Injectable()
@@ -14,16 +15,62 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async patchStatusOrderItem(id: string, { fk_categoryOrderItem, fk_revenue, status_order_item }: PatchStatusOrderItemDto): Promise<void> {
+        console.log({
+            id, fk_categoryOrderItem, fk_revenue, status_order_item
+        });
+
+        await this.prisma.orderItem.updateMany({
+            data: {
+
+                homologate: status_order_item as any
+            },
+            where: {
+                fk_order: id,
+                fk_revenue,
+                fk_categoryOrderItem,
+                homologate: "EM_HOMOLOGACAO",
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
+    async patchStatus(id: string, fk_status_order: string): Promise<void> {
+        const data = await this.prisma.order.update({
+            data: {
+                fk_orderstatus: fk_status_order,
+            },
+            where: {
+                id,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
+    async findById(id: string): Promise<Order> {
+        const data = await this.prisma.order.findUnique({
+            include: {
+                orderItem: true,
+            },
+            where: {
+                id,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
     async findManyOrderByClientNotOrderBatch(fk_client: string): Promise<Order[]> {
         const data = await this.prisma.order.findMany({
             where: {
                 AND: {
                     fk_user: fk_client,
-                    OrderBatchItem: null,
+                    orderBatchItem: null,
                 }
             },
             include: {
-                OrderBatchItem: {
+                orderBatchItem: {
                     include: {
                         orderBatch: true,
                     }

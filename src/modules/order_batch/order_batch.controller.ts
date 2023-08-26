@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors, UploadedFiles, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors, UploadedFiles, UploadedFile } from '@nestjs/common';
 import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateOrderBatch } from './dto/create_order_batch.dto';
 import { FindManyOrderBatchService } from './services/find-many-order-batch.service';
 import { CreateOrderBatchService } from './services/create-order-batch.service';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { multerOptionsOrderBatch } from 'src/shared/http/middlewares/multerOrderBatch.middleware copy';
 
 
@@ -18,31 +18,28 @@ export class OrderBatchController {
 
 
   @Post()
-  @UseInterceptors(
-    FileFieldsInterceptor(
-      [
-        { name: "_file" }
-      ],
-      multerOptionsOrderBatch,
-    )
-  )
+  @UseInterceptors(FileInterceptor('_file', multerOptionsOrderBatch))
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: "EndPoint de lotes", description: "" })
-  async create(@Body() createOrderBatch: CreateOrderBatch, @UploadedFile() file: Express.Multer.File) {
+  async create(@Body() createOrderBatch: CreateOrderBatch, @UploadedFile() file: any) {
+    
     const arquivo =  file ? file.filename ? file.filename : null : null;
     const bodyform = Object(createOrderBatch)
     
     const newData: CreateOrderBatch =  {
-        createOrderBatchItem: bodyform.createOrderBatchItem,
+        createOrderBatchItem: Object(JSON.parse(bodyform.createOrderBatchItem)),
         end_date: new Date(bodyform.end_date),
         initial_date: new Date(bodyform.initial_date),
         fk_client: bodyform.fk_client,
         invoice_number: bodyform.invoice_number,
         invoice_file: arquivo,
+        file_absolute: file.path
 
     }
 
     await this.createOrderBatchService.execute(newData);
+ 
+    
 
   }
 
@@ -92,18 +89,19 @@ export class OrderBatchController {
     })
   }
 
+
  
-  @Get(":id")
-  @ApiOperation({ summary: "EndPoint para listagem de pedidos", description: "Listagem de pedidos, obs: esta listando os do admin também por questões de resjuste" })
-  async findAllByClient(
-    @Req() req,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
-    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
+  // @Get(":id")
+  // @ApiOperation({ summary: "EndPoint para listagem de pedidos", description: "Listagem de pedidos, obs: esta listando os do admin também por questões de resjuste" })
+  // async findAllByClient(
+  //   @Req() req,
+  //   @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+  //   @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
 
-  ) {
+  // ) {
 
 
-  }
+  // }
 
 
 }

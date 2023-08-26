@@ -32,6 +32,8 @@ import { OrderRepository } from 'src/modules/order/repository/contract/OrderRepo
 import { OrderRepositoryInPrisma } from 'src/modules/order/repository/implemantations/OrderRepositoryInPrisma';
 import { OrderBatchRepositoryInPrisma } from 'src/modules/order_batch/repository/implemantations/OrderBatchRepositoryInPrisma';
 import { OrderBatchRepository } from 'src/modules/order_batch/repository/contract/OrderBatchRepository';
+import { OrderBatchItemRepository } from 'src/modules/order_batch_item/repository/contract/OrderBatchItemRepository';
+import { OrderBatchItemRepositoryInPrisma } from 'src/modules/order_batch_item/repository/implemantations/OrderBatchItemRepositoryInPrisma';
 
 
 @Module({
@@ -103,12 +105,18 @@ import { OrderBatchRepository } from 'src/modules/order_batch/repository/contrac
     {
       provide: OrderBatchRepository,
       useClass: OrderBatchRepositoryInPrisma
-    }
+    },
+    {
+      provide: OrderBatchItemRepository,
+      useClass: OrderBatchItemRepositoryInPrisma
+    },
+    
   ],
   
   exports: [
     OrderRepository,
     OrderBatchRepository,
+    OrderBatchItemRepository,
     RevenuePerClientRepository,
     MenuItemRepository,
     CategoryOrderItemRepository,
