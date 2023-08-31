@@ -56,13 +56,17 @@ export class OrderBatchItemRepositoryInPrisma implements OrderBatchItemRepositor
     }
     async removeItem({ fk_order, fk_orderBatch }: RemoveOrderBatchItem): Promise<void> {
         try {
-            await this.prisma.orderBatchItem.delete({
+            await this.prisma.orderBatchItem.update({
+                data: {
+                    is_removed: true,
+                    deleted_at: new Date()
+                },
                 where: {
                     fk_order_fk_orderBatch: {
                         fk_order,
                         fk_orderBatch
-                    }
-                },
+                    },
+                }
             });
         } catch (error) {
             throw new InternalServerErrorException(error)

@@ -7,7 +7,6 @@ export class OrderBatch {
     fk_client: string
     invoice_number: string
     numberOrderBatch: number
-
     OrderBatchItem?: OrderBatchItem[] 
 
 }

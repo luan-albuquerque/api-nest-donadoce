@@ -13,6 +13,7 @@ export class OrderAdmin {
         of_menu: boolean
         categoryOrderItem: {
             description: string;
+            time: Date
         },
         amountItem: number;
         dateOrderItem: Date;

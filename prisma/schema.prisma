@@ -11,21 +11,22 @@ datasource db {
 }
 
 model User {
-  id            String       @id @default(uuid())
-  password      String
-  email         String       @unique
-  is_enabled    Boolean      @default(true)
-  is_admin      Boolean      @default(false)
-  is_client     Boolean      @default(false)
-  is_driver     Boolean      @default(false)
-  is_production Boolean      @default(false)
-  createdAt     DateTime     @default(now())
-  updateAt      DateTime?
-  token         Token[]
-  Clients       Client?
-  Person        Person?
-  Order         Order[]
-  OrderBatch    OrderBatch[]
+  id                           String       @id @default(uuid())
+  password                     String
+  email                        String       @unique
+  is_enabled                   Boolean      @default(true)
+  is_admin                     Boolean      @default(false)
+  is_client                    Boolean      @default(false)
+  is_driver                    Boolean      @default(false)
+  is_production                Boolean      @default(false)
+  createdAt                    DateTime     @default(now())
+  updateAt                     DateTime?
+  token                        Token[]
+  Clients                      Client?
+  Person                       Person?
+  Order                        Order[]
+  OrderBatchUserOpenOrderBatch OrderBatch[] @relation(name: "userOpenOrderBatch")
+  OrderBatchClient             OrderBatch[] @relation(name: "userClient")
 }
 
 model Client {
@@ -181,19 +182,20 @@ model ItemMenu {
 model CategoryOrderItem {
   id          String      @id @default(uuid())
   description String
+  time        DateTime?   @db.Time()
   OrderItem   OrderItem[]
 }
 
 model Order {
-  id             String           @id @default(uuid())
-  numberOrder    Int              @unique() @default(autoincrement())
-  dateOrder      DateTime         @default(now())
+  id             String          @id @default(uuid())
+  numberOrder    Int             @unique() @default(autoincrement())
+  dateOrder      DateTime        @default(now())
   valueOrder     Float
   amount_of_tray Int?
   fk_orderstatus String
   fk_user        String
-  user           User             @relation(fields: [fk_user], references: [id])
-  orderStatus    OrderStatus      @relation(fields: [fk_orderstatus], references: [id])
+  user           User            @relation(fields: [fk_user], references: [id])
+  orderStatus    OrderStatus     @relation(fields: [fk_orderstatus], references: [id])
   orderItem      OrderItem[]
   orderBatchItem OrderBatchItem?
 }
@@ -237,17 +239,23 @@ model RevenuePerClient {
 }
 
 model OrderBatch {
-  id               String           @id @default(uuid())
-  invoice_file     String
-  invoice_number   String
-  numberOrderBatch Int              @default(autoincrement())
-  fk_client        String
-  user             User             @relation(fields: [fk_client], references: [id])
-  OrderBatchItem   OrderBatchItem[]
+  id                      String           @id @default(uuid())
+  invoice_file            String
+  invoice_number          String
+  numberOrderBatch        Int              @default(autoincrement())
+  fk_client               String
+  fk_user_open_orderbatch String
+  user                    User             @relation(name: "userClient", fields: [fk_client], references: [id])
+  userBatch               User             @relation(name: "userOpenOrderBatch", fields: [fk_user_open_orderbatch], references: [id])
+  OrderBatchItem          OrderBatchItem[]
 }
+
 model OrderBatchItem {
   fk_order      String     @unique
   fk_orderBatch String
+  is_removed    Boolean    @default(false)
+  created_at    DateTime   @default(now())
+  deleted_at    DateTime?
   order         Order      @relation(fields: [fk_order], references: [id])
   orderBatch    OrderBatch @relation(fields: [fk_orderBatch], references: [id])
 

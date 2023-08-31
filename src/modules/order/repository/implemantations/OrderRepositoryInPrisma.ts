@@ -28,15 +28,13 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             })
 
         } catch (error) {
-            console.log("aqui" + error);
-            
-             throw new InternalServerErrorException("Erro no Banco de dados: " + error)
+            throw new InternalServerErrorException("Erro no Banco de dados: " + error)
         } finally {
             this.prisma.$disconnect()
         }
     }
     async patchStatusOrderItem(id: string, { fk_categoryOrderItem, fk_revenue, status_order_item }: PatchStatusOrderItemDto): Promise<void> {
-   
+
         await this.prisma.orderItem.updateMany({
             data: {
 
@@ -81,10 +79,18 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     async findManyOrderByClientNotOrderBatch(fk_client: string): Promise<Order[]> {
         const data = await this.prisma.order.findMany({
             where: {
-                AND: {
-                    fk_user: fk_client,
-                    orderBatchItem: null,
-                }
+                OR: [
+                    {
+                        fk_user: fk_client,
+                        orderBatchItem: null,
+                    },
+                    {
+                        fk_user: fk_client,
+                        orderBatchItem: {
+                            is_removed: true,
+                        },
+                    }
+                ]
             },
             include: {
                 orderBatchItem: {
@@ -140,6 +146,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                         categoryOrderItem: {
                             select: {
                                 description: true,
+                                time: true,
                             }
                         },
                         amountItem: true,

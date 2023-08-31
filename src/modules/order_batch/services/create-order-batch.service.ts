@@ -21,7 +21,6 @@ export class CreateOrderBatchService {
 
     const orderAll: Order[] = await this.orderRepository.findManyNotFilter();
     const orderSemOrderBatch = await this.orderRepository.findManyOrderByClientNotOrderBatch(createOrderBatch.fk_client)
-    console.log({ createOrderBatch });
 
     await Promise.all(
       createOrderBatch.createOrderBatchItem.map(async (item) => {

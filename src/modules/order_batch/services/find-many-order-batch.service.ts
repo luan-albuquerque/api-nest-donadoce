@@ -12,7 +12,7 @@ export class FindManyOrderBatchService {
 
   async execute(filterOrderBatch: FilterOrderBatch) {
      
-    return await this.orderBatchRpeository.findOrderBatch(filterOrderBatch);
+    return await this.orderBatchRpeository.findAllOrderBatch(filterOrderBatch);
     
 
   }
