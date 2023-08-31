@@ -6,6 +6,7 @@ import { FindManyOrderByClientService } from './services/find-many-order-by-clie
 import { FindManyOrderService } from './services/find-many-order.service';
 import { PatchOrderService } from './services/patch-order.service';
 import { PatchStatusOrderItemService } from './services/patch-status-order-item.service';
+import { PatchTrayOrderService } from './services/patch-tray-order.service';
 
 @Module({
   imports:[
@@ -17,7 +18,8 @@ import { PatchStatusOrderItemService } from './services/patch-status-order-item.
     FindManyOrderByClientService,
     FindManyOrderService,
     PatchOrderService,
-    PatchStatusOrderItemService
+    PatchStatusOrderItemService,
+    PatchTrayOrderService
   ]
 })
 export class OrderModule {}

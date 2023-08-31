@@ -189,7 +189,7 @@ model Order {
   numberOrder    Int              @unique() @default(autoincrement())
   dateOrder      DateTime         @default(now())
   valueOrder     Float
-  
+  amount_of_tray Int?
   fk_orderstatus String
   fk_user        String
   user           User             @relation(fields: [fk_user], references: [id])

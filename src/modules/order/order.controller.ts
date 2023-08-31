@@ -9,6 +9,8 @@ import { PatchOrderDto } from './dto/patch-order.dto';
 import { PatchOrderService } from './services/patch-order.service';
 import { PatchStatusOrderItemService } from './services/patch-status-order-item.service';
 import { PatchStatusOrderItemDto } from './dto/patch-status-order-item.';
+import { PatchTrayOrderDto } from './dto/patch-tray-order.dto';
+import { PatchTrayOrderService } from './services/patch-tray-order.service';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -19,7 +21,8 @@ export class OrderController {
     private readonly findManyOrderByClientService: FindManyOrderByClientService,
     private readonly findManyOrderService: FindManyOrderService,
     private readonly patchOrderService: PatchOrderService,
-    private readonly patchStatusOrderItemService: PatchStatusOrderItemService
+    private readonly patchStatusOrderItemService: PatchStatusOrderItemService,
+    private readonly patchTrayOrderService: PatchTrayOrderService
   ) { }
 
 
@@ -119,10 +122,6 @@ export class OrderController {
 
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.orderService.findOne(+id);
-  // }
 
   @Patch(':id')
   @ApiOperation({ summary: "EndPoint para atualizar status de pedidos" })
@@ -131,16 +130,19 @@ export class OrderController {
     await this.patchOrderService.execute(id, patchOrderDto.fk_orderstatus);
   }
 
-  @Put(':id')
-  @ApiOperation({ summary: "EndPoint para atualizar status de item de pedidos extra que estão 'EM_HOMOLOGACAO'" })
-  async updateOrderItem(@Param('id') id: string, @Body() data: PatchStatusOrderItemDto) {
-    
-    await this.patchStatusOrderItemService.execute(id, data);
+  @Patch('tray/:id')
+  @ApiOperation({ summary: "EndPoint para atualizar e adicionar bandejas em pedidos'" })
+  async updateTryInOrder(@Param('id') id: string, @Body() data: PatchTrayOrderDto) {
+       
+       await this.patchTrayOrderService.execute(id, data.amount_of_tray)
   }
 
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.orderService.remove(+id);
-  // }
+  @Put(':id')
+  @ApiOperation({ summary: "EndPoint para atualizar status de item de pedidos extra que estão 'EM_HOMOLOGACAO'" })
+  async updateOrderItem(@Param('id') id: string, @Body() data: PatchStatusOrderItemDto) {
+
+    await this.patchStatusOrderItemService.execute(id, data);
+  }
+
 }

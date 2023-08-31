@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { OrderRepository } from "../contract/OrderRepository";
 import { CreateOrderAlternativeDto } from "../../dto/create-order-alternative.dto";
 import { PrismaService } from "src/shared/config/database/prisma/prisma.service";
@@ -15,11 +15,28 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
-    async patchStatusOrderItem(id: string, { fk_categoryOrderItem, fk_revenue, status_order_item }: PatchStatusOrderItemDto): Promise<void> {
-        console.log({
-            id, fk_categoryOrderItem, fk_revenue, status_order_item
-        });
+    async patchTrayOrder(id: string, amount_of_tray: number): Promise<void> {
 
+        try {
+            await this.prisma.order.updateMany({
+                data: {
+                    amount_of_tray,
+                },
+                where: {
+                    id: id,
+                }
+            })
+
+        } catch (error) {
+            console.log("aqui" + error);
+            
+             throw new InternalServerErrorException("Erro no Banco de dados: " + error)
+        } finally {
+            this.prisma.$disconnect()
+        }
+    }
+    async patchStatusOrderItem(id: string, { fk_categoryOrderItem, fk_revenue, status_order_item }: PatchStatusOrderItemDto): Promise<void> {
+   
         await this.prisma.orderItem.updateMany({
             data: {
 
