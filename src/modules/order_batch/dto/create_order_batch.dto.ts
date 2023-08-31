@@ -29,6 +29,8 @@ export class CreateOrderBatch {
     @IsNotEmpty({ message: 'end_date não pode esvaziar' })
     @ApiProperty()
     end_date: Date
+
+    userOpenOrderBatch?: string
  
     @ApiProperty({ type: CreateOrderBatchItem, isArray: true})
     @Type(()=> CreateOrderBatchItem)

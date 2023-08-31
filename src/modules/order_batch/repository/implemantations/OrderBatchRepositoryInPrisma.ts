@@ -50,6 +50,7 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
     async create(createOrderBatch: CreateOrderBatch): Promise<void> {
         await this.prisma.orderBatch.create({
             data: {
+                fk_user_open_orderbatch: createOrderBatch.userOpenOrderBatch,
                 fk_client: createOrderBatch.fk_client,
                 invoice_file: createOrderBatch.invoice_file,
                 invoice_number: createOrderBatch.invoice_number,

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors, UploadedFiles, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors, UploadedFiles, UploadedFile, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateOrderBatch } from './dto/create_order_batch.dto';
 import { FindManyOrderBatchService } from './services/find-many-order-batch.service';
@@ -21,7 +21,7 @@ export class OrderBatchController {
   @UseInterceptors(FileInterceptor('_file', multerOptionsOrderBatch))
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: "EndPoint de lotes", description: "" })
-  async create(@Body() createOrderBatch: CreateOrderBatch, @UploadedFile() file: any) {
+  async create(@Req() req, @Body() createOrderBatch: CreateOrderBatch, @UploadedFile() file: any) {
     
     const arquivo =  file ? file.filename ? file.filename : null : null;
     const bodyform = Object(createOrderBatch)
@@ -33,7 +33,8 @@ export class OrderBatchController {
         fk_client: bodyform.fk_client,
         invoice_number: bodyform.invoice_number,
         invoice_file: arquivo,
-        file_absolute: file.path
+        file_absolute: file.path,
+        userOpenOrderBatch:  req.user.id
 
     }
 
