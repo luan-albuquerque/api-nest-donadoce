@@ -10,6 +10,18 @@ import { skip } from "rxjs";
 @Injectable()
 export class IngredientsRepositoryInPrisma implements IngredientsRepository {
     constructor(private readonly prisma: PrismaService) { }
+    async updateAmount(id: string, amount: number): Promise<void> {
+        await this.prisma.ingredients.update({
+            data: {
+
+                amount_actual: amount,
+                updated_t: new Date()
+            },
+            where: {
+                id,
+            }
+        });
+    }
 
     async listFluxoIngredient(control: boolean): Promise<Ingredient[]> {
         const data = await this.prisma.ingredients.findMany({

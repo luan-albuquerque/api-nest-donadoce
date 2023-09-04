@@ -17,6 +17,7 @@ export class IngredientControlRepositoryInPrisma implements IngredientControlRep
                is_output: createIngredientControlDto.is_output,
                fk_ingredient: createIngredientControlDto.fk_ingredient,
                unitary_value: createIngredientControlDto.unitary_value,
+               unit_of_measurement: createIngredientControlDto.unit_of_measurement,
 
             }
               

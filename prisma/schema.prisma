@@ -94,6 +94,7 @@ model Ingredients {
 model Ingredient_control {
   id            Int         @id @default(autoincrement())
   fk_ingredient String
+  unit_of_measurement  Unit_of_measurement?
   created_at    DateTime    @default(now())
   is_output     Boolean
   unitary_value Float?
@@ -104,6 +105,7 @@ model Ingredient_control {
 model Ingredients_Revenues {
   fk_ingredient     String
   fk_revenues       String
+  unit_of_measurement  Unit_of_measurement?
   amount_ingredient Int
   ingredients       Ingredients @relation(fields: [fk_ingredient], references: [id])
   revenues          Revenues    @relation(fields: [fk_revenues], references: [id])

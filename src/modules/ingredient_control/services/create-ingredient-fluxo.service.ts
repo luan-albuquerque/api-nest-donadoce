@@ -8,36 +8,42 @@ import { IngredientsRepository } from 'src/modules/ingredients/repository/contra
 export class CreateIngredientFluxoService {
     constructor(
         private ingredientControlRepository: IngredientControlRepository,
-        private ingredientsRepository: IngredientsRepository 
-    ){}
+        private ingredientsRepository: IngredientsRepository
+    ) { }
 
-    async execute(createIngredientControlDto:CreateIngredientControlDto){
+    async execute(createIngredientControlDto: CreateIngredientControlDto) {
 
         if (!createIngredientControlDto.fk_ingredient) {
             throw new NotFoundException("Identificador não encontrado")
-          }
-      
-          const findIngredient = await this.ingredientsRepository.findById(createIngredientControlDto.fk_ingredient)
-          if (!findIngredient) {
+        }
+
+        const findIngredient = await this.ingredientsRepository.findById(createIngredientControlDto.fk_ingredient)
+        if (!findIngredient) {
             throw new NotFoundException("Ingrediente não encontrado")
-          }
+        }
+
+        if (createIngredientControlDto.unit_of_measurement === findIngredient.unit_of_measurement) {
+            throw new NotFoundException("unit_of_measurement divergente do ingrediente cadastrado")
+
+        }
+
         var actulQtd: number = findIngredient.amount_actual
         var newValue: number = findIngredient.value
 
-        if(!createIngredientControlDto.is_output){
+        if (!createIngredientControlDto.is_output) {
             actulQtd = actulQtd + createIngredientControlDto.amount
             newValue = createIngredientControlDto.unitary_value
-        }else{
-            if((actulQtd - createIngredientControlDto.amount) < 0){
-            throw new BadRequestException("Quantidade a sair superior a quantidade em estoque")
+        } else {
+            if ((actulQtd - createIngredientControlDto.amount) < 0) {
+                throw new BadRequestException("Quantidade a sair superior a quantidade em estoque")
 
             }
-            actulQtd = actulQtd -  createIngredientControlDto.amount 
+            actulQtd = actulQtd - createIngredientControlDto.amount
         }
 
-        
 
-        await this.ingredientControlRepository.createFluxoIngredient(createIngredientControlDto).then(async ()=>{
+
+        await this.ingredientControlRepository.createFluxoIngredient(createIngredientControlDto).then(async () => {
 
             await this.ingredientsRepository.update(findIngredient.id, {
                 unit_of_measurement: findIngredient.unit_of_measurement,
@@ -45,6 +51,6 @@ export class CreateIngredientFluxoService {
                 value: newValue,
                 amount_actual: actulQtd,
             })
-        })  
+        })
     }
 }

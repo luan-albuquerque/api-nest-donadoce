@@ -12,6 +12,20 @@ import { FiltersRevenueDTO } from "../../dto/filters-revenue.dto";
 export class RevenuesRepositoryInPrisma implements RevenuesRepository {
 
     constructor(private prisma: PrismaService) { }
+    async findByOneWithIngreditens(id: string): Promise<Revenue> {
+        const data = await this.prisma.revenues.findUnique({
+            include:{
+                ingredients_Revenues: true,
+            },
+            where: {
+                id,
+            },
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data
+    }
     
     async findByAllNotFilter(): Promise<Revenue[]> {
         const data = await this.prisma.revenues.findMany().finally(() => {

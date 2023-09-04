@@ -11,6 +11,7 @@ export abstract class RevenuesRepository {
         abstract remove(id: string):Promise<void>
         abstract putStatus(id: string):Promise<void>
         abstract findByOne(id: string):Promise<Revenue>
+        abstract findByOneWithIngreditens(id: string):Promise<Revenue>
         abstract findByDescription(description: string):Promise<Revenue>
         abstract findByAll(data?:FiltersRevenueDTO):Promise<Revenue[]>
         abstract findByAllNotFilter():Promise<Revenue[]>
