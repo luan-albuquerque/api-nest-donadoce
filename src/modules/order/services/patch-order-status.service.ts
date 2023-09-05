@@ -4,7 +4,7 @@ import { ListByAdminOrderDTO } from '../dto/list-by-admin-order.dto';
 
 
 @Injectable()
-export class PatchOrderService {
+export class PatchOrderStatusService {
 
   constructor(
     private readonly orderRepository: OrderRepository

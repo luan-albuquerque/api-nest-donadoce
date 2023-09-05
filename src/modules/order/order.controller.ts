@@ -6,7 +6,7 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs
 import { FindManyOrderByClientService } from './services/find-many-order-by-client.service';
 import { FindManyOrderService } from './services/find-many-order.service';
 import { PatchOrderDto } from './dto/patch-order.dto';
-import { PatchOrderService } from './services/patch-order.service';
+import { PatchOrderStatusService } from './services/patch-order-status.service';
 import { PatchStatusOrderItemService } from './services/patch-status-order-item.service';
 import { PatchStatusOrderItemDto } from './dto/patch-status-order-item.';
 import { PatchTrayOrderDto } from './dto/patch-tray-order.dto';
@@ -20,7 +20,7 @@ export class OrderController {
     private readonly createOrderService: CreateOrderService,
     private readonly findManyOrderByClientService: FindManyOrderByClientService,
     private readonly findManyOrderService: FindManyOrderService,
-    private readonly patchOrderService: PatchOrderService,
+    private readonly patchOrderStatusService: PatchOrderStatusService,
     private readonly patchStatusOrderItemService: PatchStatusOrderItemService,
     private readonly patchTrayOrderService: PatchTrayOrderService
   ) { }
@@ -127,7 +127,7 @@ export class OrderController {
   @ApiOperation({ summary: "EndPoint para atualizar status de pedidos" })
   async update(@Param('id') id: string, @Body() patchOrderDto: PatchOrderDto) {
 
-    await this.patchOrderService.execute(id, patchOrderDto.fk_orderstatus);
+    await this.patchOrderStatusService.execute(id, patchOrderDto.fk_orderstatus);
   }
 
   @Patch('tray/:id')
@@ -138,7 +138,7 @@ export class OrderController {
   }
 
 
-  @Put(':id')
+  @Patch('homologate/:id')
   @ApiOperation({ summary: "EndPoint para atualizar status de item de pedidos extra que estão 'EM_HOMOLOGACAO'" })
   async updateOrderItem(@Param('id') id: string, @Body() data: PatchStatusOrderItemDto) {
 

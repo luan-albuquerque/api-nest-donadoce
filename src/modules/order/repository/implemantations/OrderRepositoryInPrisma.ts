@@ -8,6 +8,8 @@ import { ListByAdminOrderDTO } from "../../dto/list-by-admin-order.dto";
 import { OrderAdmin } from "../../entities/order-admin.entity";
 import { Order } from "../../entities/order.entity";
 import { PatchStatusOrderItemDto } from "../../dto/patch-status-order-item.";
+import { PatchHomologateOrder } from "../../dto/patch-homologate-order.dto";
+import { OrderItem } from "../../entities/order-item.entity";
 
 
 @Injectable()
@@ -15,6 +17,43 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async findOneOrderItem(fk_categoryOrderItem: string, fk_order: string, fk_revenue: string): Promise<OrderItem> {
+        const data = await this.prisma.orderItem.findUnique({
+            where: {
+                fk_revenue_fk_order_fk_categoryOrderItem:{
+                    fk_categoryOrderItem,
+                    fk_order,
+                    fk_revenue
+                },
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
+    async UpdateOrderItemHomologate({ fk_categoryOrderItem, fk_order, fk_revenue, homologate }: PatchHomologateOrder): Promise<void> {
+        try {
+            await this.prisma.orderItem.update({
+                data: {
+                    homologate,
+                },
+                where: {
+                    fk_revenue_fk_order_fk_categoryOrderItem: {
+                        fk_categoryOrderItem,
+                        fk_order,
+                        fk_revenue
+                    }
+                }
+            })
+
+        } catch (error) {
+            throw new InternalServerErrorException("Erro no Banco de dados: " + error)
+        } finally {
+            this.prisma.$disconnect()
+        }
+
+    }
     async patchTrayOrder(id: string, amount_of_tray: number): Promise<void> {
 
         try {
@@ -51,7 +90,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         })
     }
     async patchStatus(id: string, fk_status_order: string): Promise<void> {
-        const data = await this.prisma.order.update({
+         await this.prisma.order.update({
             data: {
                 fk_orderstatus: fk_status_order,
             },
