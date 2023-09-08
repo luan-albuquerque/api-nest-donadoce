@@ -11,6 +11,7 @@ import { PatchStatusOrderItemService } from './services/patch-status-order-item.
 import { PatchStatusOrderItemDto } from './dto/patch-status-order-item.';
 import { PatchTrayOrderDto } from './dto/patch-tray-order.dto';
 import { PatchTrayOrderService } from './services/patch-tray-order.service';
+import { PatchDisabledOrderService } from './services/patch-disabled-order.service';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -22,7 +23,8 @@ export class OrderController {
     private readonly findManyOrderService: FindManyOrderService,
     private readonly patchOrderStatusService: PatchOrderStatusService,
     private readonly patchStatusOrderItemService: PatchStatusOrderItemService,
-    private readonly patchTrayOrderService: PatchTrayOrderService
+    private readonly patchTrayOrderService: PatchTrayOrderService,
+    private readonly patchDisabledOrderService: PatchDisabledOrderService
   ) { }
 
 
@@ -143,6 +145,13 @@ export class OrderController {
   async updateOrderItem(@Param('id') id: string, @Body() data: PatchStatusOrderItemDto) {
 
     await this.patchStatusOrderItemService.execute(id, data);
+  }
+
+  @Patch('disabled/:id')
+  @ApiOperation({ summary: "EndPoint para cancelar pedido " })
+  async disabledOrder(@Param('id') id: string) {
+
+    await this.patchDisabledOrderService.execute(id);
   }
 
 }

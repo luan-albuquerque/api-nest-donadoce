@@ -23,6 +23,13 @@ export class PatchOrderStatusService {
         throw new UnauthorizedException("Pedido não pode possui o status inicial")
       }
 
+      
+      if (fk_order_status == "55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4") {
+        throw new UnauthorizedException("Pedido nãp pode ser cancelado através dessa rota")
+      }
+
+
+      
       await this.orderRepository.patchStatus(id, fk_order_status);
 
     } catch (error) {

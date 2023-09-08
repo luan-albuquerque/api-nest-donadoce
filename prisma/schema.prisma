@@ -77,6 +77,7 @@ enum Unit_of_measurement {
   l
   g
   kg
+  u
 }
 
 model Ingredients {
@@ -84,6 +85,8 @@ model Ingredients {
   description          String                 @unique
   unit_of_measurement  Unit_of_measurement
   value                Float
+  amount               Int
+  value_per_serving    Float
   amount_actual        Int?
   created_at           DateTime               @default(now())
   updated_t            DateTime?

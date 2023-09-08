@@ -13,7 +13,7 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
     async updateAmount(id: string, amount: number): Promise<void> {
         await this.prisma.ingredients.update({
             data: {
-
+          
                 amount_actual: amount,
                 updated_t: new Date()
             },
@@ -38,6 +38,8 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
     async create(createIngredientDto: CreateIngredientDto): Promise<void> {
         await this.prisma.ingredients.create({
             data: {
+                value_per_serving: createIngredientDto.value_per_serving,
+                amount: createIngredientDto.amount,
                 unit_of_measurement: createIngredientDto.unit_of_measurement,
                 description: createIngredientDto.description,
                 value: createIngredientDto.value,
@@ -50,6 +52,8 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
     async update(id: string, updateIngredientDto: UpdateIngredientDto): Promise<void> {
         await this.prisma.ingredients.update({
             data: {
+                value_per_serving: updateIngredientDto.value_per_serving,
+                amount: updateIngredientDto.amount,
                 unit_of_measurement: updateIngredientDto.unit_of_measurement,
                 description: updateIngredientDto.description,
                 value: updateIngredientDto.value,

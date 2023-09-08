@@ -30,15 +30,20 @@ async function main() {
     data: [
       {
         id: "491aebc2-1c69-11ee-be56-0242ac120002",
-        description: "Dejejum"
+        description: "Dejejum",
+        time: '2023-09-04T15:00:00.000Z'
       },
       {
         id: "518a6828-1c69-11ee-be56-0242ac120002",
-        description: "Lanche 1"
+        description: "Lanche 1",
+        time: '2023-09-04T10:00:00.000Z'
+        
       },
       {
         id: "57c25f34-1c69-11ee-be56-0242ac120002",
-        description: "Lanche 2"
+        description: "Lanche 2",
+        time: '2023-09-04T15:00:00.000Z'
+       
       }
     ]
   })
@@ -69,6 +74,18 @@ async function main() {
       {
         id: "1c69c120002-575f34-1c69-be56-0242ac1201c69",
         description: "Entregue"
+      },
+      {
+        id: "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af",
+        description: "Revisão Admin"
+      },
+      {
+        id: "22afa4e4-4e7f-14ee-be56-0222afa2d22afb092",
+        description: "Revisão Cliente"
+      },
+      {
+        id: "55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4",
+        description: "Cancelado"
       }
     ]
   })
