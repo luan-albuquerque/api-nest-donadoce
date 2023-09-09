@@ -24,4 +24,5 @@ export abstract class OrderRepository {
     abstract patchTrayOrder(id: string, amount_of_tray: number): Promise<void>
     abstract findOneOrderItem(fk_categoryOrderItem: string, fk_order: string, fk_revenue: string): Promise<OrderItem>
     abstract UpdateOrderItemHomologate(data: PatchHomologateOrder): Promise<void>
+    abstract findAllOrdersInProcess(): Promise<OrderItem[]>
 }

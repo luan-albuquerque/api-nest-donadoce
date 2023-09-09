@@ -4,7 +4,7 @@ import { IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator"
 
 
 
-type Unit_of_measurement = 'ml' | 'l' | 'g' | 'kg';
+type Unit_of_measurement = 'ml' | 'l' | 'g' | 'kg' | 'u';
 
 export class CreateIngredientDto {
     @IsString({ message: 'Descrição precisa ser string' })
@@ -14,7 +14,7 @@ export class CreateIngredientDto {
 
     @IsNotEmpty({ message: 'Unidade de Medida não pode ser vazio' })
 
-    @ApiProperty({ enum: ['ml','l','g','kg']})
+    @ApiProperty({ enum: ['ml','l','g','kg','u']})
     unit_of_measurement: Unit_of_measurement
 
     @ApiProperty()

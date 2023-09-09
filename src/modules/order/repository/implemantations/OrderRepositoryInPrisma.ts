@@ -17,6 +17,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+
     async findOneOrderItem(fk_categoryOrderItem: string, fk_order: string, fk_revenue: string): Promise<OrderItem> {
         const data = await this.prisma.orderItem.findUnique({
             where: {
@@ -25,6 +26,17 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                     fk_order,
                     fk_revenue
                 },
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
+    async findAllOrdersInProcess(): Promise<OrderItem[]> {
+        const data = await this.prisma.orderItem.findMany({
+            where: {
+                
             }
         }).finally(() => {
             this.prisma.$disconnect()

@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 
 
-type Unit_of_measurement = 'ml' | 'l' | 'g' | 'kg';
+type Unit_of_measurement = 'ml' | 'l' | 'g' | 'kg' | 'u';
 
 export class CreateIngredientControlDto {
     @IsString({ message: 'Esta fk_ingredient de nome precisa ser string' })
