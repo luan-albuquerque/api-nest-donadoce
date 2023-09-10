@@ -22,7 +22,7 @@ export class CreateIngredientFluxoService {
             throw new NotFoundException("Ingrediente não encontrado")
         }
 
-        if (createIngredientControlDto.unit_of_measurement === findIngredient.unit_of_measurement) {
+        if (!(createIngredientControlDto.unit_of_measurement === findIngredient.unit_of_measurement)) {
             throw new NotFoundException("unit_of_measurement divergente do ingrediente cadastrado")
 
         }
