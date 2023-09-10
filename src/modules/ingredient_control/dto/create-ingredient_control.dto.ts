@@ -21,7 +21,7 @@ export class CreateIngredientControlDto {
     @ApiProperty()
     unitary_value: number;
 
-    @ApiProperty({ enum: ['ml', 'l', 'g', 'kg'] })
+    @ApiProperty({ enum: ['ml', 'l', 'g', 'kg', 'u'] })
     unit_of_measurement: Unit_of_measurement
 
     @IsNotEmpty({ message: 'Esta fk_ingredient de nome não pode esvaziar' })

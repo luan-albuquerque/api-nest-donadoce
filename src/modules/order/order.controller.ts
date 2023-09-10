@@ -12,6 +12,8 @@ import { PatchStatusOrderItemDto } from './dto/patch-status-order-item.';
 import { PatchTrayOrderDto } from './dto/patch-tray-order.dto';
 import { PatchTrayOrderService } from './services/patch-tray-order.service';
 import { PatchDisabledOrderService } from './services/patch-disabled-order.service';
+import * as dayjs from 'dayjs';
+import { FindManyOrderInProcess } from './services/find-many-order-in-process.service';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -24,7 +26,8 @@ export class OrderController {
     private readonly patchOrderStatusService: PatchOrderStatusService,
     private readonly patchStatusOrderItemService: PatchStatusOrderItemService,
     private readonly patchTrayOrderService: PatchTrayOrderService,
-    private readonly patchDisabledOrderService: PatchDisabledOrderService
+    private readonly patchDisabledOrderService: PatchDisabledOrderService,
+    private readonly findManyOrderInProcess: FindManyOrderInProcess
   ) { }
 
 
@@ -124,6 +127,14 @@ export class OrderController {
 
   }
 
+  @Get("inProcess")
+  @ApiOperation({ summary: "Lista de pedidos em processamento", description: "Lista de pedidos Lanche 1, Lanche 2 do dia atual e Dejejum do dia seguinte que estão no status em processamento"})
+  async findProductInProcess() {
+    
+    const data = await this.findManyOrderInProcess.execute();;
+
+    return  data;
+  }
 
   @Patch(':id')
   @ApiOperation({ summary: "EndPoint para atualizar status de pedidos" })
@@ -135,8 +146,8 @@ export class OrderController {
   @Patch('tray/:id')
   @ApiOperation({ summary: "EndPoint para atualizar e adicionar bandejas em pedidos'" })
   async updateTryInOrder(@Param('id') id: string, @Body() data: PatchTrayOrderDto) {
-       
-       await this.patchTrayOrderService.execute(id, data.amount_of_tray)
+
+    await this.patchTrayOrderService.execute(id, data.amount_of_tray)
   }
 
 

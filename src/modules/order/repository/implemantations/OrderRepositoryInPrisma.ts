@@ -10,6 +10,7 @@ import { Order } from "../../entities/order.entity";
 import { PatchStatusOrderItemDto } from "../../dto/patch-status-order-item.";
 import { PatchHomologateOrder } from "../../dto/patch-homologate-order.dto";
 import { OrderItem } from "../../entities/order-item.entity";
+import * as dayjs from "dayjs";
 
 
 @Injectable()
@@ -21,7 +22,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     async findOneOrderItem(fk_categoryOrderItem: string, fk_order: string, fk_revenue: string): Promise<OrderItem> {
         const data = await this.prisma.orderItem.findUnique({
             where: {
-                fk_revenue_fk_order_fk_categoryOrderItem:{
+                fk_revenue_fk_order_fk_categoryOrderItem: {
                     fk_categoryOrderItem,
                     fk_order,
                     fk_revenue
@@ -33,11 +34,35 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
         return data;
     }
-    async findAllOrdersInProcess(): Promise<OrderItem[]> {
-        const data = await this.prisma.orderItem.findMany({
+    async findAllOrdersInProcess(): Promise<any> {
+        const data = await this.prisma.orderItem.groupBy({
+            by: ['fk_revenue'],
             where: {
-                
-            }
+                AND: [
+                    {
+                        dateOrderItem: {
+                            gte: dayjs().hour(-4).minute(0).second(0).millisecond(0).toDate(),
+                            lte: dayjs().hour(-4).minute(0).second(0).millisecond(0).add(1, 'day').toDate()
+                        },
+                        OR: [
+                            {
+                                fk_categoryOrderItem: "518a6828-1c69-11ee-be56-0242ac120002"
+                            },
+                            {
+                                fk_categoryOrderItem: "57c25f34-1c69-11ee-be56-0242ac120002"
+                            }
+                        ]
+                    },
+                    {
+                        dateOrderItem: {
+                            gte: dayjs().hour(-4).minute(0).second(0).millisecond(0).add(1, 'day').toDate(),
+                            lte: dayjs().hour(-4).minute(0).second(0).millisecond(0).add(2, 'day').toDate()
+                        },
+                        fk_categoryOrderItem: "491aebc2-1c69-11ee-be56-0242ac120002"
+                    }
+                ]
+            },
+    
         }).finally(() => {
             this.prisma.$disconnect()
         })
@@ -102,7 +127,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         })
     }
     async patchStatus(id: string, fk_status_order: string): Promise<void> {
-         await this.prisma.order.update({
+        await this.prisma.order.update({
             data: {
                 fk_orderstatus: fk_status_order,
             },

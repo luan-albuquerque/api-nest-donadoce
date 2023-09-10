@@ -8,6 +8,7 @@ import { PatchOrderStatusService } from './services/patch-order-status.service';
 import { PatchStatusOrderItemService } from './services/patch-status-order-item.service';
 import { PatchTrayOrderService } from './services/patch-tray-order.service';
 import { PatchDisabledOrderService } from './services/patch-disabled-order.service';
+import { FindManyOrderInProcess } from './services/find-many-order-in-process.service';
 
 @Module({
   imports:[
@@ -21,7 +22,8 @@ import { PatchDisabledOrderService } from './services/patch-disabled-order.servi
     PatchOrderStatusService,
     PatchStatusOrderItemService,
     PatchTrayOrderService,
-    PatchDisabledOrderService
+    PatchDisabledOrderService,
+    FindManyOrderInProcess
   ]
 })
 export class OrderModule {}
