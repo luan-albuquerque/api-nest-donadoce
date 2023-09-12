@@ -8,11 +8,10 @@ import { CreateOrderAlternativeDto } from '../dto/create-order-alternative.dto';
 import { MenuRepository } from 'src/modules/menu/repository/contract/MenuRepository';
 import { IngredientsRepository } from 'src/modules/ingredients/repository/contract/IngredientsRepository';
 import { IngredientControlRepository } from 'src/modules/ingredient_control/repository/contract/IngredientControlRepository';
-import { CreateIngredientControlDto } from 'src/modules/ingredient_control/dto/create-ingredient_control.dto';
-
+import * as dayjs from "dayjs"
 
 @Injectable()
-export class CreateOrderService {
+export class CreateOrderProgrammedService {
 
   constructor(
     private readonly orderRepository: OrderRepository,
@@ -68,12 +67,13 @@ export class CreateOrderService {
             of_menu: true,
             amountItem: item.amountItem,
             dateOrderItem: data,
+            method_of_preparation: item.method_of_preparation,
+            delivery_date: dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth()+1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate(),
             homologate: "APROVADO",
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             fk_revenue: item.fk_revenue,
             valueOrderItem: value
           })
-
           revenuesAproved.push({
             fk_revenue: item.fk_revenue,
             amountItem: item.amountItem,
@@ -112,6 +112,8 @@ export class CreateOrderService {
           createOrderItemDtoAlt.push({
             of_menu: false,
             homologate: "EM_HOMOLOGACAO",
+            method_of_preparation: item.method_of_preparation,
+            delivery_date: dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth()+1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate(),
             amountItem: item.amountItem,
             dateOrderItem: data,
             fk_categoryOrderItem: item.fk_categoryOrderItem,
@@ -128,6 +130,7 @@ export class CreateOrderService {
         dateOrder: data,
         valueOrder: valueTotal,
         fk_user: fk_user,
+        order_type: 'programmed',
         createOrderItemDto: createOrderItemDtoAlt,
       }
 

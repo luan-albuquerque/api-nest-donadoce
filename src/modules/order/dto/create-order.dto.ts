@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { MethodOfPreparationType } from "../types/method-of-preparation.type";
 
 class CreateOrderItemDto {
 
@@ -19,7 +20,16 @@ class CreateOrderItemDto {
     @ApiProperty()
     amountItem: number
 
+    @ApiProperty()
+    method_of_preparation: MethodOfPreparationType
 
+
+}
+
+class CreateOrderNotMenuItemDto extends CreateOrderItemDto {
+    
+    @ApiProperty()
+    delivery_date: Date;
 }
 
 export class CreateOrderDto {
@@ -35,6 +45,6 @@ export class CreateOrderDto {
 
     @ApiProperty({ type: CreateOrderItemDto, isArray: true})
     @Type(()=> CreateOrderItemDto)
-    createOrderNotMenuItemDto: CreateOrderItemDto[]
+    createOrderNotMenuItemDto: CreateOrderNotMenuItemDto[]
 
 }

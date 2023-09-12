@@ -35,10 +35,21 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         return data;
     }
     async findAllOrdersInProcess(): Promise<any> {
+        console.log("eeeee");
+
+        console.log({
+            gte: dayjs().hour(-4).minute(0).second(0).millisecond(0).toDate(),
+            lte: dayjs().hour(-4).minute(0).second(0).millisecond(0).add(1, 'day').toDate()
+        });
+
         const data = await this.prisma.orderItem.groupBy({
-            by: ['fk_revenue'],
+            by: ['fk_revenue', 'fk_categoryOrderItem'],
+            _sum: {
+                amountItem: true,
+                valueOrderItem: true,
+            },
             where: {
-                AND: [
+                OR: [
                     {
                         dateOrderItem: {
                             gte: dayjs().hour(-4).minute(0).second(0).millisecond(0).toDate(),
@@ -62,7 +73,8 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                     }
                 ]
             },
-    
+
+
         }).finally(() => {
             this.prisma.$disconnect()
         })

@@ -1,3 +1,5 @@
+import { MethodOfPreparationType } from "../types/method-of-preparation.type"
+
 export class OrderItem {
     fk_order: string
     fk_revenue: string
@@ -7,4 +9,6 @@ export class OrderItem {
     homologate: string
     dateOrderItem: Date
     amountItem: number
+    delivery_date: Date;
+    method_of_preparation: MethodOfPreparationType
 }

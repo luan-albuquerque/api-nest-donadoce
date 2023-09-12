@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, ParseIntPipe, Patch, Param, Put } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { CreateOrderService } from './services/create-order.service';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { FindManyOrderByClientService } from './services/find-many-order-by-client.service';
 import { FindManyOrderService } from './services/find-many-order.service';
@@ -12,15 +11,16 @@ import { PatchStatusOrderItemDto } from './dto/patch-status-order-item.';
 import { PatchTrayOrderDto } from './dto/patch-tray-order.dto';
 import { PatchTrayOrderService } from './services/patch-tray-order.service';
 import { PatchDisabledOrderService } from './services/patch-disabled-order.service';
-import * as dayjs from 'dayjs';
 import { FindManyOrderInProcess } from './services/find-many-order-in-process.service';
+import { CreateOrderProgrammedService } from './services/create-order-programmed.service';
+import * as dayjs from 'dayjs';
 
 @Controller('order')
 @ApiBearerAuth()
 @ApiTags("Order")
 export class OrderController {
   constructor(
-    private readonly createOrderService: CreateOrderService,
+    private readonly createOrderProgrammedService: CreateOrderProgrammedService,
     private readonly findManyOrderByClientService: FindManyOrderByClientService,
     private readonly findManyOrderService: FindManyOrderService,
     private readonly patchOrderStatusService: PatchOrderStatusService,
@@ -40,7 +40,7 @@ export class OrderController {
     @Body() createOrderDto: CreateOrderDto,
     @Req() req
   ) {
-    return await this.createOrderService.execute(
+    return await this.createOrderProgrammedService.execute(
       req.user.id,
       createOrderDto
     );

@@ -1,0 +1,1 @@
+export type OrderType =  'programmed' | 'coffe'

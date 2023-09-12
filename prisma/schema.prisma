@@ -10,6 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Unit_of_measurement {
+  ml
+  l
+  g
+  kg
+  u
+}
+
+enum Order_type {
+  programmed
+  coffe
+}
+
+enum Method_of_preparation {
+  roast
+  frozen
+}
+
+enum Homologate {
+  EM_HOMOLOGACAO
+  APROVADO
+  REPROVADO
+}
+
 model User {
   id                           String       @id @default(uuid())
   password                     String
@@ -72,14 +96,6 @@ model Token {
   user       User      @relation(fields: [user_id], references: [id])
 }
 
-enum Unit_of_measurement {
-  ml
-  l
-  g
-  kg
-  u
-}
-
 model Ingredients {
   id                   String                 @id @default(uuid())
   description          String                 @unique
@@ -95,23 +111,23 @@ model Ingredients {
 }
 
 model Ingredient_control {
-  id            Int         @id @default(autoincrement())
-  fk_ingredient String
-  unit_of_measurement  Unit_of_measurement?
-  created_at    DateTime    @default(now())
-  is_output     Boolean
-  unitary_value Float?
-  amount        Int
-  ingredients   Ingredients @relation(fields: [fk_ingredient], references: [id])
+  id                  Int                  @id @default(autoincrement())
+  fk_ingredient       String
+  unit_of_measurement Unit_of_measurement?
+  created_at          DateTime             @default(now())
+  is_output           Boolean
+  unitary_value       Float?
+  amount              Int
+  ingredients         Ingredients          @relation(fields: [fk_ingredient], references: [id])
 }
 
 model Ingredients_Revenues {
-  fk_ingredient     String
-  fk_revenues       String
-  unit_of_measurement  Unit_of_measurement?
-  amount_ingredient Int
-  ingredients       Ingredients @relation(fields: [fk_ingredient], references: [id])
-  revenues          Revenues    @relation(fields: [fk_revenues], references: [id])
+  fk_ingredient       String
+  fk_revenues         String
+  unit_of_measurement Unit_of_measurement?
+  amount_ingredient   Int
+  ingredients         Ingredients          @relation(fields: [fk_ingredient], references: [id])
+  revenues            Revenues             @relation(fields: [fk_revenues], references: [id])
 
   @@id([fk_ingredient, fk_revenues])
 }
@@ -196,6 +212,7 @@ model Order {
   numberOrder    Int             @unique() @default(autoincrement())
   dateOrder      DateTime        @default(now())
   valueOrder     Float
+  order_type     Order_type?     // Tipo de pedido -> Programado e Coffe
   amount_of_tray Int?
   fk_orderstatus String
   fk_user        String
@@ -212,25 +229,22 @@ model OrderStatus {
 }
 
 model OrderItem {
-  fk_order             String
-  fk_revenue           String
-  fk_categoryOrderItem String
-  valueOrderItem       Float
-  of_menu              Boolean
-  homologate           Homologate?       @default(EM_HOMOLOGACAO)
-  dateOrderItem        DateTime          @default(now())
-  amountItem           Int
-  categoryOrderItem    CategoryOrderItem @relation(fields: [fk_categoryOrderItem], references: [id])
-  order                Order             @relation(fields: [fk_order], references: [id])
-  revenues             Revenues          @relation(fields: [fk_revenue], references: [id])
+  fk_order              String
+  fk_revenue            String
+  fk_categoryOrderItem  String                 // Status 
+  valueOrderItem        Float                    //Valor da receita ou alterada
+  of_menu               Boolean                  // Se esse item pertence algum Menu
+  method_of_preparation Method_of_preparation    // METODO DE PREPARO -> COFFE OU PROGRAMADO
+  delivery_date         DateTime
+  homologate            Homologate?           @default(EM_HOMOLOGACAO) // STATUS DE ITEM DE PEDIDOS (obs: Fora de Menu é EM_HOMO)
+  dateOrderItem         DateTime              @default(now()) // Data de Solicitação
+  amountItem            Int                   // Quantidade de Receita ( Item Ex: Coxinha de frango)
+  //Relacionamento
+  categoryOrderItem     CategoryOrderItem     @relation(fields: [fk_categoryOrderItem], references: [id])
+  order                 Order                 @relation(fields: [fk_order], references: [id])
+  revenues              Revenues              @relation(fields: [fk_revenue], references: [id])
 
   @@id([fk_revenue, fk_order, fk_categoryOrderItem])
-}
-
-enum Homologate {
-  EM_HOMOLOGACAO
-  APROVADO
-  REPROVADO
 }
 
 model RevenuePerClient {
