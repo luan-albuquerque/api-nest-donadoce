@@ -34,7 +34,7 @@ export class OrderController {
   @ApiBody({
     type: CreateOrderDto,
   })
-  @Post()
+  @Post("programmed")
   @ApiOperation({ summary: "EndPoint para criação de pedidos", description: "" })
   async create(
     @Body() createOrderDto: CreateOrderDto,
