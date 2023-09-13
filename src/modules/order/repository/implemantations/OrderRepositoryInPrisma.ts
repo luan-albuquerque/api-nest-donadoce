@@ -293,13 +293,15 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         return data;
     }
 
-    async create({ createOrderItemDto, dateOrder, fk_user, fk_orderstatus, valueOrder }: CreateOrderAlternativeDto): Promise<void> {
+    async create({ createOrderItemDto, dateOrder, fk_user, fk_orderstatus, valueOrder,order_type }: CreateOrderAlternativeDto): Promise<void> {
+       
         await this.prisma.order.create({
             data: {
                 fk_user,
                 fk_orderstatus,
                 valueOrder,
                 dateOrder,
+                order_type,
                 orderItem: {
                     createMany: {
                         data: createOrderItemDto

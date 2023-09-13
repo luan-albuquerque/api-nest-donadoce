@@ -35,7 +35,7 @@ export class OrderController {
     type: CreateOrderDto,
   })
   @Post("programmed")
-  @ApiOperation({ summary: "EndPoint para criação de pedidos", description: "" })
+  @ApiOperation({ summary: "EndPoint para criação de pedidos programados", description: "Rota para criação de pedidos programados. Obs: method_of_preparation deve ser 'roast' ou 'frozen'" })
   async create(
     @Body() createOrderDto: CreateOrderDto,
     @Req() req
