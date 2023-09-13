@@ -1,9 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Unit_of_measurement } from "../types/Unit-of-measurement.types";
 
 
 
-type Unit_of_measurement = 'ml' | 'l' | 'g' | 'kg' | 'u';
 
 export class CreateIngredientControlDto {
     @IsString({ message: 'Esta fk_ingredient de nome precisa ser string' })
@@ -21,8 +21,7 @@ export class CreateIngredientControlDto {
     @ApiProperty()
     unitary_value: number;
 
-    @ApiProperty({ enum: ['ml', 'l', 'g', 'kg', 'u'] })
-    unit_of_measurement: Unit_of_measurement
+    unit_of_measurement?: Unit_of_measurement
 
     @IsNotEmpty({ message: 'Esta fk_ingredient de nome não pode esvaziar' })
     @ApiProperty()

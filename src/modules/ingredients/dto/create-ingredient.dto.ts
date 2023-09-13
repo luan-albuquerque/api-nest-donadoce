@@ -13,7 +13,6 @@ export class CreateIngredientDto {
     description: string
 
     @IsNotEmpty({ message: 'Unidade de Medida não pode ser vazio' })
-
     @ApiProperty({ enum: ['ml','l','g','kg','u']})
     unit_of_measurement: Unit_of_measurement
 
@@ -21,6 +20,8 @@ export class CreateIngredientDto {
     @IsNumber()
     @IsNotEmpty({ message: 'Valor por porção não pode ser vazio' })
     value_per_serving: number
+
+    amount_actual?: number
 
     @ApiProperty()
     @IsNumber()

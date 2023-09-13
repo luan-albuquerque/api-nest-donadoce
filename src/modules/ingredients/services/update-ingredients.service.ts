@@ -22,6 +22,7 @@ export class UpdateIngredientsService {
     if (verifyNewDescription && findIngredient.description != updateIngredientDto.description) {
       throw new UnauthorizedException("Descrição já existente em outro ingrediente")
     }
+    updateIngredientDto.amount_actual = updateIngredientDto.amount;
 
     updateIngredientDto.description = updateIngredientDto.description.toUpperCase()
 

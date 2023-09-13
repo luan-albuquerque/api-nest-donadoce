@@ -40,6 +40,7 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
             data: {
                 value_per_serving: createIngredientDto.value_per_serving,
                 amount: createIngredientDto.amount,
+                amount_actual: createIngredientDto.amount_actual,
                 unit_of_measurement: createIngredientDto.unit_of_measurement,
                 description: createIngredientDto.description,
                 value: createIngredientDto.value,

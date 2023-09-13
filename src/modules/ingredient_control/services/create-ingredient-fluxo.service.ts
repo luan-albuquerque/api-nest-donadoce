@@ -22,10 +22,6 @@ export class CreateIngredientFluxoService {
             throw new NotFoundException("Ingrediente não encontrado")
         }
 
-        if (!(createIngredientControlDto.unit_of_measurement === findIngredient.unit_of_measurement)) {
-            throw new NotFoundException("unit_of_measurement divergente do ingrediente cadastrado")
-
-        }
 
         var actulQtd: number = findIngredient.amount_actual
         var newValue: number = findIngredient.value
@@ -40,6 +36,8 @@ export class CreateIngredientFluxoService {
             }
             actulQtd = actulQtd - createIngredientControlDto.amount
         }
+
+        createIngredientControlDto.unit_of_measurement = findIngredient.unit_of_measurement;
 
 
 
