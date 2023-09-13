@@ -18,7 +18,10 @@ export class UpdateRevenueService {
             throw new UnauthorizedException("Receita não encontrada")
         }
 
+        updateRevenueDto.order_type = updateRevenueDto.status == 1 ? "programmed" : "coffe";
+
         const revenueNewAtu = await this.revenuesRepository.findByDescription(updateRevenueDto.description)
+
 
         if (revenueNewAtu && updateRevenueDto.description != revenue.description) {
             throw new UnauthorizedException("Descrição já existente em outra receita")
@@ -37,6 +40,8 @@ export class UpdateRevenueService {
         
         await this.revenuesRepository.update(id, {
             description: updateRevenueDto.description,
+            status: updateRevenueDto.status,
+            order_type: updateRevenueDto.order_type,
             value: updateRevenueDto.value,
             imagem: newimagen,
             base_max_amount: updateRevenueDto.base_max_amount,

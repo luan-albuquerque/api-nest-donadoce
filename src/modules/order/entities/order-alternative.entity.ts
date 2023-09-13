@@ -1,8 +1,10 @@
+import { OrderType } from "../types/ordertype.type";
+
 export class OrderAlternative {
     id: string;
     dateOrder: Date;
     numberOrder: number;
-
+    order_type: OrderType
     orderItem: {
         homologate: string
         of_menu: boolean

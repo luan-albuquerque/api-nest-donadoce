@@ -2,6 +2,7 @@ import { ApiProperty, } from "@nestjs/swagger"
 import { Transform, Type } from "class-transformer"
 import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator"
 import { StatusRevenue } from "../enum/statusRevenue.enum"
+import { OrderType } from "src/modules/order/types/ordertype.type"
 
 class IngredientWithAmount {
     @ApiProperty()
@@ -55,6 +56,8 @@ export class CreateRevenueDto {
 
     @ApiProperty({ type: 'string', format: 'binary', required: false })
     imagem?: string
+
+    order_type?: OrderType
 
     @ApiProperty({type: 'number'})
     @Transform(({ value }) => Number(value))

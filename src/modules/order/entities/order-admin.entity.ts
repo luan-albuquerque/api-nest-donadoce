@@ -1,7 +1,10 @@
+import { OrderType } from "../types/ordertype.type";
+
 export class OrderAdmin {
     id: string;
     dateOrder: Date;
     numberOrder: number;
+    order_type: OrderType
     user: {
         Clients: {
             corporate_name: string

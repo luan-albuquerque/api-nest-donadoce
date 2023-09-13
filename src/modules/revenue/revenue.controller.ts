@@ -162,6 +162,7 @@ export class RevenueController {
     const newData: UpdateRevenueDto = {
       imagem,
       description: bodyform.description,
+      status: bodyform.status,
       value: Number(bodyform.value),
       old_imagem: bodyform.old_imagem,
       yield_per_quantity: Number(bodyform.yield_per_quantity),

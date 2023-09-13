@@ -1,3 +1,4 @@
+import { OrderType } from "src/modules/order/types/ordertype.type"
 import { RevenueIngredient } from "src/modules/revenue_ingredient/entities/revenue_ingredient.entity"
 
 export class Revenue {
@@ -9,6 +10,7 @@ export class Revenue {
     base_max_amount?: number
     base_min_amount?: number
     imagem: string
+    order_type: OrderType
     created_at: Date
     updated_t?: Date
     ingredients_Revenues?: RevenueIngredient[]

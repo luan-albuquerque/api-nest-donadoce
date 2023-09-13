@@ -27,6 +27,7 @@ export class CreateRevenueService {
         }
 
 
+        createRevenueDto.order_type = createRevenueDto.status == 1 ? "programmed" : "coffe";
      
         if (createRevenueDto.ingredients) {
             const convertIngredients = JSON.parse(String(createRevenueDto.ingredients))

@@ -217,6 +217,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 id: true,
                 dateOrder: true,
                 numberOrder: true,
+                order_type: true,
                 user: {
 
                     select: {
@@ -317,6 +318,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 id: true,
                 dateOrder: true,
                 numberOrder: true,
+                order_type: true,
                 orderItem: {
                     select: {
                         categoryOrderItem: {

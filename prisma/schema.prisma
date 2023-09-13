@@ -145,6 +145,7 @@ model Revenues {
   created_at           DateTime               @default(now())
   updated_t            DateTime?
   status               Int
+  order_type           Order_type? // Tipo de pedido -> Programado e Coffe
   is_enabled           Boolean                @default(true)
   ingredients_Revenues Ingredients_Revenues[]
   // recipe_steps         Recipe_steps[]
@@ -212,7 +213,7 @@ model Order {
   numberOrder    Int             @unique() @default(autoincrement())
   dateOrder      DateTime        @default(now())
   valueOrder     Float
-  order_type     Order_type?     // Tipo de pedido -> Programado e Coffe
+  order_type     Order_type? // Tipo de pedido -> Programado e Coffe
   amount_of_tray Int?
   fk_orderstatus String
   fk_user        String
@@ -231,14 +232,14 @@ model OrderStatus {
 model OrderItem {
   fk_order              String
   fk_revenue            String
-  fk_categoryOrderItem  String                 // Status 
-  valueOrderItem        Float                    //Valor da receita ou alterada
-  of_menu               Boolean                  // Se esse item pertence algum Menu
-  method_of_preparation Method_of_preparation    // METODO DE PREPARO -> COFFE OU PROGRAMADO
+  fk_categoryOrderItem  String // Status 
+  valueOrderItem        Float //Valor da receita ou alterada
+  of_menu               Boolean // Se esse item pertence algum Menu
+  method_of_preparation Method_of_preparation // METODO DE PREPARO -> COFFE OU PROGRAMADO
   delivery_date         DateTime
   homologate            Homologate?           @default(EM_HOMOLOGACAO) // STATUS DE ITEM DE PEDIDOS (obs: Fora de Menu é EM_HOMO)
   dateOrderItem         DateTime              @default(now()) // Data de Solicitação
-  amountItem            Int                   // Quantidade de Receita ( Item Ex: Coxinha de frango)
+  amountItem            Int // Quantidade de Receita ( Item Ex: Coxinha de frango)
   //Relacionamento
   categoryOrderItem     CategoryOrderItem     @relation(fields: [fk_categoryOrderItem], references: [id])
   order                 Order                 @relation(fields: [fk_order], references: [id])

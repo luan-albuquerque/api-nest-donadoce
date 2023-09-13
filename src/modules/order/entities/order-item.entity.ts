@@ -1,4 +1,5 @@
 import { MethodOfPreparationType } from "../types/method-of-preparation.type"
+import { OrderType } from "../types/ordertype.type"
 
 export class OrderItem {
     fk_order: string
