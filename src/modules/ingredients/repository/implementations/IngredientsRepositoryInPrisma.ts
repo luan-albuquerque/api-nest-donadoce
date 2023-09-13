@@ -20,6 +20,8 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
             where: {
                 id,
             }
+        }).finally(()=>{
+            this.prisma.$disconnect()
         });
     }
 
