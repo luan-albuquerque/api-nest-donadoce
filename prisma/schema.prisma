@@ -133,33 +133,32 @@ model Ingredients_Revenues {
 }
 
 model Revenues {
-  id                   String                 @id @default(uuid())
-  description          String                 @unique
-  value                Float
-  yield_per_quantity   Int?
-  time_in_hours        Int?
-  base_max_amount      Int
-  base_min_amount      Int
-  presumed_profit      Float?
-  imagem               String?
-  created_at           DateTime               @default(now())
-  updated_t            DateTime?
-  status               Int
-  order_type           Order_type? // Tipo de pedido -> Programado e Coffe
-  is_enabled           Boolean                @default(true)
-  ingredients_Revenues Ingredients_Revenues[]
+  id                       String                 @id @default(uuid())
+  description              String                 @unique
+  value                    Float
+  value_defined_by_revenue Float?                
+  yield_per_quantity       Int?
+  time_in_hours            Int?
+  base_max_amount          Int
+  base_min_amount          Int
+  presumed_profit          Float?
+  imagem                   String?
+  created_at               DateTime               @default(now())
+  updated_t                DateTime?
+  status                   Int
+  order_type               Order_type? // Tipo de pedido -> Programado e Coffe
+  is_enabled               Boolean                @default(true)
+  ingredients_Revenues     Ingredients_Revenues[]
   // recipe_steps         Recipe_steps[]
-  ItemMenu             ItemMenu[]
-  OrderItem            OrderItem[]
-  RevenuePerClient     RevenuePerClient[]
+  ItemMenu                 ItemMenu[]
+  OrderItem                OrderItem[]
+  RevenuePerClient         RevenuePerClient[]
 }
 
 model Company {
   id             String           @id @default(uuid())
   corporate_name String
   cnpj           String           @unique
-  email          String           @unique
-  fone           String
   county         String?
   district       String?
   uf             String?

@@ -13,18 +13,6 @@ export class UpdateCompanyDto   {
     @IsNotEmpty({ message: 'Esta variável de cnpj não pode esvaziar' })
     @ApiProperty()
     cnpj: string
-    
-    @IsString({ message: 'Esta variável de e-mail precisa ser string' })
-    @IsEmail()
-    @IsNotEmpty({ message: 'Esta variável de e-mail não pode esvazia' })
-    @ApiProperty()
-    email: string
-
-    @IsString({ message: 'Esta variável de fone precisa ser string' })
-    @IsNotEmpty({ message: 'Esta variável de fone não pode esvaziar' })
-    @ApiProperty()
-    @IsPhoneNumber('BR')
-    fone: string
 
     @IsString({ message: 'Esta variável de address precisa ser string' })
     @IsNotEmpty({ message: 'Esta variável de address não pode esvaziar' })

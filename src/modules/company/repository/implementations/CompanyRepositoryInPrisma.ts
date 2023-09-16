@@ -8,30 +8,8 @@ import { UpdateCompanyDto } from "../../dto/update-company.dto";
 @Injectable()
 export class CompanyRepositoryInPrisma implements CompanyRepository {
     constructor(private prisma: PrismaService) { }
-    async findByFone(fone: string): Promise<Company> {
-        const data = await this.prisma.company.findFirst({
-            where: {
-                fone,
-            }
-        }).finally(() => {
-            this.prisma.$disconnect()
-        })
 
-        return data;
-    }
    
-    async findByEmail(email: string): Promise<Company> {
-        const data = await this.prisma.company.findUnique({
-            where: {
-                email,
-            }
-        }).finally(() => {
-            this.prisma.$disconnect()
-        })
-
-        return data
-    }
-
     async findAll(): Promise<Company[]> {
         const data = await this.prisma.company.findMany({
 
@@ -81,8 +59,6 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
                 county: createCompanyDto.county,
                 district:createCompanyDto.district,
                 uf: createCompanyDto.uf,
-                email: createCompanyDto.email,
-                fone: createCompanyDto.fone,
                 createdAt: new Date()
             }
         }).catch(async (error) => {

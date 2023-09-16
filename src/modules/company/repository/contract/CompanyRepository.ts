@@ -6,8 +6,6 @@ export abstract class CompanyRepository {
     abstract create(createCompanyDto: CreateCompanyDto):Promise<void>
     abstract findById(id: string):Promise<Company>
     abstract findByCNPJ(cnpj: string ): Promise<Company>
-    abstract findByFone(fone: string ): Promise<Company>
-    abstract findByEmail(email: string ): Promise<Company>
     abstract findAll(): Promise<Company[]>
     abstract update(id: string, updateCompanyDto: UpdateCompanyDto): Promise<void>
     abstract remove(id: string): Promise<void>

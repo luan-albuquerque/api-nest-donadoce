@@ -18,16 +18,6 @@ export class CreateCompanyService {
 
     createCompanyDto.corporate_name = createCompanyDto.corporate_name.toUpperCase();
 
-    const findByEmail = await this.companyRepository.findByEmail(createCompanyDto.email);
-    if (findByEmail) {
-      throw new NotFoundException("Email já Existe")
-    }
-
-    
-    const emailClient = await this.userRepository.findByMail(createCompanyDto.email);
-    if (emailClient) {
-      throw new NotFoundException(`Este email: ${createCompanyDto.email} está sendo utilizado por um cliente`)
-    }
 
     const findByCNPJ = await this.companyRepository.findByCNPJ(createCompanyDto.cnpj);
     if (findByCNPJ) {
@@ -40,26 +30,14 @@ export class CreateCompanyService {
 
    
 
-    const findByFone = await this.companyRepository.findByFone(createCompanyDto.fone);
-    if (findByFone) {
-      throw new NotFoundException("Fone já Existe.")
-    }
-
-    const findByFoneInCliente = await this.clientsRepository.findByFone(createCompanyDto.fone);
-    if (findByFoneInCliente) {
-      throw new NotFoundException("Fone sendo utilizado por um cliente.")
-    }
-
     const create: CreateCompanyDto = {
       corporate_name: createCompanyDto.corporate_name,
       address: createCompanyDto.address,
       cep: createCompanyDto.cep,
       cnpj: createCompanyDto.cnpj,
       county: createCompanyDto.cep,
-      email: createCompanyDto.email,
       district: createCompanyDto.district,
       uf: createCompanyDto.uf,
-      fone: createCompanyDto.fone,
     }
 
 
