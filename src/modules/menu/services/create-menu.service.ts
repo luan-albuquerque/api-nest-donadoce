@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateMenuDto } from "../dto/create-menu.dto";
 import { MenuRepository } from "../repository/contract/MenuRepository";
 import { RevenuesRepository } from "src/modules/revenue/repository/contract/RevenuesRepository";
+import * as dayjs from "dayjs";
 
 @Injectable()
 export class CreateMenuService {
@@ -35,7 +36,10 @@ export class CreateMenuService {
 
 
 
-        await this.menuRepository.create({ dateMenu, createItensMenu })
+        await this.menuRepository.create({ 
+            dateMenu: dayjs(dayjs(dateMenu).format("YYYY-MM-DDT00:00:00Z")).hour(-4).toDate(),
+            createItensMenu 
+            })
     }
 
 }
