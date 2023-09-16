@@ -48,7 +48,7 @@ export class CreateIngredientFluxoService {
                 description: findIngredient.description,
                 amount: findIngredient.amount,
                 value_per_serving: findIngredient.value_per_serving,
-                value: newValue,
+                value: findIngredient.value,
                 amount_actual: actulQtd,
             })
         })
