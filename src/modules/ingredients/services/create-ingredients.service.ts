@@ -18,10 +18,11 @@ export class CreateIngredientsService {
       throw new UnauthorizedException("Descrição já existente em outro ingrediente")
     }
 
-    createIngredientDto.amount_actual = createIngredientDto.amount;
+    createIngredientDto.amount_actual = 0;
 
     createIngredientDto.description = createIngredientDto.description.toUpperCase()
 
+    
     await this.ingredientsRepository.create(createIngredientDto)
 
   }
