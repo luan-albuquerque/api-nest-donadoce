@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, Query, Req } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Query, Req } from "@nestjs/common";
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from "@nestjs/swagger";
 import * as dayjs from "dayjs";
 import { ListKambaService } from "./services/list-kambam.service";
+import { PatchUpdateSequencialService } from "./services/patch-update-sequencial.service";
 
 @Controller('control-production')
 @ApiBearerAuth()
@@ -9,7 +10,8 @@ import { ListKambaService } from "./services/list-kambam.service";
 export class ControlProductionController {
 
     constructor(
-        private readonly listKambaService: ListKambaService
+        private readonly listKambaService: ListKambaService,
+        private readonly patchUpdateSequencialService: PatchUpdateSequencialService
     ){}
 
 
@@ -25,6 +27,16 @@ export class ControlProductionController {
     ) {
       
         return await this.listKambaService.execute(date);
+
+    }
+
+
+    @Patch("kambam/:id/:seq")
+    @ApiOperation({ summary: "EndPoint para update de sequencial", description: "Rota para update de sequencial" })
+    
+    async patchKambam(@Param('id') id: string, @Param('seq') seq: number) {
+      
+        return await this.patchUpdateSequencialService.execute(id, seq)
 
     }
 

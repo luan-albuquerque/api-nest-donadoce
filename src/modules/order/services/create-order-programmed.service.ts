@@ -84,33 +84,7 @@ export class CreateOrderProgrammedService {
           })
 
 
-          const c = await this.controlProductionRepository.findItemProduction({
-            fk_categoryOrderItem: item.fk_categoryOrderItem,
-            fk_revenue: item.fk_revenue,
-            delivery_date: menuSeleted.dateMenu
-          })
-
-          if (c) {
-
-            await this.controlProductionRepository.updateItemProduction({
-              amount_actual: c.amount_actual + item.amountItem,
-              id: c.id,
-            })
-
-          } else {
-            const seq = await this.controlProductionRepository.findSeqControlProductProductInDay(menuSeleted.dateMenu);
-            await this.controlProductionRepository.createItemProduction({
-              seq: seq + 1,
-              amount_actual: item.amountItem,
-              delivery_date: menuSeleted.dateMenu,
-              description: revenue.description,
-              fk_revenue: revenue.id,
-              description_category: category.description,
-              fk_categoryOrderItem: category.id,
-              order_type: "programmed"
-            });
-          }
-
+        
 
 
 
@@ -172,46 +146,6 @@ export class CreateOrderProgrammedService {
 
 
       await this.orderRepository.create(createOrderAlternativeDto)
-
-      Promise.all(
-
-        // Lista receitas aprovadas que foram e quantidade
-        revenuesAproved.map(async (item) => {
-          // Buscar dados de receitas , como ingredientes que compoem ela
-          const revenue = await this.revenuesRepository.findByOneWithIngredients(item.fk_revenue);
-
-          // Mapear o ingredientes que fazem a receita
-          revenue.ingredients_Revenues.map(async (ingredientesItem) => {
-            // Busco dados mais especificos do ingrediente - Quantidade total em estoque
-            const findIngredient = await this.ingredientsRepository.findById(ingredientesItem.fk_ingredient)
-
-            // Pego o valor atual de itens daquele ingredientes no estoque
-            var actulQtd: number = findIngredient.amount_actual
-
-            // Sinalizo uma retirada de ingredientes_control - (estoque de ingredientes)
-            await this.ingredientControlRepository.createFluxoIngredient({
-              amount: ingredientesItem.amount_ingredient * item.amountItem,
-              is_output: true,
-              fk_ingredient: ingredientesItem.fk_ingredient,
-              unit_of_measurement: findIngredient.unit_of_measurement,
-              unitary_value: 0
-            })
-
-            // Montar calculo de acordo com a quantidade de receita que o cliente pediu
-            actulQtd = actulQtd - (ingredientesItem.amount_ingredient * item.amountItem);
-
-            // Atualizar retirada 
-            await this.ingredientsRepository.updateAmount(findIngredient.id, actulQtd);
-          })
-        })
-      )
-
-
-      // Controle de Produção Progamado
-
-
-
-
 
 
     } else {

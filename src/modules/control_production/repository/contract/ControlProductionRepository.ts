@@ -12,6 +12,7 @@ export abstract class ControlProductionRepository {
     abstract findItemProduction(data: FindItemProductionDto): Promise<ControlProductionProductEntity>
     abstract findAllControlProductionProduct(delivery_date: Date): Promise<ControlProductionProductEntity[]>
     abstract findSeqControlProductProductInDay(delivery_date: Date): Promise<number>
+    abstract updateSequencialProduct(id: string, seq: number): Promise<void>
 
 
 }

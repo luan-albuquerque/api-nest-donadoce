@@ -13,6 +13,18 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async updateSequencialProduct(id: string, seq: number): Promise<void> {
+        await this.prisma.controlProductionProduct.update({
+            data: {
+                seq,
+            },
+            where: {
+                id
+            }
+        }).finally(() => {
+            this.prisma.$disconnect();
+        })
+    }
     async findAllControlProductionProduct(delivery_date: Date): Promise<ControlProductionProductEntity[]> {
         return await this.prisma.controlProductionProduct.findMany({
             where: {
@@ -53,6 +65,7 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
 
 
     async findItemProduction({ fk_categoryOrderItem, fk_revenue, delivery_date }: FindItemProductionDto): Promise<ControlProductionProductEntity> {
+
         return await this.prisma.controlProductionProduct.findFirst({
             where: {
                 fk_revenue,
@@ -65,19 +78,21 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
     }
 
     async findSeqControlProductProductInDay(delivery_date: Date): Promise<number> {
-        const data = await this.prisma.controlProductionProduct.groupBy({
-            by: ['delivery_date'],
-            _max: {
-                seq: true,
+        
+        const data = await this.prisma.controlProductionProduct.findFirst({
+            orderBy:{
+                seq: "desc"
             },
-            where: {
-                delivery_date,
+            where:{
+                delivery_date
             }
         }).finally(() => {
             this.prisma.$disconnect();
         })
 
-        return data['_max'];
+
+
+        return data.seq;
     }
 
 
