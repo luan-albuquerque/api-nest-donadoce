@@ -52,10 +52,7 @@ class CreateClientService {
           throw new HttpException('Company inexistente', HttpStatus.CONFLICT)
         }
 
-        const findByFoneInCompany = await this.companyRepository.findByFone(item.fone);
-        if (findByFoneInCompany) {
-          throw new NotFoundException("Fone já cadastrado em uma empresa")
-        }
+
 
         const findByFoneInClient = await this.clientsRepository.findByFone(item.fone);
         if (findByFoneInClient) {
@@ -68,10 +65,6 @@ class CreateClientService {
           throw new NotFoundException(`${item.email} já cadastrado`)
         }
 
-        const findByEmailInClient = await this.companyRepository.findByEmail(item.email);
-        if (findByEmailInClient) {
-          throw new NotFoundException(`Este email: ${item.email} está sendo utilizado por uma empresa.`)
-        }
 
 
       })

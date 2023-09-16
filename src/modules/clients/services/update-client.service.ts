@@ -28,11 +28,6 @@ class UpdateClientService {
         throw new HttpException('Email já existente', HttpStatus.CONFLICT)
       }
 
-      const findByEmailInClient = await this.companyRepository.findByEmail(clientFindByMail.email);
-      if (findByEmailInClient) {
-        throw new NotFoundException(`Este email: ${clientFindByMail.email} está sendo utilizado por uma empresa.`)
-      }
-
       const clientFindByCNPJ= await this.clientsRepository.findByCNPJ(updateClientDto.cnpj);
       const clientFindByCNPJInCompany = await this.companyRepository.findByCNPJ(updateClientDto.cnpj);
   

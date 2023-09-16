@@ -27,10 +27,6 @@ class CreateClientCompanyService {
           throw new NotFoundException("Cliente não encontrado.")
         }
        
-        const findByFoneInCompany = await this.companyRepository.findByFone(item.fone);
-        if (findByFoneInCompany) {
-          throw new NotFoundException("Fone Empresa já cadastrado")
-        }
 
         const findByFoneInClient = await this.clientsRepository.findByFone(item.fone);
         if (findByFoneInClient) {

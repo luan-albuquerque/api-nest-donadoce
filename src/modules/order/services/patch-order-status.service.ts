@@ -25,8 +25,14 @@ export class PatchOrderStatusService {
 
       
       if (fk_order_status == "55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4") {
-        throw new UnauthorizedException("Pedido nãp pode ser cancelado através dessa rota")
+        throw new UnauthorizedException("Pedido não pode ser cancelado através dessa rota")
       }
+
+
+      if (fk_order_status == "45690813-1c69-11ee-be56-c691200020241") {
+        
+      }
+      
 
 
       
