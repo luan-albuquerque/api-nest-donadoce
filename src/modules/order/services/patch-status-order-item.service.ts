@@ -68,6 +68,8 @@ export class PatchStatusOrderItemService {
             await this.ingredientsRepository.updateAmount(findIngredient.id, actulQtd);
 
           });
+
+  
         }
       })
 

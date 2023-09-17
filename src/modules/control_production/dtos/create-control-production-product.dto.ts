@@ -1,6 +1,6 @@
 import { OrderType } from "src/modules/order/types/ordertype.type"
 
-export class CreateControlProductionDto {
+export class CreateControlProductionProductDto {
   
     seq: number
     fk_revenue: string

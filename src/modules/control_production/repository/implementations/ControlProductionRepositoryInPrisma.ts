@@ -1,11 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { ControlProductionRepository } from "../contract/ControlProductionRepository";
 import { PrismaService } from "src/shared/config/database/prisma/prisma.service";
-import { CreateControlProductionDto } from "../../dtos/create-control-production.dto";
+import { CreateControlProductionProductDto } from "../../dtos/create-control-production-product.dto";
 import { ControlProductionProductEntity } from "../../entity/control-production-product.entity";
 import * as dayjs from "dayjs";
 import { FindItemProductionDto } from "../../dtos/find-item-production.dto";
 import { UpdateControlProductionProductDto } from "../../dtos/update-control-production.dto";
+import { OrderType } from "src/modules/order/types/ordertype.type";
 
 @Injectable()
 export class ControlProductionRepositoryInPrisma implements ControlProductionRepository {
@@ -25,10 +26,14 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
             this.prisma.$disconnect();
         })
     }
-    async findAllControlProductionProduct(delivery_date: Date): Promise<ControlProductionProductEntity[]> {
+    async findAllControlProductionProduct(order_type: OrderType): Promise<ControlProductionProductEntity[]> {
         return await this.prisma.controlProductionProduct.findMany({
             where: {
-                delivery_date,
+                delivery_date: {
+                    gte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).toDate(),
+                    lte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).add(1, 'day').toDate()
+                },
+                order_type,
             }
         }).finally(() => {
             this.prisma.$disconnect();
@@ -46,7 +51,7 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
             this.prisma.$disconnect();
         })
     }
-    async createItemProduction({ amount_actual, delivery_date, description, description_category, fk_categoryOrderItem, fk_revenue, order_type, seq }: CreateControlProductionDto): Promise<void> {
+    async createItemProductionTypeProduct({ amount_actual, delivery_date, description, description_category, fk_categoryOrderItem, fk_revenue, order_type, seq }: CreateControlProductionProductDto): Promise<void> {
         await this.prisma.controlProductionProduct.create({
             data: {
                 seq,
@@ -64,6 +69,8 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
     }
 
 
+
+
     async findItemProduction({ fk_categoryOrderItem, fk_revenue, delivery_date }: FindItemProductionDto): Promise<ControlProductionProductEntity> {
 
         return await this.prisma.controlProductionProduct.findFirst({
@@ -78,12 +85,12 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
     }
 
     async findSeqControlProductProductInDay(delivery_date: Date): Promise<number> {
-        
+
         const data = await this.prisma.controlProductionProduct.findFirst({
-            orderBy:{
+            orderBy: {
                 seq: "desc"
             },
-            where:{
+            where: {
                 delivery_date
             }
         }).finally(() => {

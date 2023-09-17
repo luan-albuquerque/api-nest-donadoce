@@ -292,3 +292,18 @@ model ControlProductionProduct {
   order_type           Order_type
   amount_actual        Int
 }
+
+
+model ControlProductionClient {
+  id                   String     @id @default(uuid())
+  seq                  Int
+  fk_user              String
+  corporate_name       String
+  fk_revenue           String
+  description          String
+  fk_categoryOrderItem String
+  description_category String
+  delivery_date        DateTime
+  order_type           Order_type
+  amount_actual        Int
+}

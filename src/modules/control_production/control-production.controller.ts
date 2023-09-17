@@ -3,6 +3,8 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from "@nestjs
 import * as dayjs from "dayjs";
 import { ListKambaService } from "./services/list-kambam.service";
 import { PatchUpdateSequencialService } from "./services/patch-update-sequencial.service";
+import { OrderType } from "src/modules/order/types/ordertype.type";
+
 
 @Controller('control-production')
 @ApiBearerAuth()
@@ -13,20 +15,21 @@ export class ControlProductionController {
         private readonly listKambaService: ListKambaService,
         private readonly patchUpdateSequencialService: PatchUpdateSequencialService
     ){}
-
-
+q
     @ApiQuery({
-        name: 'date',
+        name: 'order_type',
         required: false,
-        type: Date,
+        type: String
       })
     @Get("kambam")
-    @ApiOperation({ summary: "EndPoint para criação de pedidos programados", description: "Rota para criação de pedidos programados. Obs: method_of_preparation deve ser 'roast' ou 'frozen'" })
+    @ApiOperation({ summary: "EndPoint para listaagen do kambam por produto", description: "É pertimido o filtro por 'programmed' ou 'coffe'" })
     async listKambam(
-        @Query('date') date = undefined
+        @Query('order_type') orderIfType = "programmed"
     ) {
+
+        var orderType: OrderType = orderIfType == "coffe" ? "coffe" : "programmed"
       
-        return await this.listKambaService.execute(date);
+        return await this.listKambaService.execute(orderType);
 
     }
 
