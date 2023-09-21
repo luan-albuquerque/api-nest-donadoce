@@ -98,8 +98,8 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
         })
 
 
-
-        return data.seq;
+       const r = data != null ? data.seq : 0
+        return r;
     }
 
 
