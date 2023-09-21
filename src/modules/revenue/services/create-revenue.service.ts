@@ -26,9 +26,9 @@ export class CreateRevenueService {
             throw new UnauthorizedException("Descrição já existente em outra receita")
         }
 
+        createRevenueDto.value_defined_by_revenue = 0;
 
         createRevenueDto.order_type = createRevenueDto.status == 1 ? "programmed" : "coffe";
-     
         if (createRevenueDto.ingredients) {
             const convertIngredients = JSON.parse(String(createRevenueDto.ingredients))
  
@@ -38,6 +38,7 @@ export class CreateRevenueService {
                     if (!busca) {
                         throw new NotFoundException("Ingrediente não existe!")
                     }
+                    createRevenueDto.value_defined_by_revenue += busca.value_per_serving * item.amount_ingredient;
                 })
             )
         }
@@ -56,6 +57,10 @@ export class CreateRevenueService {
                             amount_ingredient: item.amount_ingredient
                         })
                     })
+                     
+
+
+                    
                 )
             }
         }

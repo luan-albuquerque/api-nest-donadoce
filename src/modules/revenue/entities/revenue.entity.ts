@@ -5,7 +5,9 @@ export class Revenue {
     id: string
     description: string
     value: number
+    value_defined_by_revenue?: number;
     yield_per_quantity: number
+    time_in_hours: number;
     presumed_profit: number
     base_max_amount?: number
     base_min_amount?: number

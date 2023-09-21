@@ -14,6 +14,7 @@ export class UpdateRevenueService {
         
         const revenue = await this.revenuesRepository.findByOne(id)
 
+
         if (!revenue) {
             throw new UnauthorizedException("Receita não encontrada")
         }
@@ -49,7 +50,8 @@ export class UpdateRevenueService {
             old_imagem: null,
             presumed_profit: updateRevenueDto.presumed_profit,
             time_in_hours: updateRevenueDto.time_in_hours,
-            yield_per_quantity: updateRevenueDto.yield_per_quantity
+            yield_per_quantity: updateRevenueDto.yield_per_quantity,
+            value_defined_by_revenue: revenue.value_defined_by_revenue,
         })
 
 

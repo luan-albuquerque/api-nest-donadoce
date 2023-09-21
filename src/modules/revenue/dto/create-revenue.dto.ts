@@ -29,6 +29,8 @@ export class CreateRevenueDto {
     @IsNotEmpty({ message: 'Valor não pode ser vazio' })
     value: number
 
+    value_defined_by_revenue?: number
+
     @ApiProperty({required: false})
     @IsNumber()
     @Type(()=> Number)

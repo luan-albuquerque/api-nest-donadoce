@@ -12,29 +12,32 @@ export class RevenuesIngredientsRepositoryInPrisma implements RevenuesIngredient
     constructor(private prisma: PrismaService) { }
     async removeAllByRevenue(fk_revenue: string): Promise<void> {
         await this.prisma.ingredients_Revenues.deleteMany({
-            where:{
-             fk_revenues: fk_revenue
+            where: {
+                fk_revenues: fk_revenue
             }
-         }).finally(() => {
-             this.prisma.$disconnect()
-         })
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
     }
 
 
-    async findOneIngredient(fk_ingredient: string,fk_revenues:string): Promise<RevenueIngredient> {
-       const data = await this.prisma.ingredients_Revenues.findFirst({
-            where:{
-             AND:{
-                fk_ingredient,
-                fk_revenues
-             }
+    async findOneIngredient(fk_ingredient: string, fk_revenues: string): Promise<RevenueIngredient> {
+        const data = await this.prisma.ingredients_Revenues.findFirst({
+            include: {
+                ingredients: true,
+            },
+            where: {
+                AND: {
+                    fk_ingredient,
+                    fk_revenues
+                }
 
             }
-         }).finally(() => {
-             this.prisma.$disconnect()
-         })
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
 
-         return data
+        return data
     }
 
     async create(createRevenueIngredientDto: CreateRevenueIngredientDto[]): Promise<void> {
@@ -46,12 +49,12 @@ export class RevenuesIngredientsRepositoryInPrisma implements RevenuesIngredient
     }
     async remove(fk_ingredient: string, fk_revenues: string): Promise<void> {
         await this.prisma.ingredients_Revenues.delete({
-           where:{
-            fk_ingredient_fk_revenues: {
-                fk_ingredient,
-                fk_revenues,
+            where: {
+                fk_ingredient_fk_revenues: {
+                    fk_ingredient,
+                    fk_revenues,
+                }
             }
-           }
         }).finally(() => {
             this.prisma.$disconnect()
         })
@@ -60,7 +63,7 @@ export class RevenuesIngredientsRepositoryInPrisma implements RevenuesIngredient
         await this.prisma.ingredients_Revenues.update({
             data: {
                 amount_ingredient: updateRevenueIngredientDto.amount_ingredient,
-                
+
             }, where: {
                 fk_ingredient_fk_revenues: {
                     fk_ingredient: updateRevenueIngredientDto.fk_ingredient,
