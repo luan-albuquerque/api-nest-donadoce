@@ -27,10 +27,10 @@ export class CreateOrderBatchService {
         var orderAlReadyExist = orderAll.find((order) => order.id === item.fk_order);
 
         if (!orderAlReadyExist) {
-          fs.access(createOrderBatch.file_absolute).then(() => {
-            fs.unlink(createOrderBatch.file_absolute)
+          this.deleteFile(createOrderBatch.file_invoice_absolute);
+          this.deleteFile(createOrderBatch.file_payment_voucher_absolute);
+          this.deleteFile(createOrderBatch.file_caution_absolute);
 
-          })
           throw new NotFoundException('Pedido ' + item.fk_order + ' não encontrado.')
         }
 
@@ -38,10 +38,10 @@ export class CreateOrderBatchService {
 
         if (!orderSem) {
 
-          fs.access(createOrderBatch.file_absolute).then(() => {
-            fs.unlink(createOrderBatch.file_absolute)
+          this.deleteFile(createOrderBatch.file_invoice_absolute);
+          this.deleteFile(createOrderBatch.file_payment_voucher_absolute);
+          this.deleteFile(createOrderBatch.file_caution_absolute);
 
-          })
           throw new NotFoundException('Pedido possivelmente está vinculado a um lote - fk_order: ' + item.fk_order);
 
         }
@@ -51,4 +51,15 @@ export class CreateOrderBatchService {
     await this.orderBatchRepository.create(createOrderBatch);
 
   }
+
+
+  async deleteFile(path_absolute: string) {
+    fs.access(path_absolute).then(() => {
+      fs.unlink(path_absolute)
+
+    })
+  }
+
+
 }
+

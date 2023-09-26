@@ -13,6 +13,8 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+
+    //Não atualizei por conta de não saber se ia usar
     async update(id: string, updateOrderBatch: UpdateOrderBatch): Promise<void> {
         await this.prisma.orderBatch.update({
             where:{
@@ -20,7 +22,7 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
             },
             data: {
                 fk_client: updateOrderBatch.fk_client,
-                invoice_file: updateOrderBatch.invoice_file,
+                file_invoice: updateOrderBatch.invoice_file,
                 invoice_number: updateOrderBatch.invoice_number,
             }
         }).catch(() => {
@@ -31,7 +33,9 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
         var data: OrderBatch = await this.prisma.orderBatch.findUnique({
             select: {
                 id: true,
-                invoice_file: true,
+                file_invoice: true,
+                file_caution: true,
+                file_payment_voucher: true,
                 fk_client: true,
                 invoice_number: true,
                 numberOrderBatch: true,
@@ -52,7 +56,9 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
             data: {
                 fk_user_open_orderbatch: createOrderBatch.userOpenOrderBatch,
                 fk_client: createOrderBatch.fk_client,
-                invoice_file: createOrderBatch.invoice_file,
+                file_invoice: createOrderBatch.file_invoice,
+                file_caution: createOrderBatch.file_caution,
+                file_payment_voucher: createOrderBatch.file_payment_voucher,
                 invoice_number: createOrderBatch.invoice_number,
                 OrderBatchItem: {
                     createMany: {
@@ -71,7 +77,9 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
         var data: OrderBatch[] = await this.prisma.orderBatch.findMany({
             select: {
                 id: true,
-                invoice_file: true,
+                file_invoice: true,
+                file_caution: true,
+                file_payment_voucher: true,
                 fk_client: true,
                 invoice_number: true,
                 numberOrderBatch: true,

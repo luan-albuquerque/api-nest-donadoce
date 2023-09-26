@@ -32,9 +32,9 @@ export class UpdateOrderBatchService {
       throw new NotFoundException('Lote não encontrado.')
     }
 
-    orderBatchAllReadyExist.fk_client = !updateOrderBatch.fk_client ? orderBatchAllReadyExist.invoice_file : updateOrderBatch.fk_client
-    orderBatchAllReadyExist.invoice_number = !updateOrderBatch.invoice_number ? orderBatchAllReadyExist.invoice_file : updateOrderBatch.invoice_number
-    orderBatchAllReadyExist.invoice_file = !updateOrderBatch.invoice_file ? orderBatchAllReadyExist.invoice_file : updateOrderBatch.invoice_file
+    // orderBatchAllReadyExist.fk_client = !updateOrderBatch.fk_client ? orderBatchAllReadyExist.invoice_file : updateOrderBatch.fk_client
+    // orderBatchAllReadyExist.invoice_number = !updateOrderBatch.invoice_number ? orderBatchAllReadyExist.invoice_file : updateOrderBatch.invoice_number
+    // orderBatchAllReadyExist.file_invoice = !updateOrderBatch.invoice_file ? orderBatchAllReadyExist.file_invoice : updateOrderBatch.invoice_file
    
     
 

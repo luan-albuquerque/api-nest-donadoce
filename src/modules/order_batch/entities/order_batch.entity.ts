@@ -3,10 +3,12 @@ import { OrderBatchItem } from "src/modules/order_batch_item/entities/order_batc
 export class OrderBatch {
 
     id: string
-    invoice_file: string
+    file_invoice: string
+    file_caution: string
+    file_payment_voucher: string
     fk_client: string
     invoice_number: string
     numberOrderBatch: number
-    OrderBatchItem?: OrderBatchItem[] 
+    OrderBatchItem?: OrderBatchItem[]
 
 }

@@ -5,13 +5,8 @@ import { CreateOrderBatchService } from './services/create-order-batch.service';
 import { OrderBatchController } from './order_batch.controller';
 
 @Module({
-  imports:[
-    DatabaseModule
-  ],
+  imports: [DatabaseModule],
   controllers: [OrderBatchController],
-  providers: [
-    CreateOrderBatchService,
-    FindManyOrderBatchService,
-  ]
+  providers: [CreateOrderBatchService, FindManyOrderBatchService],
 })
 export class OrderBatchModule {}

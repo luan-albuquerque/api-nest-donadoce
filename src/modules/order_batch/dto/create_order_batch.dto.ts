@@ -8,14 +8,20 @@ export class CreateOrderBatch {
     @IsNotEmpty({ message: 'fk_client não pode esvaziar' })
     @ApiProperty()
     fk_client: string
-  
+
 
     @ApiProperty({ type: 'string', format: 'binary', required: false })
-    _file?: string
+    file_invoice?: string
 
-    invoice_file: string
+    @ApiProperty({ type: 'string', format: 'binary', required: false })
+    file_caution?: string
 
-    file_absolute?: string
+    @ApiProperty({ type: 'string', format: 'binary', required: false })
+    file_payment_voucher?: string
+
+    file_invoice_absolute?: string
+    file_caution_absolute?: string
+    file_payment_voucher_absolute?: string
 
     @IsString({ message: 'invoice_number precisa ser string' })
     @IsNotEmpty({ message: 'invoice_number não pode esvaziar' })
@@ -25,14 +31,14 @@ export class CreateOrderBatch {
     @IsNotEmpty({ message: 'end_date não pode esvaziar' })
     @ApiProperty()
     initial_date: Date
-    
+
     @IsNotEmpty({ message: 'end_date não pode esvaziar' })
     @ApiProperty()
     end_date: Date
 
     userOpenOrderBatch?: string
- 
-    @ApiProperty({ type: CreateOrderBatchItem, isArray: true})
-    @Type(()=> CreateOrderBatchItem)
+
+    @ApiProperty({ type: CreateOrderBatchItem, isArray: true })
+    @Type(() => CreateOrderBatchItem)
     createOrderBatchItem: CreateOrderBatchItem[]
 }
