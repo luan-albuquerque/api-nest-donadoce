@@ -39,13 +39,6 @@ export class OrderBatchController {
 
     const bodyform = Object(createOrderBatch)
 
-    console.log({
-      file_invoice,
-      file_caution,
-      file_payment_voucher
-    });
-    
-
     const newData: CreateOrderBatch = {
       createOrderBatchItem: Object(JSON.parse(bodyform.createOrderBatchItem)),
       end_date: new Date(bodyform.end_date),
@@ -53,8 +46,8 @@ export class OrderBatchController {
       fk_client: bodyform.fk_client,
       invoice_number: bodyform.invoice_number,
       userOpenOrderBatch: req.user.id,
-      file_caution: file_caution,
-      file_caution_absolute: files.file_caution[0].path,
+      // file_caution: file_caution,
+      // file_caution_absolute: files.file_caution[0].path,
       file_invoice: file_invoice,
       file_invoice_absolute: files.file_invoice[0].path,
       file_payment_voucher: file_payment_voucher,

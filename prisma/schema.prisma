@@ -260,7 +260,6 @@ model RevenuePerClient {
 model OrderBatch {
   id                      String           @id @default(uuid())
   file_invoice            String
-  file_caution            String
   file_payment_voucher    String
   invoice_number          String
   numberOrderBatch        Int              @default(autoincrement())

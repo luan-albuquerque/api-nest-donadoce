@@ -4,7 +4,7 @@ export class OrderBatch {
 
     id: string
     file_invoice: string
-    file_caution: string
+    // file_caution: string
     file_payment_voucher: string
     fk_client: string
     invoice_number: string

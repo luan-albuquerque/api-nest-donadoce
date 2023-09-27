@@ -29,7 +29,6 @@ export class CreateOrderBatchService {
         if (!orderAlReadyExist) {
           this.deleteFile(createOrderBatch.file_invoice_absolute);
           this.deleteFile(createOrderBatch.file_payment_voucher_absolute);
-          this.deleteFile(createOrderBatch.file_caution_absolute);
 
           throw new NotFoundException('Pedido ' + item.fk_order + ' não encontrado.')
         }
@@ -40,7 +39,6 @@ export class CreateOrderBatchService {
 
           this.deleteFile(createOrderBatch.file_invoice_absolute);
           this.deleteFile(createOrderBatch.file_payment_voucher_absolute);
-          this.deleteFile(createOrderBatch.file_caution_absolute);
 
           throw new NotFoundException('Pedido possivelmente está vinculado a um lote - fk_order: ' + item.fk_order);
 

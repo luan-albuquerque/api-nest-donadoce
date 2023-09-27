@@ -34,7 +34,6 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
             select: {
                 id: true,
                 file_invoice: true,
-                file_caution: true,
                 file_payment_voucher: true,
                 fk_client: true,
                 invoice_number: true,
@@ -57,7 +56,6 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                 fk_user_open_orderbatch: createOrderBatch.userOpenOrderBatch,
                 fk_client: createOrderBatch.fk_client,
                 file_invoice: createOrderBatch.file_invoice,
-                file_caution: createOrderBatch.file_caution,
                 file_payment_voucher: createOrderBatch.file_payment_voucher,
                 invoice_number: createOrderBatch.invoice_number,
                 OrderBatchItem: {
@@ -78,7 +76,6 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
             select: {
                 id: true,
                 file_invoice: true,
-                file_caution: true,
                 file_payment_voucher: true,
                 fk_client: true,
                 invoice_number: true,
