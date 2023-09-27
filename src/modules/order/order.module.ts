@@ -9,6 +9,7 @@ import { PatchTrayOrderService } from './services/patch-tray-order.service';
 import { PatchDisabledOrderService } from './services/patch-disabled-order.service';
 import { FindManyOrderInProcess } from './services/find-many-order-in-process.service';
 import { CreateOrderProgrammedService } from './services/create-order-programmed.service';
+import { CreateOrderCoffeService } from './services/create-order-coffe.service';
 
 @Module({
   imports:[
@@ -23,7 +24,8 @@ import { CreateOrderProgrammedService } from './services/create-order-programmed
     PatchStatusOrderItemService,
     PatchTrayOrderService,
     PatchDisabledOrderService,
-    FindManyOrderInProcess
+    FindManyOrderInProcess,
+    CreateOrderCoffeService,
   ]
 })
 export class OrderModule {}

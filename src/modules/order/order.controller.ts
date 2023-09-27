@@ -14,6 +14,8 @@ import { PatchDisabledOrderService } from './services/patch-disabled-order.servi
 import { FindManyOrderInProcess } from './services/find-many-order-in-process.service';
 import { CreateOrderProgrammedService } from './services/create-order-programmed.service';
 import * as dayjs from 'dayjs';
+import { CreateOrderCoffeDto } from './dto/create-order-coffe.dto';
+import { CreateOrderCoffeService } from './services/create-order-coffe.service';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -21,6 +23,7 @@ import * as dayjs from 'dayjs';
 export class OrderController {
   constructor(
     private readonly createOrderProgrammedService: CreateOrderProgrammedService,
+    private readonly createOrderCoffeService: CreateOrderCoffeService,
     private readonly findManyOrderByClientService: FindManyOrderByClientService,
     private readonly findManyOrderService: FindManyOrderService,
     private readonly patchOrderStatusService: PatchOrderStatusService,
@@ -43,6 +46,22 @@ export class OrderController {
     return await this.createOrderProgrammedService.execute(
       req.user.id,
       createOrderDto
+    );
+  }
+
+
+  @ApiBody({
+    type: CreateOrderCoffeDto,
+  })
+  @Post("coffe")
+  @ApiOperation({ summary: "EndPoint para criação de pedidos coffe", description: "Rota para criação de pedidos coffe. Obs: method_of_preparation deve ser 'roast' ou 'frozen'" })
+  async createCoffe(
+    @Body() createOrderCoffeDto: CreateOrderCoffeDto,
+    @Req() req
+  ) {
+    return await this.createOrderCoffeService.execute(
+      req.user.id,
+      createOrderCoffeDto
     );
   }
 

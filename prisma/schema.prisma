@@ -203,6 +203,7 @@ model ItemMenu {
 model CategoryOrderItem {
   id          String      @id @default(uuid())
   description String
+  order_type  Order_type? 
   time        DateTime?   @db.Time()
   OrderItem   OrderItem[]
 }

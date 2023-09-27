@@ -34,7 +34,7 @@ export class CreateOrderProgrammedService {
     var valueTotal = 0
     const data = new Date();
     const revenueAll = await this.revenuesRepository.findByAllNotFilter();
-    const categoryAll = await this.categoryOrderItemRepository.findAll();;
+    const categoryAll = await this.categoryOrderItemRepository.findAllProg();;
     const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
     const menuSeleted = await this.menuRepository.findOne(createOrderDto.fk_menu);
     const revenuesAproved: { fk_revenue: string, amountItem: number }[] = [];

@@ -9,11 +9,35 @@ export class CategoryOrderItemRepositoryInPrisma implements CategoryOrderItemRep
     constructor(
         private readonly prisma: PrismaService
     ) { }
-  
+
     async findAll(): Promise<CategoryOrderItem[]> {
         return await this.prisma.categoryOrderItem.findMany({
             orderBy: {
                 description: "asc"
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
+  
+    async findAllProg(): Promise<CategoryOrderItem[]> {
+        return await this.prisma.categoryOrderItem.findMany({
+            orderBy: {
+                description: "asc"
+            },where:{
+                order_type: "programmed",
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
+
+    async findAllCoffe(): Promise<CategoryOrderItem[]> {
+        return await this.prisma.categoryOrderItem.findMany({
+            orderBy: {
+                description: "asc"
+            },where:{
+                order_type: "coffe",
             }
         }).finally(() => {
             this.prisma.$disconnect()

@@ -31,19 +31,28 @@ async function main() {
       {
         id: "491aebc2-1c69-11ee-be56-0242ac120002",
         description: "Dejejum",
-        time: '2023-09-04T15:00:00.000Z'
+        time: '2023-09-04T15:00:00.000Z',
+        order_type: "programmed",
       },
       {
         id: "518a6828-1c69-11ee-be56-0242ac120002",
         description: "Lanche 1",
-        time: '2023-09-04T10:00:00.000Z'
+        time: '2023-09-04T10:00:00.000Z',
+        order_type: "programmed",
         
       },
       {
         id: "57c25f34-1c69-11ee-be56-0242ac120002",
         description: "Lanche 2",
-        time: '2023-09-04T15:00:00.000Z'
-       
+        time: '2023-09-04T15:00:00.000Z',
+        order_type: "programmed",
+      },
+      ,
+      {
+        id: "coffe-be56-11ee-sdsd-024dca12034542",
+        description: "Coffe",
+        time: '2023-09-04T00:00:00.000Z',
+        order_type: "coffe",
       }
     ]
   })
