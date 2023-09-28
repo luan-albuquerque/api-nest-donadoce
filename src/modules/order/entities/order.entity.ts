@@ -9,6 +9,7 @@ export class Order {
     dateOrder: Date
     valueOrder: number
     fk_orderstatus: string
+    file_caution?: string
     fk_user: string
     order_type: OrderType
     orderBatchItem?: OrderBatchItem

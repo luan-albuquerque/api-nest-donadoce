@@ -215,6 +215,7 @@ model Order {
   valueOrder     Float
   order_type     Order_type? // Tipo de pedido -> Programado e Coffe
   amount_of_tray Int?
+  file_caution   String?
   fk_orderstatus String
   fk_user        String
   user           User            @relation(fields: [fk_user], references: [id])

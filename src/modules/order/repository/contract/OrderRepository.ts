@@ -19,6 +19,7 @@ export abstract class OrderRepository {
     abstract findById(id: string): Promise<Order>
     abstract findManyOrderByClientNotOrderBatch(fk_client: string): Promise<Order[]>
     abstract findManyNotFilter(): Promise<Order[]>
+    abstract addCautionInOrder(id: string, file_caution: string): Promise<void>
 
     //OrderItem
     abstract patchTrayOrder(id: string, amount_of_tray: number): Promise<void>

@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, ParseIntPipe, Patch, Param, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe,UploadedFiles, ParseIntPipe, Patch, Param, Put, UseInterceptors } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { FindManyOrderByClientService } from './services/find-many-order-by-client.service';
 import { FindManyOrderService } from './services/find-many-order.service';
 import { PatchOrderDto } from './dto/patch-order.dto';
@@ -16,6 +16,10 @@ import { CreateOrderProgrammedService } from './services/create-order-programmed
 import * as dayjs from 'dayjs';
 import { CreateOrderCoffeDto } from './dto/create-order-coffe.dto';
 import { CreateOrderCoffeService } from './services/create-order-coffe.service';
+import { PatchAddCautionOrderService } from './services/patch-add-caution-order.service';
+import { multerOptionsCaution } from 'src/shared/http/middlewares/multerCaution.middleware';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { AddCautionInOrder } from './dto/add-caution-in-order.dto';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -30,7 +34,8 @@ export class OrderController {
     private readonly patchStatusOrderItemService: PatchStatusOrderItemService,
     private readonly patchTrayOrderService: PatchTrayOrderService,
     private readonly patchDisabledOrderService: PatchDisabledOrderService,
-    private readonly findManyOrderInProcess: FindManyOrderInProcess
+    private readonly findManyOrderInProcess: FindManyOrderInProcess,
+    private readonly patchAddCautionOrderService: PatchAddCautionOrderService
   ) { }
 
 
@@ -48,6 +53,7 @@ export class OrderController {
       createOrderDto
     );
   }
+
 
 
   @ApiBody({
@@ -104,6 +110,31 @@ export class OrderController {
   ) {
     return await this.findManyOrderService.execute({ desc_user, numberOrder, skip, take: limit, order_status: statusOrder })
   }
+
+
+ 
+  @Post("caution/:id")
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'file_caution', maxCount: 1 },
+      ],
+      multerOptionsCaution,
+    ),
+  )
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: "EndPoint para adição de cautela", description: "" })
+  async addCaution(
+    @Param('id') id: string,
+    @UploadedFiles() files: any,
+    @Body() addCautionInOrder: AddCautionInOrder
+  ) {
+
+    const file_caution = files ? files.file_caution ? files.file_caution[0].filename : null : null;
+
+    return await this.patchAddCautionOrderService.execute(id, file_caution, files.file_caution[0].path || null);
+  }
+
 
   @ApiQuery({
     name: 'limit',

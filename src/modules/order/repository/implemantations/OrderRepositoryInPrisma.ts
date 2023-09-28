@@ -18,6 +18,19 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async addCautionInOrder(id: string, file_caution: string): Promise<void> {
+        await this.prisma.order.update({
+            data: {
+                file_caution,
+            },
+            where: {
+                id,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+    }
 
     async findOneOrderItem(fk_categoryOrderItem: string, fk_order: string, fk_revenue: string): Promise<OrderItem> {
         const data = await this.prisma.orderItem.findUnique({
@@ -35,7 +48,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         return data;
     }
     async findAllOrdersInProcess(): Promise<any> {
-      
+
 
         const data = await this.prisma.orderItem.groupBy({
             by: ['fk_revenue', 'fk_categoryOrderItem'],
@@ -213,6 +226,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 dateOrder: true,
                 numberOrder: true,
                 order_type: true,
+                file_caution: true,
                 user: {
 
                     select: {
@@ -288,8 +302,8 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         return data;
     }
 
-    async create({ createOrderItemDto, dateOrder, fk_user, fk_orderstatus, valueOrder,order_type }: CreateOrderAlternativeDto): Promise<void> {
-       
+    async create({ createOrderItemDto, dateOrder, fk_user, fk_orderstatus, valueOrder, order_type }: CreateOrderAlternativeDto): Promise<void> {
+
         await this.prisma.order.create({
             data: {
                 fk_user,
@@ -316,6 +330,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 dateOrder: true,
                 numberOrder: true,
                 order_type: true,
+                file_caution: true,
                 orderItem: {
                     select: {
                         categoryOrderItem: {
