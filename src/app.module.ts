@@ -69,6 +69,8 @@ import { ControlProduction } from './modules/control_production/control-producti
       .exclude(
 
         { method: RequestMethod.ALL, path: "/img_revenue/(.*)" },
+        { method: RequestMethod.ALL, path: "/caution/(.*)" },
+        { method: RequestMethod.ALL, path: "/order_batch/(.*)" },
         { method: RequestMethod.POST, path: "/session" },
         { method: RequestMethod.POST, path: '/session/send-email' },
         { method: RequestMethod.POST, path: '/session/redefine-password' }
