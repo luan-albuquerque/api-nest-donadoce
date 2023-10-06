@@ -220,7 +220,7 @@ export class OrderController {
 
   @Get('verifyOrderItem/:fk_order')
   @ApiOperation({ summary: "Verificar se existem itens de pedidos fora do cardapio com staus Homologate" })
-  async verifyOrderItem(@Param('id') id: string) {
+  async verifyOrderItem(@Param('fk_order') id: string) {
 
     await this.findOrderItemInHomologateService.execute(id);
   }
