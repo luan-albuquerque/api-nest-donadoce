@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { OrderRepository } from '../repository/contract/OrderRepository';
-import { PatchStatusOrderItemDto } from '../dto/patch-status-order-item.';
 import { GenerateLogs } from 'src/shared/exception/GenerateLogs.exception';
 import * as fs from 'fs/promises';
 
@@ -13,6 +12,7 @@ export class PatchAddCautionOrderService {
     ) { }
 
     async execute(id: string, file: string, file_path: string) {
+
         try {
 
             const order = await this.orderRepository.findById(id)
@@ -33,12 +33,10 @@ export class PatchAddCautionOrderService {
 
             this.orderRepository.addCautionInOrder(id, file);
 
-
         } catch (error) {
             await GenerateLogs.generate(error)
             throw new InternalServerErrorException(error)
         }
-
 
     }
 

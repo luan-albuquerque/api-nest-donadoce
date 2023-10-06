@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import { OrderRepository } from '../repository/contract/OrderRepository';
-import { ListByAdminOrderDTO } from '../dto/list-by-admin-order.dto';
 import { PatchStatusOrderItemDto } from '../dto/patch-status-order-item.';
 import { IngredientsRepository } from 'src/modules/ingredients/repository/contract/IngredientsRepository';
 import { IngredientControlRepository } from 'src/modules/ingredient_control/repository/contract/IngredientControlRepository';
@@ -26,7 +25,6 @@ export class PatchStatusOrderItemService {
         throw new NotFoundException("Pedido não encontrado")
       }
 
-
       const orderItem = await this.orderRepository.findOneOrderItem(fk_categoryOrderItem, id, fk_revenue);
       if (orderItem.homologate != "EM_HOMOLOGACAO") {
         throw new BadRequestException("Item em Pedido ja foi atualizado.")
@@ -35,8 +33,6 @@ export class PatchStatusOrderItemService {
       if (status_order_item == "EM_HOMOLOGACAO" || status_order_item != "APROVADO" && status_order_item != "REPROVADO") {
         throw new BadRequestException("Operação não permitida.")
       }
-
-
 
       await this.orderRepository.patchStatusOrderItem(id, { fk_categoryOrderItem, fk_revenue, status_order_item }).then(async () => {
         // Caso o pedido fora do estoque seja aprovado 
@@ -69,14 +65,14 @@ export class PatchStatusOrderItemService {
 
           });
 
-  
+
         }
       })
 
-
-
     } catch (error) {
+
       throw new InternalServerErrorException(error)
+
     }
 
 

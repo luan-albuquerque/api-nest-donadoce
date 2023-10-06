@@ -16,7 +16,8 @@ export class FindManyOrderService {
       return await this.orderRepository.findMany({ desc_user, numberOrder, skip, take, order_status })
       
      } catch (error) {
-        throw new InternalServerErrorException("Erro no servidor")
+
+        throw new InternalServerErrorException("Erro: " + error)
      }
     
 

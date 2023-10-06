@@ -11,6 +11,7 @@ import { FindManyOrderInProcess } from './services/find-many-order-in-process.se
 import { CreateOrderProgrammedService } from './services/create-order-programmed.service';
 import { CreateOrderCoffeService } from './services/create-order-coffe.service';
 import { PatchAddCautionOrderService } from './services/patch-add-caution-order.service';
+import { FindOrderItemInHomologateService } from './services/find-order-item-in-homologate.service';
 
 @Module({
   imports:[
@@ -27,7 +28,8 @@ import { PatchAddCautionOrderService } from './services/patch-add-caution-order.
     PatchDisabledOrderService,
     FindManyOrderInProcess,
     CreateOrderCoffeService,
-    PatchAddCautionOrderService
+    PatchAddCautionOrderService,
+    FindOrderItemInHomologateService
   ]
 })
 export class OrderModule {}

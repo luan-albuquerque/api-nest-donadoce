@@ -39,12 +39,17 @@ export class CreateOrderCoffeService {
           if (!revenue) {
             throw new NotFoundException(`Receita não encontrada - fk_revenue: ${item.fk_revenue}`)
           }
-        
+
           const inter = interAll.find((iInter) => iInter.fk_revenue === item.fk_revenue);
           var value = revenue.value
           if (inter) {
             value = inter.unique_value;
           }
+
+          if (item.amountItem > revenue.base_max_amount || item.amountItem < revenue.base_min_amount) {
+            throw new NotFoundException(`Quantidade em receita ${revenue.description} excede os limites definidos.`)
+          }
+
 
           valueTotal = value + valueTotal;
 

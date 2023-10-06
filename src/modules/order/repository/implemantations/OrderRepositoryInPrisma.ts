@@ -203,6 +203,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     }
     async findOne(numberOrder: number): Promise<Order[]> {
         const data = await this.prisma.order.findMany({
+          
             where: {
                 numberOrder,
             }

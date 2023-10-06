@@ -20,6 +20,7 @@ import { PatchAddCautionOrderService } from './services/patch-add-caution-order.
 import { multerOptionsCaution } from 'src/shared/http/middlewares/multerCaution.middleware';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { AddCautionInOrder } from './dto/add-caution-in-order.dto';
+import { FindOrderItemInHomologateService } from './services/find-order-item-in-homologate.service';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -35,7 +36,8 @@ export class OrderController {
     private readonly patchTrayOrderService: PatchTrayOrderService,
     private readonly patchDisabledOrderService: PatchDisabledOrderService,
     private readonly findManyOrderInProcess: FindManyOrderInProcess,
-    private readonly patchAddCautionOrderService: PatchAddCautionOrderService
+    private readonly patchAddCautionOrderService: PatchAddCautionOrderService,
+    private readonly findOrderItemInHomologateService: FindOrderItemInHomologateService
   ) { }
 
 
@@ -214,5 +216,17 @@ export class OrderController {
 
     await this.patchDisabledOrderService.execute(id);
   }
+
+
+  @Get('verifyOrderItem/:fk_order')
+  @ApiOperation({ summary: "Verificar se existem itens de pedidos fora do cardapio com staus Homologate" })
+  async verifyOrderItem(@Param('id') id: string) {
+
+    await this.findOrderItemInHomologateService.execute(id);
+  }
+
+
+
+  
 
 }

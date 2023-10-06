@@ -25,7 +25,7 @@ export class CreateRevenueService {
         if (revenue) {
             throw new UnauthorizedException("Descrição já existente em outra receita")
         }
-
+        
         createRevenueDto.value_defined_by_revenue = 0;
 
         createRevenueDto.order_type = createRevenueDto.status == 1 ? "programmed" : "coffe";

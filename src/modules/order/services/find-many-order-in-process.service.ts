@@ -15,15 +15,15 @@ export class FindManyOrderInProcess {
   ) { }
 
   async execute() {
-     
-     try {
-      // return await this.orderRepository.findAllOrdersInProcess()
-      
-      
-     } catch (error) {
-        throw new InternalServerErrorException("Erro no servidor")
-     }
-    
+
+    try {
+
+      return await this.orderRepository.findAllOrdersInProcess()
+
+    } catch (error) {
+      throw new InternalServerErrorException("Erro: " + error)
+    }
+
 
   }
 }

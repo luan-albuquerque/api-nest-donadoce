@@ -6,11 +6,7 @@ import { CategoryOrderItemRepository } from 'src/modules/category_order_items/re
 import { RevenuePerClientRepository } from 'src/modules/revenue-per-client/repository/contract/RevenuePerClientRepository';
 import { CreateOrderAlternativeDto } from '../dto/create-order-alternative.dto';
 import { MenuRepository } from 'src/modules/menu/repository/contract/MenuRepository';
-import { IngredientsRepository } from 'src/modules/ingredients/repository/contract/IngredientsRepository';
-import { IngredientControlRepository } from 'src/modules/ingredient_control/repository/contract/IngredientControlRepository';
 import * as dayjs from "dayjs"
-import { ControlProductionRepository } from 'src/modules/control_production/repository/contract/ControlProductionRepository';
-import { ClientsRepository } from 'src/modules/clients/repository/contract/ClientsRepository';
 
 @Injectable()
 export class CreateOrderProgrammedService {
@@ -21,16 +17,12 @@ export class CreateOrderProgrammedService {
     private readonly revenuePerClientRepository: RevenuePerClientRepository,
     private readonly menuRepository: MenuRepository,
     private readonly categoryOrderItemRepository: CategoryOrderItemRepository,
-    private ingredientControlRepository: IngredientControlRepository,
-    private ingredientsRepository: IngredientsRepository,
-    private readonly controlProductionRepository: ControlProductionRepository,
-    private readonly clientsRepository: ClientsRepository
   ) { }
 
 
   async execute(fk_user: string, createOrderDto: CreateOrderDto) {
+    
     const createOrderItemDtoAlt = []
-
     var valueTotal = 0
     const data = new Date();
     const revenueAll = await this.revenuesRepository.findByAllNotFilter();
@@ -64,8 +56,11 @@ export class CreateOrderProgrammedService {
             value = inter.unique_value;
           }
 
-          valueTotal = value + valueTotal;
+          if (item.amountItem > revenue.base_max_amount || item.amountItem < revenue.base_min_amount) {
+            throw new NotFoundException(`Quantidade em receita ${revenue.description} excede os limites definidos.`)
+          }
 
+          valueTotal = value + valueTotal;
 
           createOrderItemDtoAlt.push({
             of_menu: true,
@@ -81,13 +76,7 @@ export class CreateOrderProgrammedService {
           revenuesAproved.push({
             fk_revenue: item.fk_revenue,
             amountItem: item.amountItem,
-          })
-
-
-        
-
-
-
+           })
         })
       );
 
@@ -96,22 +85,22 @@ export class CreateOrderProgrammedService {
 
           const revenue = revenueAll.find((iRevenue) => iRevenue.id === item.fk_revenue);
           if (!revenue) {
-            throw new NotFoundException(`Receita não encontrada em itens fora do Menu - fk_revenue: ${item.fk_revenue}`)
+            throw new NotFoundException(`Receita não encontrada em itens fora do cardapio ${revenue.description}.  Error: fk_revenue: ${item.fk_revenue}`)
           }
-          console.log({ itenMenu: menuSeleted.itemMenu });
-
+          
           const menu = menuSeleted.itemMenu.find((menuItemS) => menuItemS.fk_revenues === item.fk_revenue)
 
           if (menu) {
-            throw new NotFoundException(`Item está no menu, verifique a lista de pedidos em Menu`)
+            throw new NotFoundException(`Item está no menu, verifique a lista de pedidos em cardapio`)
           }
 
           const category = categoryAll.find((iCategory) => iCategory.id === item.fk_categoryOrderItem);
           if (!category) {
-            throw new NotFoundException(`Category não encontrada em itens fora do Menu - fk_category: ${item.fk_categoryOrderItem}`)
+            throw new NotFoundException(`Categoria não encontrada em itens fora do cardapio. Error: fk_category: ${item.fk_categoryOrderItem}`)
           }
           const inter = interAll.find((iInter) => iInter.fk_revenue === item.fk_revenue);
           var value = revenue.value
+
           if (inter) {
             value = inter.unique_value;
           }

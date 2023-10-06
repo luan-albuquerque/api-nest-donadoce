@@ -32,7 +32,7 @@ export class PatchOrderStatusService {
 
       const order = await this.orderRepository.findById(id);
       const client = await this.clientsRepository.findById(order.fk_user);
-      
+
       if (!client) {
         throw new UnauthorizedException("Usuario que realizou o pedido não pertencem a cadeia de usuarios cliente")
       }
@@ -59,13 +59,12 @@ export class PatchOrderStatusService {
 
       }
 
-
-
-
       await this.orderRepository.patchStatus(id, fk_order_status);
 
     } catch (error) {
+
       throw new InternalServerErrorException("Erro no servidor")
+
     }
 
 
@@ -79,6 +78,10 @@ export class PatchOrderStatusService {
       // Lista receitas aprovadas que foram e quantidade
       order.orderItem.map(async (item) => {
 
+        if (item.homologate == "EM_HOMOLOGACAO") {
+          return;
+        }
+        
         // Buscar dados de receitas , como ingredientes que compoem ela
         const revenue = await this.revenuesRepository.findByOne(item.fk_revenue);
 
@@ -125,6 +128,10 @@ export class PatchOrderStatusService {
       // Lista receitas aprovadas que foram e quantidade
       order.orderItem.map(async (item) => {
 
+        if (item.homologate == "EM_HOMOLOGACAO") {
+          return;
+        }
+
         // Buscar dados de receitas , como ingredientes que compoem ela
         const revenue = await this.revenuesRepository.findByOne(item.fk_revenue);
 
@@ -164,6 +171,10 @@ export class PatchOrderStatusService {
   private async processIngredientes(order: Order) {
     await Promise.all(
       order.orderItem.map(async (item) => {
+        
+        if (item.homologate == "EM_HOMOLOGACAO") {
+          return;
+        }
         // Buscar dados de receitas , como ingredientes que compoem ela
         const revenue = await this.revenuesRepository.findByOneWithIngredients(item.fk_revenue);
 

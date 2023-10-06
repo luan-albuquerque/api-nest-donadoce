@@ -11,14 +11,15 @@ export class FindManyOrderByClientService {
   ) { }
 
   async execute({ fk_user, numberOrder, skip, take, order_status }: ListByClientOrderDTO) {
-     
-     try {
+
+    try {
+
       return await this.orderRepository.findManyByClient({ fk_user, numberOrder, skip, take, order_status })
-      
-     } catch (error) {
-        throw new InternalServerErrorException("Erro no servidor")
-     }
-    
+
+    } catch (error) {
+      throw new InternalServerErrorException("Erro: " + error)
+    }
+
 
   }
 }
