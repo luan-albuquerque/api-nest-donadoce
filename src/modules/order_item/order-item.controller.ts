@@ -41,7 +41,7 @@ export class OrderItemController {
     );
   }
 
-  @Post("programmed")
+  @Patch("programmed")
   @ApiOperation({ summary: "EndPoint para atualização de quantidade" })
   async patch(
     @Body() patchItemInOrderDTO: PatchItemInOrderDTO,
