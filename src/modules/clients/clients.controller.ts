@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post,Patch, Body, Put, Param, Delete, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
 
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
@@ -102,4 +102,11 @@ export class ClientsController {
   remove(@Param('id') id: string) {
     return this.deleteClientService.execute(id);
   }
+
+  @Patch('revision/:fk_order')
+  @ApiOperation({ summary: "Adicionar e modificar nota fiscal do client" })
+  async revisionClient(@Param('fk_order') id: string) {
+
+  }
+
 }

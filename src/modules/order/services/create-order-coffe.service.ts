@@ -1,16 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateOrderDto } from '../dto/create-order.dto';
 import { OrderRepository } from '../repository/contract/OrderRepository';
 import { RevenuesRepository } from 'src/modules/revenue/repository/contract/RevenuesRepository';
-import { CategoryOrderItemRepository } from 'src/modules/category_order_items/repository/contract/CategoryOrderItemRepository';
 import { RevenuePerClientRepository } from 'src/modules/revenue-per-client/repository/contract/RevenuePerClientRepository';
 import { CreateOrderAlternativeDto } from '../dto/create-order-alternative.dto';
-import { MenuRepository } from 'src/modules/menu/repository/contract/MenuRepository';
-import { IngredientsRepository } from 'src/modules/ingredients/repository/contract/IngredientsRepository';
-import { IngredientControlRepository } from 'src/modules/ingredient_control/repository/contract/IngredientControlRepository';
-import * as dayjs from "dayjs"
-import { ControlProductionRepository } from 'src/modules/control_production/repository/contract/ControlProductionRepository';
-import { ClientsRepository } from 'src/modules/clients/repository/contract/ClientsRepository';
 import { CreateOrderCoffeDto } from '../dto/create-order-coffe.dto';
 
 @Injectable()

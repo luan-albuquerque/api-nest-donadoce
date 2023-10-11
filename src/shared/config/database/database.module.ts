@@ -36,6 +36,8 @@ import { OrderBatchItemRepository } from 'src/modules/order_batch_item/repositor
 import { OrderBatchItemRepositoryInPrisma } from 'src/modules/order_batch_item/repository/implemantations/OrderBatchItemRepositoryInPrisma';
 import { ControlProductionRepositoryInPrisma } from 'src/modules/control_production/repository/implementations/ControlProductionRepositoryInPrisma';
 import { ControlProductionRepository } from 'src/modules/control_production/repository/contract/ControlProductionRepository';
+import { OrderItemRepository } from 'src/modules/order_item/repository/contract/OrderItemRepository';
+import { OrderItemRepositoryInPrisma } from 'src/modules/order_item/repository/implemantations/OrderItemRepositoryInPrisma';
 
 
 @Module({
@@ -115,12 +117,17 @@ import { ControlProductionRepository } from 'src/modules/control_production/repo
     {
       provide: ControlProductionRepository,
       useClass: ControlProductionRepositoryInPrisma,
+    },
+    {
+      provide: OrderItemRepository,
+      useClass: OrderItemRepositoryInPrisma,
     }
     
   ],
   
   exports: [
     OrderRepository,
+    OrderItemRepository,
     OrderBatchRepository,
     OrderBatchItemRepository,
     RevenuePerClientRepository,

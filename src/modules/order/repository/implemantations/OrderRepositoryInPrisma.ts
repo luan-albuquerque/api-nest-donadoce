@@ -9,8 +9,7 @@ import { OrderAdmin } from "../../entities/order-admin.entity";
 import { Order } from "../../entities/order.entity";
 import { PatchStatusOrderItemDto } from "../../dto/patch-status-order-item.";
 import { PatchHomologateOrder } from "../../dto/patch-homologate-order.dto";
-import { OrderItem } from "../../entities/order-item.entity";
-import * as dayjs from "dayjs";
+import { OrderItem } from "../../../order_item/entities/order-item.entity";
 
 
 @Injectable()
@@ -32,103 +31,10 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
     }
 
-    async findOneOrderItem(fk_categoryOrderItem: string, fk_order: string, fk_revenue: string): Promise<OrderItem> {
-        const data = await this.prisma.orderItem.findUnique({
-            where: {
-                fk_revenue_fk_order_fk_categoryOrderItem: {
-                    fk_categoryOrderItem,
-                    fk_order,
-                    fk_revenue
-                },
-            }
-        }).finally(() => {
-            this.prisma.$disconnect()
-        })
-
-        return data;
-    }
-    async findAllOrdersInProcess(): Promise<any> {
-
-
-        const data = await this.prisma.orderItem.groupBy({
-            by: ['fk_revenue', 'fk_categoryOrderItem'],
-            _sum: {
-                amountItem: true,
-                valueOrderItem: true,
-            },
-            where: {
-                OR: [
-                    {
-                        dateOrderItem: {
-                            gte: dayjs().hour(-4).minute(0).second(0).millisecond(0).toDate(),
-                            lte: dayjs().hour(-4).minute(0).second(0).millisecond(0).add(1, 'day').toDate()
-                        },
-                        OR: [
-                            {
-                                fk_categoryOrderItem: "518a6828-1c69-11ee-be56-0242ac120002"
-                            },
-                            {
-                                fk_categoryOrderItem: "57c25f34-1c69-11ee-be56-0242ac120002"
-                            }
-                        ]
-                    },
-                    {
-                        dateOrderItem: {
-                            gte: dayjs().hour(-4).minute(0).second(0).millisecond(0).add(1, 'day').toDate(),
-                            lte: dayjs().hour(-4).minute(0).second(0).millisecond(0).add(2, 'day').toDate()
-                        },
-                        fk_categoryOrderItem: "491aebc2-1c69-11ee-be56-0242ac120002"
-                    }
-                ]
-            },
-
-
-        }).finally(() => {
-            this.prisma.$disconnect()
-        })
-
-        return data;
-    }
-    async UpdateOrderItemHomologate({ fk_categoryOrderItem, fk_order, fk_revenue, homologate }: PatchHomologateOrder): Promise<void> {
-        try {
-            await this.prisma.orderItem.update({
-                data: {
-                    homologate,
-                },
-                where: {
-                    fk_revenue_fk_order_fk_categoryOrderItem: {
-                        fk_categoryOrderItem,
-                        fk_order,
-                        fk_revenue
-                    }
-                }
-            })
-
-        } catch (error) {
-            throw new InternalServerErrorException("Erro no Banco de dados: " + error)
-        } finally {
-            this.prisma.$disconnect()
-        }
-
-    }
-    async patchTrayOrder(id: string, amount_of_tray: number): Promise<void> {
-
-        try {
-            await this.prisma.order.updateMany({
-                data: {
-                    amount_of_tray,
-                },
-                where: {
-                    id: id,
-                }
-            })
-
-        } catch (error) {
-            throw new InternalServerErrorException("Erro no Banco de dados: " + error)
-        } finally {
-            this.prisma.$disconnect()
-        }
-    }
+    
+   
+    
+   
     async patchStatusOrderItem(id: string, { fk_categoryOrderItem, fk_revenue, status_order_item }: PatchStatusOrderItemDto): Promise<void> {
 
         await this.prisma.orderItem.updateMany({

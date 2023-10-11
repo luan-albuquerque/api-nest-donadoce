@@ -26,6 +26,7 @@ import { RevenuePerClientModule } from './modules/revenue-per-client/revenue-per
 import { OrderBatchModule } from './modules/order_batch/order_batch.module';
 import { OrderBatchItemModule } from './modules/order_batch_item/order_batch_item.module';
 import { ControlProduction } from './modules/control_production/control-production.module';
+import { OrderItemModule } from './modules/order_item/order-item.module';
 
 @Module({
   imports: [
@@ -51,9 +52,10 @@ import { ControlProduction } from './modules/control_production/control-producti
     CategoryOrderItemsModule,
     RevenuePerClientModule,
     OrderModule,
+    OrderItemModule,
     OrderBatchModule,
     OrderBatchItemModule,
-    ControlProduction
+    ControlProduction,
 
   ],
   controllers: [],

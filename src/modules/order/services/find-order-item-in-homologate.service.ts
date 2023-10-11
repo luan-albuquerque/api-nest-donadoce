@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { OrderRepository } from '../repository/contract/OrderRepository';
 import { ListByAdminOrderDTO } from '../dto/list-by-admin-order.dto';
-import { OrderItem } from '../entities/order-item.entity';
+import { OrderItem } from '../../order_item/entities/order-item.entity';
 
 
 @Injectable()

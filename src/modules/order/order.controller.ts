@@ -220,13 +220,16 @@ export class OrderController {
 
   @Get('verifyOrderItem/:fk_order')
   @ApiOperation({ summary: "Verificar se existem itens de pedidos fora do cardapio com staus Homologate" })
-  async verifyOrderItem(@Param('fk_order') id: string) {
+  async verifyOrderItem(@Param('fk_order') fk_order: string) {
 
-    await this.findOrderItemInHomologateService.execute(id);
+    await this.findOrderItemInHomologateService.execute(fk_order);
   }
 
 
+  @Put(":fk_order")
+  @ApiOperation({ summary: "Verificar se existem itens de pedidos fora do cardapio com staus Homologate" })
+  async UpdateItensOfOrder(@Param('fk_order') fk_order: string) {
 
-  
-
+    await this.findOrderItemInHomologateService.execute(fk_order);
+  }
 }

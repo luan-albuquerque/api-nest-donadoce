@@ -6,7 +6,7 @@ import { OrderAdmin } from "../../entities/order-admin.entity";
 import { Order } from "../../entities/order.entity";
 import { PatchStatusOrderItemDto } from "../../dto/patch-status-order-item.";
 import { PatchHomologateOrder } from "../../dto/patch-homologate-order.dto";
-import { OrderItem } from "../../entities/order-item.entity";
+import { OrderItem } from "../../../order_item/entities/order-item.entity";
 
 export abstract class OrderRepository {
     //Order
@@ -21,9 +21,5 @@ export abstract class OrderRepository {
     abstract findManyNotFilter(): Promise<Order[]>
     abstract addCautionInOrder(id: string, file_caution: string): Promise<void>
 
-    //OrderItem
-    abstract patchTrayOrder(id: string, amount_of_tray: number): Promise<void>
-    abstract findOneOrderItem(fk_categoryOrderItem: string, fk_order: string, fk_revenue: string): Promise<OrderItem>
-    abstract UpdateOrderItemHomologate(data: PatchHomologateOrder): Promise<void>
-    abstract findAllOrdersInProcess(): Promise<any>
+ 
 }

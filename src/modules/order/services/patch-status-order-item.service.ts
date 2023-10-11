@@ -4,6 +4,7 @@ import { PatchStatusOrderItemDto } from '../dto/patch-status-order-item.';
 import { IngredientsRepository } from 'src/modules/ingredients/repository/contract/IngredientsRepository';
 import { IngredientControlRepository } from 'src/modules/ingredient_control/repository/contract/IngredientControlRepository';
 import { RevenuesRepository } from 'src/modules/revenue/repository/contract/RevenuesRepository';
+import { OrderItemRepository } from 'src/modules/order_item/repository/contract/OrderItemRepository';
 
 
 @Injectable()
@@ -11,6 +12,7 @@ export class PatchStatusOrderItemService {
 
   constructor(
     private readonly orderRepository: OrderRepository,
+    private readonly orderItemRepository: OrderItemRepository,
     private ingredientControlRepository: IngredientControlRepository,
     private readonly revenuesRepository: RevenuesRepository,
     private ingredientsRepository: IngredientsRepository
@@ -25,7 +27,7 @@ export class PatchStatusOrderItemService {
         throw new NotFoundException("Pedido não encontrado")
       }
 
-      const orderItem = await this.orderRepository.findOneOrderItem(fk_categoryOrderItem, id, fk_revenue);
+      const orderItem = await this.orderItemRepository.findOneOrderItem(fk_categoryOrderItem, id, fk_revenue);
       if (orderItem.homologate != "EM_HOMOLOGACAO") {
         throw new BadRequestException("Item em Pedido ja foi atualizado.")
       }
