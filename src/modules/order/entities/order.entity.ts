@@ -10,6 +10,9 @@ export class Order {
     valueOrder: number
     fk_orderstatus: string
     file_caution?: string
+    file_invoice?: string
+    invoice_number?: string
+    file_payment_voucher?: string
     fk_user: string
     order_type: OrderType
     orderBatchItem?: OrderBatchItem

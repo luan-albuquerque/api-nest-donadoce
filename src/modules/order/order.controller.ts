@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe,UploadedFiles, ParseIntPipe, Patch, Param, Put, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, UploadedFiles, ParseIntPipe, Patch, Param, Put, UseInterceptors } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
@@ -21,6 +21,10 @@ import { multerOptionsCaution } from 'src/shared/http/middlewares/multerCaution.
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { AddCautionInOrder } from './dto/add-caution-in-order.dto';
 import { FindOrderItemInHomologateService } from './services/find-order-item-in-homologate.service';
+import { AddInvoiceInOrder } from './dto/add-invoice-in-order.dto';
+import { PatchAddInvoiceOrderService } from './services/patch-add-invoice-order.service';
+import { AddPaymentVoucherInOrder } from './dto/add-payment-voucher-in-order.dto';
+import { PatchAddPaymentVoucherOrderService } from './services/patch-add-payment-voucher-order.service';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -37,7 +41,9 @@ export class OrderController {
     private readonly patchDisabledOrderService: PatchDisabledOrderService,
     private readonly findManyOrderInProcess: FindManyOrderInProcess,
     private readonly patchAddCautionOrderService: PatchAddCautionOrderService,
-    private readonly findOrderItemInHomologateService: FindOrderItemInHomologateService
+    private readonly findOrderItemInHomologateService: FindOrderItemInHomologateService,
+    private readonly patchAddInvoiceOrderService: PatchAddInvoiceOrderService,
+    private readonly patchAddPaymentVoucherOrderService: PatchAddPaymentVoucherOrderService
   ) { }
 
 
@@ -114,7 +120,7 @@ export class OrderController {
   }
 
 
- 
+
   @Post("caution/:id")
   @UseInterceptors(
     FileFieldsInterceptor(
@@ -180,12 +186,12 @@ export class OrderController {
   }
 
   @Get("inProcess")
-  @ApiOperation({ summary: "Lista de pedidos em processamento", description: "Lista de pedidos Lanche 1, Lanche 2 do dia atual e Dejejum do dia seguinte que estão no status em processamento"})
+  @ApiOperation({ summary: "Lista de pedidos em processamento", description: "Lista de pedidos Lanche 1, Lanche 2 do dia atual e Dejejum do dia seguinte que estão no status em processamento" })
   async findProductInProcess() {
-    
+
     const data = await this.findManyOrderInProcess.execute();;
 
-    return  data;
+    return data;
   }
 
   @Patch(':id')
@@ -232,4 +238,54 @@ export class OrderController {
 
     await this.findOrderItemInHomologateService.execute(fk_order);
   }
+
+  @Patch("invoice/:id")
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'file_invoice', maxCount: 1 },
+      ],
+      multerOptionsCaution,
+    ),
+  )
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: "EndPoint para adição e atualização de nota fiscal em pedido", description: "Voce pode atualizar tando o numero quanto o pedido" })
+  async addInvoice(
+    @Param('id') id: string,
+    @UploadedFiles() files: any,
+    @Body() addInvoiceInOrder: AddInvoiceInOrder
+  ) {
+
+    const file_invoice = files ? files.file_invoice ? files.file_invoice[0].filename : null : null;
+    await this.patchAddInvoiceOrderService.execute(id, file_invoice, files.file_invoice[0].path, addInvoiceInOrder.number_invoice);
+  }
+
+  @Patch("payment_voucher/:id")
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'file_payment_voucher', maxCount: 1 },
+      ],
+      multerOptionsCaution,
+    ),
+  )
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: "EndPoint para adição de comprovante de pagamento", description: "Voce pode atualizar tando inumeras vezes até ser finalizado" })
+  async addPaymentVouncher(
+    @Param('id') id: string,
+    @UploadedFiles() files: any,
+    @Body() addPaymentVoucherInOrder: AddPaymentVoucherInOrder,
+    @Req() req
+
+  ) {
+
+    const file_payment_voucher = files ? files.file_payment_voucher ? files.file_payment_voucher[0].filename : null : null;
+    await this.patchAddPaymentVoucherOrderService.execute(req.user.id, id, file_payment_voucher, files.file_payment_voucher[0].path);
+  
+  }
+
+
+
+
+  
 }

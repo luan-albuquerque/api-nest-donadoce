@@ -16,12 +16,12 @@ export class CreateOrderBatch {
     // @ApiProperty({ type: 'string', format: 'binary', required: false })
     // file_caution?: string
 
-    @ApiProperty({ type: 'string', format: 'binary', required: false })
-    file_payment_voucher?: string
+    // @ApiProperty({ type: 'string', format: 'binary', required: false })
+    // file_payment_voucher?: string
 
     file_invoice_absolute?: string
     // file_caution_absolute?: string
-    file_payment_voucher_absolute?: string
+    // file_payment_voucher_absolute?: string
 
     @IsString({ message: 'invoice_number precisa ser string' })
     @IsNotEmpty({ message: 'invoice_number não pode esvaziar' })

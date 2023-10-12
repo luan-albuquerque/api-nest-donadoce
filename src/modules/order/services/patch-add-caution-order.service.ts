@@ -31,7 +31,7 @@ export class PatchAddCautionOrderService {
                 throw new NotFoundException("Pedido ja possui cautela")
             }
 
-            this.orderRepository.addCautionInOrder(id, file);
+            await this.orderRepository.addCautionInOrder(id, file);
 
         } catch (error) {
             await GenerateLogs.generate(error)

@@ -34,8 +34,8 @@ export class OrderBatchController {
   ) {
 
     const file_invoice = files ? files.file_invoice ? files.file_invoice[0].filename : null : null;
-    const file_caution = files ? files.file_caution ? files.file_caution[0].filename : null : null;
-    const file_payment_voucher = files ? files.file_payment_voucher ? files.file_payment_voucher[0].filename : null : null;
+    // const file_caution = files ? files.file_caution ? files.file_caution[0].filename : null : null;
+    // const file_payment_voucher = files ? files.file_payment_voucher ? files.file_payment_voucher[0].filename : null : null;
 
     const bodyform = Object(createOrderBatch)
 
@@ -50,8 +50,8 @@ export class OrderBatchController {
       // file_caution_absolute: files.file_caution[0].path,
       file_invoice: file_invoice,
       file_invoice_absolute: files.file_invoice[0].path,
-      file_payment_voucher: file_payment_voucher,
-      file_payment_voucher_absolute:  files.file_payment_voucher[0].path,
+      // file_payment_voucher: file_payment_voucher,
+      // file_payment_voucher_absolute:  files.file_payment_voucher[0].path,
     }
 
     await this.createOrderBatchService.execute(newData);

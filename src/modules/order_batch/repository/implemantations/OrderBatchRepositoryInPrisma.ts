@@ -56,8 +56,8 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                 fk_user_open_orderbatch: createOrderBatch.userOpenOrderBatch,
                 fk_client: createOrderBatch.fk_client,
                 file_invoice: createOrderBatch.file_invoice,
-                file_payment_voucher: createOrderBatch.file_payment_voucher,
                 invoice_number: createOrderBatch.invoice_number,
+                file_payment_voucher: null,
                 OrderBatchItem: {
                     createMany: {
                         data: createOrderBatch.createOrderBatchItem,

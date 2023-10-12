@@ -20,6 +20,8 @@ export abstract class OrderRepository {
     abstract findManyOrderByClientNotOrderBatch(fk_client: string): Promise<Order[]>
     abstract findManyNotFilter(): Promise<Order[]>
     abstract addCautionInOrder(id: string, file_caution: string): Promise<void>
+    abstract addPaymentVoucherInOrder(id: string, file_payment_voucher: string): Promise<void>
+    abstract addInvoiceInOrder(id: string, file_invoice: string, number_invoice: string): Promise<void>
 
  
 }

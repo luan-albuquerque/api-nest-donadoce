@@ -136,7 +136,7 @@ model Revenues {
   id                       String                 @id @default(uuid())
   description              String                 @unique
   value                    Float
-  value_defined_by_revenue Float?                
+  value_defined_by_revenue Float?
   yield_per_quantity       Int?
   time_in_hours            Int?
   base_max_amount          Int
@@ -203,25 +203,28 @@ model ItemMenu {
 model CategoryOrderItem {
   id          String      @id @default(uuid())
   description String
-  order_type  Order_type? 
+  order_type  Order_type?
   time        DateTime?   @db.Time()
   OrderItem   OrderItem[]
 }
 
 model Order {
-  id             String          @id @default(uuid())
-  numberOrder    Int             @unique() @default(autoincrement())
-  dateOrder      DateTime        @default(now())
-  valueOrder     Float
-  order_type     Order_type? // Tipo de pedido -> Programado e Coffe
-  amount_of_tray Int?
-  file_caution   String?
-  fk_orderstatus String
-  fk_user        String
-  user           User            @relation(fields: [fk_user], references: [id])
-  orderStatus    OrderStatus     @relation(fields: [fk_orderstatus], references: [id])
-  orderItem      OrderItem[]
-  orderBatchItem OrderBatchItem?
+  id                   String          @id @default(uuid())
+  numberOrder          Int             @unique() @default(autoincrement())
+  dateOrder            DateTime        @default(now())
+  valueOrder           Float
+  order_type           Order_type? // Tipo de pedido -> Programado e Coffe
+  amount_of_tray       Int?
+  file_caution         String?
+  file_invoice         String?
+  invoice_number       String?
+  file_payment_voucher String?
+  fk_orderstatus       String
+  fk_user              String
+  user                 User            @relation(fields: [fk_user], references: [id])
+  orderStatus          OrderStatus     @relation(fields: [fk_orderstatus], references: [id])
+  orderItem            OrderItem[]
+  orderBatchItem       OrderBatchItem?
 }
 
 model OrderStatus {
@@ -262,7 +265,7 @@ model RevenuePerClient {
 model OrderBatch {
   id                      String           @id @default(uuid())
   file_invoice            String
-  file_payment_voucher    String
+  file_payment_voucher    String?
   invoice_number          String
   numberOrderBatch        Int              @default(autoincrement())
   fk_client               String
@@ -295,7 +298,6 @@ model ControlProductionProduct {
   order_type           Order_type
   amount_actual        Int
 }
-
 
 model ControlProductionClient {
   id                   String     @id @default(uuid())

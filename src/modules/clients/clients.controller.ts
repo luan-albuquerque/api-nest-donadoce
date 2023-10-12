@@ -103,10 +103,6 @@ export class ClientsController {
     return this.deleteClientService.execute(id);
   }
 
-  @Patch('revision/:fk_order')
-  @ApiOperation({ summary: "Adicionar e modificar nota fiscal do client" })
-  async revisionClient(@Param('fk_order') id: string) {
 
-  }
 
 }

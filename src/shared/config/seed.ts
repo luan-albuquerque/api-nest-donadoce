@@ -95,6 +95,10 @@ async function main() {
       {
         id: "55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4",
         description: "Cancelado"
+      },
+      {
+        id: "fer762d-erjr345d4s5f-dfkj3kd-39dsu49dshn3",
+        description: "Finalizado"
       }
     ]
   })

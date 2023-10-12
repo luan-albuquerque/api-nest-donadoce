@@ -12,6 +12,8 @@ import { CreateOrderProgrammedService } from './services/create-order-programmed
 import { CreateOrderCoffeService } from './services/create-order-coffe.service';
 import { PatchAddCautionOrderService } from './services/patch-add-caution-order.service';
 import { FindOrderItemInHomologateService } from './services/find-order-item-in-homologate.service';
+import { PatchAddInvoiceOrderService } from './services/patch-add-invoice-order.service';
+import { PatchAddPaymentVoucherOrderService } from './services/patch-add-payment-voucher-order.service';
 
 @Module({
   imports:[
@@ -29,7 +31,9 @@ import { FindOrderItemInHomologateService } from './services/find-order-item-in-
     FindManyOrderInProcess,
     CreateOrderCoffeService,
     PatchAddCautionOrderService,
-    FindOrderItemInHomologateService
+    FindOrderItemInHomologateService,
+    PatchAddInvoiceOrderService,
+    PatchAddPaymentVoucherOrderService
   ]
 })
 export class OrderModule {}
