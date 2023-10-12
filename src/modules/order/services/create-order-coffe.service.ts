@@ -31,6 +31,10 @@ export class CreateOrderCoffeService {
           if (!revenue) {
             throw new NotFoundException(`Receita não encontrada - fk_revenue: ${item.fk_revenue}`)
           }
+          
+          if(item.method_of_preparation != "frozen" && item.method_of_preparation != "roast"){
+            throw new NotFoundException(`Method_of_preparation not found`)
+          }
 
           const inter = interAll.find((iInter) => iInter.fk_revenue === item.fk_revenue);
           var value = revenue.value
