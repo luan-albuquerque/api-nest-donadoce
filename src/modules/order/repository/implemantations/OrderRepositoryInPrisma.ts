@@ -162,6 +162,12 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 dateOrder: true,
                 numberOrder: true,
                 order_type: true,
+                amount_of_tray: true,
+                file_invoice: true,
+                file_payment_voucher: true,
+                invoice_number: true,
+                fk_orderstatus: true,
+                fk_user: true,
                 file_caution: true,
                 user: {
 
@@ -177,6 +183,8 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                     select: {
                         homologate: true,
                         of_menu: true,
+                        method_of_preparation: true,
+                        delivery_date: true,
                         categoryOrderItem: {
                             select: {
                                 description: true,
@@ -267,6 +275,10 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 numberOrder: true,
                 order_type: true,
                 file_caution: true,
+                amount_of_tray: true,
+                file_invoice: true,
+                file_payment_voucher: true,
+                invoice_number: true,
                 orderItem: {
                     select: {
                         categoryOrderItem: {
@@ -274,6 +286,8 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                                 description: true,
                             }
                         },
+                        delivery_date: true,
+                        method_of_preparation: true,
                         homologate: true,
                         of_menu: true,
                         amountItem: true,
