@@ -1,10 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors, UploadedFiles, UploadedFile, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors, UploadedFiles, Param, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateOrderBatch } from './dto/create_order_batch.dto';
 import { FindManyOrderBatchService } from './services/find-many-order-batch.service';
 import { CreateOrderBatchService } from './services/create-order-batch.service';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { multerOptionsOrderBatch } from 'src/shared/http/middlewares/multerOrderBatch.middleware';
+import { AddPaymentVoucherOrderBatch } from './dto/add_payment_voucher_order_batch.dto';
+import { AddPaymentVoucherInOrderBatchService } from './services/add-payment-voucher-in-order-batch.service';
 
 
 @Controller('order_batch')
@@ -13,7 +15,8 @@ import { multerOptionsOrderBatch } from 'src/shared/http/middlewares/multerOrder
 export class OrderBatchController {
   constructor(
     private readonly findManyOrderBatchService: FindManyOrderBatchService,
-    private readonly createOrderBatchService: CreateOrderBatchService
+    private readonly createOrderBatchService: CreateOrderBatchService,
+    private readonly addPaymentVoucherInOrderBatchService: AddPaymentVoucherInOrderBatchService
   ) { }
 
 
@@ -22,8 +25,6 @@ export class OrderBatchController {
     FileFieldsInterceptor(
       [
         { name: 'file_invoice', maxCount: 1 },
-        { name: 'file_caution', maxCount: 1 },
-        { name: 'file_payment_voucher', maxCount: 1 },
       ],
       multerOptionsOrderBatch,
     ),
@@ -107,18 +108,26 @@ export class OrderBatchController {
   }
 
 
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'file_payment_voucher', maxCount: 1 },
+      ],
+      multerOptionsOrderBatch,
+    ),
+  )
+  @ApiConsumes('multipart/form-data')
+  @Patch(":id")
+  @ApiOperation({ summary: "EndPoint para adicionar comprovante de pagamento" })
+  async addPaymentVoucher(
+    @Param("id") id: string,
+    @Body() addPaymentVoucherOrderBatch: AddPaymentVoucherOrderBatch,
+    @UploadedFiles() files: any
+  ) {
+    const file_payment_voucher = files ? files.file_invoice ? files.file_payment_voucher[0].filename : null : null;
 
-  // @Get(":id")
-  // @ApiOperation({ summary: "EndPoint para listagem de pedidos", description: "Listagem de pedidos, obs: esta listando os do admin também por questões de resjuste" })
-  // async findAllByClient(
-  //   @Req() req,
-  //   @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
-  //   @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
-
-  // ) {
-
-
-  // }
+    await this.addPaymentVoucherInOrderBatchService.execute(id, file_payment_voucher, files.file_payment_voucher[0].path);
+  }
 
 
 }

@@ -13,11 +13,23 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async addPaymentVoucher(id: string, file: string): Promise<void> {
+        await this.prisma.orderBatch.update({
+            where: {
+                id,
+            },
+            data: {
+                file_payment_voucher: file
+            }
+        }).catch(() => {
+            this.prisma.$disconnect()
+        })
+    }
 
     //Não atualizei por conta de não saber se ia usar
     async update(id: string, updateOrderBatch: UpdateOrderBatch): Promise<void> {
         await this.prisma.orderBatch.update({
-            where:{
+            where: {
                 id,
             },
             data: {
@@ -41,7 +53,7 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                 OrderBatchItem: true,
             },
             where: {
-               id,
+                id,
             },
         }).finally(() => {
             this.prisma.$disconnect()
@@ -69,7 +81,7 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
             this.prisma.$disconnect()
         })
     }
- 
+
 
     async findAllOrderBatch({ fk_client, invoice_number, numberOrderBatch, skip, take }: FilterOrderBatch): Promise<OrderBatch[]> {
         var data: OrderBatch[] = await this.prisma.orderBatch.findMany({

@@ -10,7 +10,7 @@ import * as fs from 'fs/promises';
 import { UpdateOrderBatch } from '../dto/update_order_batch.dto';
 
 @Injectable()
-export class UpdateOrderBatchService {
+export class AddPaymentVoucherInOrderBatchService {
 
   constructor(
     private readonly orderBatchRepository: OrderBatchRepository,
@@ -18,7 +18,7 @@ export class UpdateOrderBatchService {
   ) { }
 
 
-  async execute(id: string, updateOrderBatch: UpdateOrderBatch) {
+  async execute(id: string, file_payment_voucher: string, file_path: string) {
 
 
 
@@ -26,18 +26,25 @@ export class UpdateOrderBatchService {
     var orderBatchAllReadyExist = await this.orderBatchRepository.findOneOrderBatch(id);
 
     if (!orderBatchAllReadyExist) {
-      fs.access(updateOrderBatch.file_absolute).then(() => {
-        fs.unlink(updateOrderBatch.file_absolute)
-      })
+      this.deleteFile(file_path);
       throw new NotFoundException('Lote não encontrado.')
     }
 
-    // orderBatchAllReadyExist.fk_client = !updateOrderBatch.fk_client ? orderBatchAllReadyExist.invoice_file : updateOrderBatch.fk_client
-    // orderBatchAllReadyExist.invoice_number = !updateOrderBatch.invoice_number ? orderBatchAllReadyExist.invoice_file : updateOrderBatch.invoice_number
-    // orderBatchAllReadyExist.file_invoice = !updateOrderBatch.invoice_file ? orderBatchAllReadyExist.file_invoice : updateOrderBatch.invoice_file
-   
-    
 
+    await this.orderBatchRepository.addPaymentVoucher(id, file_payment_voucher).then(async () => {
+      orderBatchAllReadyExist.OrderBatchItem.map(async (item) => {
+        await this.orderRepository.addPaymentVoucherInOrder(item.fk_order, file_payment_voucher);
+      })
+    })
+
+
+
+  }
+
+  async deleteFile(path_absolute: string) {
+    fs.access(path_absolute).then(() => {
+      fs.unlink(path_absolute)
+    })
   }
 
 }
