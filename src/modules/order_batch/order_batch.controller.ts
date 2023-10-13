@@ -7,6 +7,8 @@ import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express
 import { multerOptionsOrderBatch } from 'src/shared/http/middlewares/multerOrderBatch.middleware';
 import { AddPaymentVoucherOrderBatch } from './dto/add_payment_voucher_order_batch.dto';
 import { AddPaymentVoucherInOrderBatchService } from './services/add-payment-voucher-in-order-batch.service';
+import { multerOptionsPayment } from 'src/shared/http/middlewares/multerPaymentmiddleware';
+import { multerOptionsInvoice } from 'src/shared/http/middlewares/multerInvoicemiddleware';
 
 
 @Controller('order_batch')
@@ -26,7 +28,7 @@ export class OrderBatchController {
       [
         { name: 'file_invoice', maxCount: 1 },
       ],
-      multerOptionsOrderBatch,
+      multerOptionsInvoice,
     ),
   )
   @ApiConsumes('multipart/form-data')
@@ -113,7 +115,7 @@ export class OrderBatchController {
       [
         { name: 'file_payment_voucher', maxCount: 1 },
       ],
-      multerOptionsOrderBatch,
+      multerOptionsPayment,
     ),
   )
   @ApiConsumes('multipart/form-data')

@@ -72,6 +72,8 @@ import { OrderItemModule } from './modules/order_item/order-item.module';
 
         { method: RequestMethod.ALL, path: "/img_revenue/(.*)" },
         { method: RequestMethod.ALL, path: "/caution/(.*)" },
+        { method: RequestMethod.ALL, path: "/invoice/(.*)" },
+        { method: RequestMethod.ALL, path: "/payment/(.*)" },
         { method: RequestMethod.ALL, path: "/order_batch/(.*)" },
         { method: RequestMethod.POST, path: "/session" },
         { method: RequestMethod.POST, path: '/session/send-email' },

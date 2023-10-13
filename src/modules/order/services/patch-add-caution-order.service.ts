@@ -26,11 +26,6 @@ export class PatchAddCautionOrderService {
                 throw new NotFoundException("Pedido não pode ter cautela adicionado pois não está 'em processamento'")
             }
 
-            if (order.file_caution) {
-                this.deleteFile(file_path);
-                throw new NotFoundException("Pedido ja possui cautela")
-            }
-
             await this.orderRepository.addCautionInOrder(id, file);
 
         } catch (error) {
