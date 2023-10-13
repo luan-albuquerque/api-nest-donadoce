@@ -27,7 +27,7 @@ export class PatchAddInvoiceOrderService {
 
             }
 
-            if (order.fk_orderstatus == "1c69c120002-575f34-1c69-be56-0242ac1201c69" || order.fk_orderstatus == "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af") {
+            if (order.fk_orderstatus != "1c69c120002-575f34-1c69-be56-0242ac1201c69" && order.fk_orderstatus != "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af") {
                 throw new BadRequestException("Para adicionar nota fiscal o pedido deve está com staus 'Revisão Admin' ou 'Entregue'")
             }
             
