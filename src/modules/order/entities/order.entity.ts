@@ -8,6 +8,8 @@ export class Order {
     numberOrder: number
     dateOrder: Date
     valueOrder: number
+    amount_of_boxes?: number
+    comment_by_client?: string
     fk_orderstatus: string
     file_caution?: string
     file_invoice?: string
