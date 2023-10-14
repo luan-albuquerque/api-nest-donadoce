@@ -9,6 +9,8 @@ import CreateClientService from './services/create-client.service';
 import DeleteClientService from './services/delete-client.service';
 import UpdateClientService from './services/update-client.service';
 import { PaginationOptions } from './dto/pagination-options.dto';
+import { PatchStatusOrderByClientService } from './services/patch-order-status.service';
+import { PatchStatusOrderDTO } from './dto/patch-status-order.dto';
 @ApiTags("Clients")
 @Controller('clients')
 export class ClientsController {
@@ -17,7 +19,8 @@ export class ClientsController {
     private readonly findOneClientService: FindOneClientService,
     private readonly createClientService: CreateClientService,
     private readonly deleteClientService:DeleteClientService,
-    private readonly updateClientService: UpdateClientService
+    private readonly updateClientService: UpdateClientService,
+    private readonly patchStatusOrderByClientService: PatchStatusOrderByClientService
   ) { }
 
 
@@ -101,6 +104,17 @@ export class ClientsController {
   })
   remove(@Param('id') id: string) {
     return this.deleteClientService.execute(id);
+  }
+
+  
+  @Patch("order/:fk_order")
+  @ApiOperation({ summary: "Atualiza status do pedido e adiciona um comentario" })
+  async UpdateItensOfOrder(
+    @Param('fk_order') fk_order: string,
+    @Body() patchStatusOrderDTO: PatchStatusOrderDTO
+  ) {
+
+    await this.patchStatusOrderByClientService.execute(fk_order,patchStatusOrderDTO.fk_order_Status, patchStatusOrderDTO.comment);
   }
 
 

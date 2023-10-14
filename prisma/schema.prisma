@@ -215,6 +215,8 @@ model Order {
   valueOrder           Float
   order_type           Order_type? // Tipo de pedido -> Programado e Coffe
   amount_of_tray       Int?
+  amount_of_boxes      Int?
+  comment_by_client    String?
   file_caution         String?
   file_invoice         String?
   invoice_number       String?

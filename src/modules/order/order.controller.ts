@@ -207,7 +207,7 @@ export class OrderController {
   @ApiOperation({ summary: "EndPoint para atualizar e adicionar bandejas em pedidos'" })
   async updateTryInOrder(@Param('id') id: string, @Body() data: PatchTrayOrderDto) {
 
-    await this.patchTrayOrderService.execute(id, data.amount_of_tray)
+    await this.patchTrayOrderService.execute(id, data.amount_of_tray, data.amount_of_boxes)
   }
 
 

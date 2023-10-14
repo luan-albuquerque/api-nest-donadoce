@@ -17,6 +17,19 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async patchStatusByClient(id: string, fk_status_order: string, comment: string): Promise<void> {
+        await this.prisma.order.update({
+            data: {
+                fk_orderstatus: fk_status_order,
+                comment_by_client: comment
+            },
+            where: {
+                id,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
     
 
     async addPaymentVoucherInOrder(id: string, file_payment_voucher: string): Promise<void> {

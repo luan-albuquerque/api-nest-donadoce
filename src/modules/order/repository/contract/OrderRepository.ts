@@ -12,6 +12,7 @@ export abstract class OrderRepository {
     //Order
     abstract create(data: CreateOrderAlternativeDto): Promise<void>
     abstract patchStatus(id: string, fk_status_order: string): Promise<void>
+    abstract patchStatusByClient(id: string, fk_status_order: string, comment: string): Promise<void>
     abstract patchStatusOrderItem(id: string, data: PatchStatusOrderItemDto): Promise<void>
     abstract findManyByClient(data: ListByClientOrderDTO): Promise<OrderAlternative[]>
     abstract findMany(data: ListByAdminOrderDTO): Promise<OrderAdmin[]>

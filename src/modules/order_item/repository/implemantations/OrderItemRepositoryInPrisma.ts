@@ -65,12 +65,13 @@ export class OrderItemRepositoryInPrisma implements OrderItemRepository {
         })
     }
 
-    async patchTrayOrder(id: string, amount_of_tray: number): Promise<void> {
+    async patchTrayOrder(id: string, amount_of_tray: number, amount_of_boxes: number): Promise<void> {
 
         try {
             await this.prisma.order.updateMany({
                 data: {
                     amount_of_tray,
+                    amount_of_boxes,
                 },
                 where: {
                     id: id,

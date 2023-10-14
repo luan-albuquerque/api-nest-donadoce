@@ -10,6 +10,7 @@ import CreateClientService from './services/create-client.service';
 import BCryptHash from './providers/implementations/BCryptHash';
 import DeleteClientService from './services/delete-client.service';
 import UpdateClientService from './services/update-client.service';
+import { PatchStatusOrderByClientService } from './services/patch-order-status.service';
 
 @Module({
   imports: [DatabaseModule, 
@@ -26,6 +27,7 @@ import UpdateClientService from './services/update-client.service';
     FindOneClientService,
     DeleteClientService,
     UpdateClientService,
+    PatchStatusOrderByClientService,
     BCryptHash,
     BCryptHashPassword,
   ]

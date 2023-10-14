@@ -6,7 +6,7 @@ import { PatchItemInOrderDTO } from "../../dto/patch-item-in-order-programmed.dt
 
 export abstract class OrderItemRepository {
        //OrderItem
-       abstract patchTrayOrder(id: string, amount_of_tray: number): Promise<void>
+       abstract patchTrayOrder(id: string, amount_of_tray: number,  amount_of_boxes: number): Promise<void>
        abstract findOneOrderItem(fk_categoryOrderItem: string, fk_order: string, fk_revenue: string): Promise<OrderItem>
        abstract UpdateOrderItemHomologate(data: PatchHomologateOrder): Promise<void>
        abstract findAllOrdersInProcess(): Promise<any>

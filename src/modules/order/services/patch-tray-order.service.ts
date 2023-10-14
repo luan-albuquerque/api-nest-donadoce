@@ -13,7 +13,7 @@ export class PatchTrayOrderService {
         private readonly orderRepository: OrderRepository
     ) { }
 
-    async execute(id: string, amount_of_tray: number) {
+    async execute(id: string, amount_of_tray: number ,  amount_of_boxes: number) {
         try {
 
             const order = await this.orderRepository.findById(id)
@@ -21,7 +21,7 @@ export class PatchTrayOrderService {
                 throw new NotFoundException("Pedido não encontrado")
             }
 
-            await this.orderItemRepository.patchTrayOrder(id, amount_of_tray);
+            await this.orderItemRepository.patchTrayOrder(id, amount_of_tray, amount_of_boxes);
 
         } catch (error) {
             await GenerateLogs.generate(error)
