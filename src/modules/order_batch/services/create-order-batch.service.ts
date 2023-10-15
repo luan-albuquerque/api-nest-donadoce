@@ -34,13 +34,13 @@ export class CreateOrderBatchService {
 
         var orderSem = orderSemOrderBatch.find((t) => t.id === item.fk_order)
 
-        if (  orderSem.fk_orderstatus == "1c69c120002-575f34-1c69-be56-0242ac1201c69" || 
-        orderSem.fk_orderstatus == "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" ||
-        orderSem.fk_orderstatus == "789850813-1c69-11ee-be56-c691200020241") {
-          this.deleteFile(createOrderBatch.file_invoice_absolute);
+      //   if (  orderSem.fk_orderstatus != "1c69c120002-575f34-1c69-be56-0242ac1201c69" &&
+      //   orderSem.fk_orderstatus != "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" &&
+      //   orderSem.fk_orderstatus != "789850813-1c69-11ee-be56-c691200020241") {
+      //     this.deleteFile(createOrderBatch.file_invoice_absolute);
 
-          throw new BadRequestException("Para adicionar nota fiscal o pedido deve está com staus 'Revisão Admin' ou 'Entregue' Erro: " + orderSem.numberOrder)
-      }
+      //     throw new BadRequestException("Para adicionar nota fiscal o pedido deve está com staus 'Revisão Admin' ou 'Entregue' Erro: " + orderSem.numberOrder)
+      // }
 
         if (!orderSem && orderSem.file_invoice != null && orderSem.fk_orderstatus != "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af") {
 

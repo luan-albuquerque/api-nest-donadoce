@@ -22,22 +22,25 @@ export class PatchAddInvoiceOrderService {
             }
 
 
-            if(order.fk_orderstatus == "fer762d-erjr345d4s5f-dfkj3kd-39dsu49dshn3"){
+            if (order.fk_orderstatus == "fer762d-erjr345d4s5f-dfkj3kd-39dsu49dshn3") {
                 throw new BadRequestException("Pedido ja foi finalizado")
 
             }
 
             if (
-            order.fk_orderstatus == "1c69c120002-575f34-1c69-be56-0242ac1201c69" || 
-            order.fk_orderstatus == "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" ||
-            order.fk_orderstatus == "789850813-1c69-11ee-be56-c691200020241"
-            
-            ) {
-                throw new BadRequestException("Para adicionar nota fiscal o pedido deve está com staus 'Revisão Admin', 'Em entrega' ou 'Entregue'")
-            }
-            
+                order.fk_orderstatus == "1c69c120002-575f34-1c69-be56-0242ac1201c69" ||
+                order.fk_orderstatus == "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" ||
+                order.fk_orderstatus == "789850813-1c69-11ee-be56-c691200020241"
 
-           await this.orderRepository.addInvoiceInOrder(id, file, number_invoice);
+            ) {
+                await this.orderRepository.addInvoiceInOrder(id, file, number_invoice);
+
+            } else {
+                throw new BadRequestException("Para adicionar nota fiscal o pedido deve está com staus 'Revisão Admin', 'Em entrega' ou 'Entregue'")
+
+            }
+
+
 
         } catch (error) {
             this.deleteFile(file_path);
