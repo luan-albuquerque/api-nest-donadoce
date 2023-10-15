@@ -41,7 +41,7 @@ export class PatchStatusOrderByClientService {
 
     } catch (error) {
 
-      throw new InternalServerErrorException("Erro no servidor")
+      throw new InternalServerErrorException("Erro: " + error.message)
 
     }
 
