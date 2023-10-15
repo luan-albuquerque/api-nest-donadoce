@@ -35,6 +35,11 @@ export class CreateOrderDto {
     @IsNotEmpty({ message: 'Variável fk_menu não pode ser vazia' })
     @ApiProperty()
     fk_menu: string;
+
+    @IsString({ message: 'Variável fk_company precisa ser string' })
+    @IsNotEmpty({ message: 'Variável fk_company não pode ser vazia' })
+    @ApiProperty()
+    fk_company: string;
     
     @ApiProperty({ type: CreateOrderItemDto, isArray: true})
     @Type(()=> CreateOrderItemDto)

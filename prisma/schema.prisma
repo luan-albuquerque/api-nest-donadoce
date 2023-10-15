@@ -168,6 +168,7 @@ model Company {
   createdAt      DateTime         @default(now())
   updateAt       DateTime?
   Client_Company Client_Company[]
+  Order          Order[]
 }
 
 model Client_Company {
@@ -224,7 +225,9 @@ model Order {
   file_payment_voucher String?
   fk_orderstatus       String
   fk_user              String
+  fk_company           String?
   user                 User            @relation(fields: [fk_user], references: [id])
+  company              Company?         @relation(fields: [fk_company], references: [id])
   orderStatus          OrderStatus     @relation(fields: [fk_orderstatus], references: [id])
   orderItem            OrderItem[]
   orderBatchItem       OrderBatchItem?

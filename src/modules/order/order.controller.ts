@@ -27,6 +27,8 @@ import { AddPaymentVoucherInOrder } from './dto/add-payment-voucher-in-order.dto
 import { PatchAddPaymentVoucherOrderService } from './services/patch-add-payment-voucher-order.service';
 import { multerOptionsPayment } from 'src/shared/http/middlewares/multerPaymentmiddleware';
 import { multerOptionsInvoice } from 'src/shared/http/middlewares/multerInvoicemiddleware';
+import { FindManyOrderRoutesService } from './services/find-many-order-routes.service';
+import { OrderType } from './types/ordertype.type';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -45,9 +47,25 @@ export class OrderController {
     private readonly patchAddCautionOrderService: PatchAddCautionOrderService,
     private readonly findOrderItemInHomologateService: FindOrderItemInHomologateService,
     private readonly patchAddInvoiceOrderService: PatchAddInvoiceOrderService,
-    private readonly patchAddPaymentVoucherOrderService: PatchAddPaymentVoucherOrderService
+    private readonly patchAddPaymentVoucherOrderService: PatchAddPaymentVoucherOrderService,
+    private readonly findManyOrderRoutesService: FindManyOrderRoutesService
   ) { }
 
+  @Get('kambamRoute')
+  @ApiOperation({ summary: "Lista de pedidos com prioridade" })
+  @ApiQuery({
+    name: 'statusOrder',
+    required: false,
+    type: Number,
+  })
+  async kambamRoute(
+    @Query('statusOrder') statusOrder = undefined,
+  ): Promise<any> {
+    
+    const orderType: OrderType = statusOrder == 1 ? "programmed" : "coffe";
+    
+    return await this.findManyOrderRoutesService.execute(orderType);
+  }
 
   @ApiBody({
     type: CreateOrderDto,
@@ -268,8 +286,8 @@ export class OrderController {
       [
         { name: 'file_payment_voucher', maxCount: 1 },
       ],
-      multerOptionsPayment 
-         ),
+      multerOptionsPayment
+    ),
   )
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: "EndPoint para adição de comprovante de pagamento", description: "Voce pode atualizar tando inumeras vezes até ser finalizado" })
@@ -283,11 +301,11 @@ export class OrderController {
 
     const file_payment_voucher = files ? files.file_payment_voucher ? files.file_payment_voucher[0].filename : null : null;
     await this.patchAddPaymentVoucherOrderService.execute(req.user.id, id, file_payment_voucher, files.file_payment_voucher[0].path);
-  
+
   }
 
 
 
 
-  
+
 }

@@ -10,6 +10,7 @@ import { Order } from "../../entities/order.entity";
 import { PatchStatusOrderItemDto } from "../../dto/patch-status-order-item.";
 import { PatchHomologateOrder } from "../../dto/patch-homologate-order.dto";
 import { OrderItem } from "../../../order_item/entities/order-item.entity";
+import { OrderType } from "../../types/ordertype.type";
 
 
 @Injectable()
@@ -17,6 +18,47 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async findManyOrderInRoute(date_inicial: Date, date_final: Date, orderType: OrderType): Promise<Order[]> {
+        return await this.prisma.order.findMany({
+            include: {
+                orderItem: {
+                    include: {
+                        revenues: true,
+                    },
+                },
+                company: true,
+                user: true,
+      
+            },
+            where: {
+                order_type: orderType,
+                fk_orderstatus: "789850813-1c69-11ee-be56-c691200020241",
+                orderItem: {
+                    every: {
+                        AND: [{
+                            delivery_date: {
+                                gte: date_inicial
+                            },
+                        },
+                        {
+                            delivery_date: {
+                                lte: date_final
+                            }
+                        }]
+                    }
+                },
+            },
+            orderBy: {
+                company: {
+                    priority: "asc",
+                },
+                
+                
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
     async patchStatusByClient(id: string, fk_status_order: string, comment: string): Promise<void> {
         await this.prisma.order.update({
             data: {
@@ -30,7 +72,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             this.prisma.$disconnect()
         })
     }
-    
+
 
     async addPaymentVoucherInOrder(id: string, file_payment_voucher: string): Promise<void> {
         await this.prisma.order.update({
@@ -73,10 +115,10 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
     }
 
-    
-   
-    
-   
+
+
+
+
     async patchStatusOrderItem(id: string, { fk_categoryOrderItem, fk_revenue, status_order_item }: PatchStatusOrderItemDto): Promise<void> {
 
         await this.prisma.orderItem.updateMany({
@@ -151,7 +193,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     }
     async findOne(numberOrder: number): Promise<Order[]> {
         const data = await this.prisma.order.findMany({
-          
+
             where: {
                 numberOrder,
             }
@@ -177,7 +219,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 order_type: true,
                 amount_of_tray: true,
                 amount_of_boxes: true,
-                comment_by_client: true, 
+                comment_by_client: true,
                 file_invoice: true,
                 file_payment_voucher: true,
                 invoice_number: true,
@@ -261,13 +303,14 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         return data;
     }
 
-    async create({ createOrderItemDto, dateOrder, fk_user, fk_orderstatus, valueOrder, order_type }: CreateOrderAlternativeDto): Promise<void> {
+    async create({ createOrderItemDto, dateOrder, fk_user, fk_orderstatus, valueOrder, order_type, fk_company }: CreateOrderAlternativeDto): Promise<void> {
 
         await this.prisma.order.create({
             data: {
                 fk_user,
                 fk_orderstatus,
                 valueOrder,
+                fk_company,
                 dateOrder,
                 order_type,
                 orderItem: {

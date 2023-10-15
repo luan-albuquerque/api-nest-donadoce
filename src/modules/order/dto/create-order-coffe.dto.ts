@@ -29,6 +29,10 @@ class CreateOrderCoffeItemDto {
 
 export class CreateOrderCoffeDto {
 
+    @IsString({ message: 'Variável fk_company precisa ser string' })
+    @IsNotEmpty({ message: 'Variável fk_company não pode ser vazia' })
+    @ApiProperty()
+    fk_company: string;
 
     @ApiProperty({ type: CreateOrderCoffeItemDto, isArray: true})
     @Type(()=> CreateOrderCoffeItemDto)

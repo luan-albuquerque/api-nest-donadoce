@@ -1,3 +1,4 @@
+import { Revenue } from "src/modules/revenue/entities/revenue.entity"
 import { MethodOfPreparationType } from "../../order/types/method-of-preparation.type"
 import { OrderType } from "../../order/types/ordertype.type"
 
@@ -10,6 +11,7 @@ export class OrderItem {
     homologate: string
     dateOrderItem: Date
     amountItem: number
-    delivery_date: Date;
+    delivery_date: Date
     method_of_preparation: MethodOfPreparationType
+    revenues?: Revenue
 }

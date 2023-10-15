@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { CreateCompanyService } from './services/create-company.service';
@@ -11,6 +11,7 @@ import { RemoveCompanyService } from './services/remove-company.service';
 import { PatchPriorityCompanyService } from './services/patch-priority-company.service';
 import { PatchPriorityCompanyDTO } from './dto/patch-priority-company.dto';
 import { FindAllPriorityCompanyService } from './services/find-all-by-priority-company.service';
+import { FindAllCompanyByClientService } from './services/find-all-company-by-client.service';
 
 @ApiTags('Company')
 @ApiBearerAuth()
@@ -23,7 +24,8 @@ export class CompanyController {
     private readonly updateCompanyService: UpdateCompanyService,
     private readonly removeCompanyService: RemoveCompanyService,
     private readonly patchPriorityCompanyService: PatchPriorityCompanyService,
-    private readonly findAllPriorityCompanyService: FindAllPriorityCompanyService
+    private readonly findAllPriorityCompanyService: FindAllPriorityCompanyService,
+    private readonly findAllCompanyByClientService: FindAllCompanyByClientService
 
   ) { }
 
@@ -42,6 +44,18 @@ export class CompanyController {
   async findManyPriority() {
   
     return await this.findAllPriorityCompanyService.execute();
+  }
+
+
+  
+  @ApiOperation({ summary: "Lista de todas as unidadades pelo Login do Token "})
+  @Get("clientsByToken")
+  async findAllByClient(
+    @Req() req
+  ) {
+    return await this.findAllCompanyByClientService.execute(
+      req.user.id,
+    );
   }
 
   @ApiOperation({ summary: "Criação de empresa vinclado a um cliente ", description: "O endpoint deve possuir um cliente exemplo: Ao criar Empresa Sansung, a mesma deve possuir o cliente Sodexo" })

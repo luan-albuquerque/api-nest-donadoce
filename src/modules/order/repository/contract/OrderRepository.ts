@@ -7,6 +7,7 @@ import { Order } from "../../entities/order.entity";
 import { PatchStatusOrderItemDto } from "../../dto/patch-status-order-item.";
 import { PatchHomologateOrder } from "../../dto/patch-homologate-order.dto";
 import { OrderItem } from "../../../order_item/entities/order-item.entity";
+import { OrderType } from "../../types/ordertype.type";
 
 export abstract class OrderRepository {
     //Order
@@ -23,6 +24,7 @@ export abstract class OrderRepository {
     abstract addCautionInOrder(id: string, file_caution: string): Promise<void>
     abstract addPaymentVoucherInOrder(id: string, file_payment_voucher: string): Promise<void>
     abstract addInvoiceInOrder(id: string, file_invoice: string, number_invoice: string): Promise<void>
+    abstract findManyOrderInRoute(date_inicial: Date, date_final: Date, orderType: OrderType): Promise<Order[]>
 
  
 }

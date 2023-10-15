@@ -70,6 +70,7 @@ export class CreateOrderCoffeService {
         dateOrder: data,
         valueOrder: valueTotal,
         fk_user: fk_user,
+        fk_company: createOrderCoffeDto.fk_company,
         order_type: 'coffe',
         createOrderItemDto: createOrderItemDtoAlt,
       }

@@ -8,6 +8,7 @@ import { RemoveCompanyService } from './services/remove-company.service';
 import { UpdateCompanyService } from './services/update-company.service';
 import { FindAllPriorityCompanyService } from './services/find-all-by-priority-company.service';
 import { PatchPriorityCompanyService } from './services/patch-priority-company.service';
+import { FindAllCompanyByClientService } from './services/find-all-company-by-client.service';
 
 @Module({
   imports: [DatabaseModule],
@@ -19,7 +20,8 @@ import { PatchPriorityCompanyService } from './services/patch-priority-company.s
     UpdateCompanyService, 
     RemoveCompanyService,
     FindAllPriorityCompanyService,
-    PatchPriorityCompanyService
+    PatchPriorityCompanyService,
+    FindAllCompanyByClientService
   ]
 })
 export class CompanyModule { }
