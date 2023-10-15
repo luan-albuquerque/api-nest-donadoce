@@ -114,7 +114,7 @@ export class ClientsController {
     @Body() patchStatusOrderDTO: PatchStatusOrderDTO
   ) {
 
-    await this.patchStatusOrderByClientService.execute(fk_order,patchStatusOrderDTO.fk_order_Status, patchStatusOrderDTO.comment);
+    await this.patchStatusOrderByClientService.execute(fk_order,patchStatusOrderDTO.fk_order_status, patchStatusOrderDTO.comment);
   }
 
 
