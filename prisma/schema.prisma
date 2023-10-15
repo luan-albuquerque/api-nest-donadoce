@@ -157,6 +157,7 @@ model Revenues {
 
 model Company {
   id             String           @id @default(uuid())
+  priority       Int              @unique @default(autoincrement())
   corporate_name String
   cnpj           String           @unique
   county         String?

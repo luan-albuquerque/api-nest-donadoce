@@ -7,6 +7,9 @@ export abstract class CompanyRepository {
     abstract findById(id: string):Promise<Company>
     abstract findByCNPJ(cnpj: string ): Promise<Company>
     abstract findAll(): Promise<Company[]>
+    abstract findAllPriority(): Promise<Company[]>
     abstract update(id: string, updateCompanyDto: UpdateCompanyDto): Promise<void>
     abstract remove(id: string): Promise<void>
+    abstract patchPriority(id: string, priority: number): Promise<void>
+    abstract findPriority(priority: number): Promise<Company>
 }

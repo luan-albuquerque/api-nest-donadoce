@@ -8,8 +8,38 @@ import { UpdateCompanyDto } from "../../dto/update-company.dto";
 @Injectable()
 export class CompanyRepositoryInPrisma implements CompanyRepository {
     constructor(private prisma: PrismaService) { }
+    async findAllPriority(): Promise<Company[]> {
+        return await this.prisma.company.findMany({
+            orderBy: {
+                priority: "asc",
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
+    async findPriority(priority: number): Promise<Company> {
+        return await this.prisma.company.findUnique({
+            where: {
+                priority,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
+    async patchPriority(id: string, priority: number): Promise<void> {
+        await this.prisma.company.update({
+            data: {
+                priority
+            },
+            where: {
+                id,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
 
-   
+
     async findAll(): Promise<Company[]> {
         const data = await this.prisma.company.findMany({
 
@@ -30,10 +60,10 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
                 cep: updateCompanyDto.cep,
                 cnpj: updateCompanyDto.cnpj,
                 county: updateCompanyDto.county,
-                district:updateCompanyDto.district,
+                district: updateCompanyDto.district,
                 uf: updateCompanyDto.uf,
                 updateAt: new Date(),
-                
+
             },
         }).catch(async (error) => {
             await this.prisma.$disconnect()
@@ -57,7 +87,7 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
                 cep: createCompanyDto.cep,
                 cnpj: createCompanyDto.cnpj,
                 county: createCompanyDto.county,
-                district:createCompanyDto.district,
+                district: createCompanyDto.district,
                 uf: createCompanyDto.uf,
                 createdAt: new Date()
             }
@@ -66,7 +96,7 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
         })
     }
 
-    
+
     async findById(id: string): Promise<Company> {
         const data = await this.prisma.company.findUnique({
             where: {

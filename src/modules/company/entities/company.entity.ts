@@ -6,6 +6,7 @@ export class Company {
     cnpj: string
     county: string
     district: string
+    priority?: number
     uf: string
     address: string
     cep: string
