@@ -33,8 +33,8 @@ export class PatchStatusOrderByClientService {
         throw new UnauthorizedException("Pedido não está com o status 'Revisão Client'")
       }
 
-      if (fk_order_status == "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" || fk_order_status == "fer762d-erjr345d4s5f-dfkj3kd-39dsu49dshn3") {
-        throw new UnauthorizedException("O status so pode ser 'Revisão Client' ou 'Finalizado'");
+      if (fk_order_status == "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" ) {
+        throw new UnauthorizedException("O status so pode ser 'Revisão Admin'");
       }
     
       await this.orderRepository.patchStatusByClient(id, fk_order_status, comment);
