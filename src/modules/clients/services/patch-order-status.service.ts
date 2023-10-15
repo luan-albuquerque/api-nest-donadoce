@@ -15,7 +15,7 @@ export class PatchStatusOrderByClientService {
 
   async execute(id: string, fk_order_status: string, comment: string) {
 
-    try {
+    
 
       const order = await this.orderRepository.findById(id);
       const client = await this.clientsRepository.findById(order.fk_user);
@@ -33,17 +33,13 @@ export class PatchStatusOrderByClientService {
         throw new UnauthorizedException("Pedido não está com o status 'Revisão Client'")
       }
 
-      if (fk_order_status == "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" ) {
+      if (fk_order_status != "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" ) {
         throw new UnauthorizedException("O status so pode ser 'Revisão Admin'");
       }
     
       await this.orderRepository.patchStatusByClient(id, fk_order_status, comment);
 
-    } catch (error) {
-
-      throw new InternalServerErrorException("Erro: " + error.message)
-
-    }
+    
 
 
   }
