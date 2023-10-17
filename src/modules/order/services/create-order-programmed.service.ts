@@ -21,7 +21,7 @@ export class CreateOrderProgrammedService {
 
 
   async execute(fk_user: string, createOrderDto: CreateOrderDto) {
-    
+
     const createOrderItemDtoAlt = []
     var valueTotal = 0
     const data = new Date();
@@ -76,7 +76,7 @@ export class CreateOrderProgrammedService {
           revenuesAproved.push({
             fk_revenue: item.fk_revenue,
             amountItem: item.amountItem,
-           })
+          })
         })
       );
 
@@ -87,7 +87,7 @@ export class CreateOrderProgrammedService {
           if (!revenue) {
             throw new NotFoundException(`Receita não encontrada em itens fora do cardapio ${revenue.description}.  Error: fk_revenue: ${item.fk_revenue}`)
           }
-          
+
           const menu = menuSeleted.itemMenu.find((menuItemS) => menuItemS.fk_revenues === item.fk_revenue)
 
           if (menu) {
@@ -113,7 +113,7 @@ export class CreateOrderProgrammedService {
             method_of_preparation: item.method_of_preparation,
             delivery_date: dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate(),
             amountItem: item.amountItem,
-            dateOrderItem: data,
+            dateOrderItem: dayjs().toDate(),
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             fk_revenue: item.fk_revenue,
             valueOrderItem: value
@@ -125,9 +125,9 @@ export class CreateOrderProgrammedService {
 
       const createOrderAlternativeDto: CreateOrderAlternativeDto = {
         fk_orderstatus: "022ac120002-1c69-11ee-be56-0242ac120002",
-        dateOrder: data,
+        dateOrder: dayjs().toDate(),
         valueOrder: valueTotal,
-        fk_user: fk_user,    
+        fk_user: fk_user,
         fk_company: createOrderDto.fk_company,
         order_type: 'programmed',
         createOrderItemDto: createOrderItemDtoAlt,

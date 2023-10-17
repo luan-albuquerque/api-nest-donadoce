@@ -32,8 +32,8 @@ export class CreateOrderCoffeService {
           if (!revenue) {
             throw new NotFoundException(`Receita não encontrada - fk_revenue: ${item.fk_revenue}`)
           }
-          
-          if(item.method_of_preparation != "frozen" && item.method_of_preparation != "roast"){
+
+          if (item.method_of_preparation != "frozen" && item.method_of_preparation != "roast") {
             throw new NotFoundException(`Method_of_preparation not found`)
           }
 
@@ -55,7 +55,7 @@ export class CreateOrderCoffeService {
             amountItem: item.amountItem,
             dateOrderItem: dayjs().toDate(),
             method_of_preparation: item.method_of_preparation,
-            delivery_date: item.delivery_date,
+            delivery_date: dayjs(item.delivery_date).toDate(),
             homologate: "APROVADO",
             fk_categoryOrderItem: "coffe-be56-11ee-sdsd-024dca12034542",
             fk_revenue: item.fk_revenue,
@@ -68,7 +68,7 @@ export class CreateOrderCoffeService {
 
       const createOrderAlternativeDto: CreateOrderAlternativeDto = {
         fk_orderstatus: "022ac120002-1c69-11ee-be56-0242ac120002",
-        dateOrder: data,
+        dateOrder: dayjs().toDate(),
         valueOrder: valueTotal,
         fk_user: fk_user,
         fk_company: createOrderCoffeDto.fk_company,
