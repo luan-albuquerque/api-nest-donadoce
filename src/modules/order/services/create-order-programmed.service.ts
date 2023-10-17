@@ -72,7 +72,7 @@ export class CreateOrderProgrammedService {
           createOrderItemDtoAlt.push({
             of_menu: true,
             amountItem: item.amountItem,
-            dateOrderItem: dayjs().toDate(),
+            dateOrderItem: dayjs().utc(true).toDate(),
             method_of_preparation: item.method_of_preparation,
             delivery_date: dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate(),
             homologate: "APROVADO",
@@ -120,7 +120,7 @@ export class CreateOrderProgrammedService {
             method_of_preparation: item.method_of_preparation,
             delivery_date: dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate(),
             amountItem: item.amountItem,
-            dateOrderItem: dayjs().toDate(),
+            dateOrderItem: dayjs().utc(true).toDate(),
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             fk_revenue: item.fk_revenue,
             valueOrderItem: value
@@ -132,7 +132,7 @@ export class CreateOrderProgrammedService {
 
       const createOrderAlternativeDto: CreateOrderAlternativeDto = {
         fk_orderstatus: "022ac120002-1c69-11ee-be56-0242ac120002",
-        dateOrder: dayjs().toDate(),
+        dateOrder: dayjs().utc(true).toDate(),
         valueOrder: valueTotal,
         fk_user: fk_user,
         fk_company: createOrderDto.fk_company,

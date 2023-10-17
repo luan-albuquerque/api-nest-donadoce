@@ -22,8 +22,8 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
         return await this.prisma.controlProductionClient.findMany({
             where: {
                 delivery_date: {
-                    gte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).toDate(),
-                    lte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).add(1, 'day').toDate()
+                    gte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate(),
+                    lte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).add(1, 'day').toDate()
                 },
                 order_type,
             }
@@ -104,8 +104,8 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
         return await this.prisma.controlProductionProduct.findMany({
             where: {
                 delivery_date: {
-                    gte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).toDate(),
-                    lte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).add(1, 'day').toDate()
+                    gte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate(),
+                    lte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).add(1, 'day').toDate()
                 },
                 order_type,
             }

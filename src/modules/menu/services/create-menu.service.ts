@@ -37,7 +37,7 @@ export class CreateMenuService {
 
 
         await this.menuRepository.create({ 
-            dateMenu: dayjs(dayjs(dateMenu).format("YYYY-MM-DDT00:00:00Z")).toDate(),
+            dateMenu: dayjs(dayjs(dateMenu).format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate(),
             createItensMenu 
             })
     }

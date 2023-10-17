@@ -77,9 +77,7 @@ export class AppModule implements NestModule {
     dayjs.extend(timezone);
     dayjs.tz.setDefault('America/Manaus');
 
-    console.log({dayjs_inicial: dayjs()});
-    console.log({dayjs_inicial: dayjs().toDate()});
-
+  
     consumer.apply(EnsureAuthenticatedMiddleware)
       .exclude(
 
