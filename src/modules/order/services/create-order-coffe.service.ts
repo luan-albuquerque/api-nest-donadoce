@@ -56,7 +56,7 @@ export class CreateOrderCoffeService {
           }
 
 
-          valueTotal = value + valueTotal;
+          valueTotal = (value * item.amountItem) + valueTotal;
       
 
           createOrderItemDtoAlt.push({

@@ -67,7 +67,7 @@ export class CreateOrderProgrammedService {
             throw new NotFoundException(`Quantidade em receita ${revenue.description} excede os limites definidos.`)
           }
 
-          valueTotal = value + valueTotal;
+          valueTotal = (value * item.amountItem) + valueTotal;
 
           createOrderItemDtoAlt.push({
             of_menu: true,
@@ -112,7 +112,7 @@ export class CreateOrderProgrammedService {
             value = inter.unique_value;
           }
 
-          valueTotal = value + valueTotal;
+          valueTotal = (value * item.amountItem) + valueTotal;
 
           createOrderItemDtoAlt.push({
             of_menu: false,
