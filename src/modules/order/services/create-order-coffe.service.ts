@@ -73,7 +73,13 @@ export class CreateOrderCoffeService {
 
         })
       );
-
+      console.log({
+        gte: dayjs().minute(0).second(0).millisecond(0).toDate(),
+        lte: dayjs().minute(0).second(0).millisecond(0).add(1, 'day').toDate(),
+        t: dayjs().toDate(),
+      });
+      
+    
 
       const createOrderAlternativeDto: CreateOrderAlternativeDto = {
         fk_orderstatus: "022ac120002-1c69-11ee-be56-0242ac120002",
