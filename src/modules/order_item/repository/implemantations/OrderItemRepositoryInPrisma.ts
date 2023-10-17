@@ -134,8 +134,8 @@ export class OrderItemRepositoryInPrisma implements OrderItemRepository {
                 OR: [
                     {
                         dateOrderItem: {
-                            gte: dayjs().hour(-4).minute(0).second(0).millisecond(0).toDate(),
-                            lte: dayjs().hour(-4).minute(0).second(0).millisecond(0).add(1, 'day').toDate()
+                            gte: dayjs().minute(0).second(0).millisecond(0).toDate(),
+                            lte: dayjs().minute(0).second(0).millisecond(0).add(1, 'day').toDate()
                         },
                         OR: [
                             {
