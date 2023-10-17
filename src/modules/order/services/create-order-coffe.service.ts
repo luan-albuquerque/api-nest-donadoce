@@ -5,6 +5,7 @@ import { RevenuePerClientRepository } from 'src/modules/revenue-per-client/repos
 import { CreateOrderAlternativeDto } from '../dto/create-order-alternative.dto';
 import { CreateOrderCoffeDto } from '../dto/create-order-coffe.dto';
 import * as dayjs from "dayjs"
+import { CompanyRepository } from 'src/modules/company/repository/contract/CompanyRepository';
 
 @Injectable()
 export class CreateOrderCoffeService {
@@ -12,6 +13,7 @@ export class CreateOrderCoffeService {
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly revenuesRepository: RevenuesRepository,
+    private readonly companyRepository: CompanyRepository,
     private readonly revenuePerClientRepository: RevenuePerClientRepository,
   ) { }
 
@@ -24,6 +26,12 @@ export class CreateOrderCoffeService {
     const revenueAll = await this.revenuesRepository.findByAllNotFilter();
     const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
     if (createOrderCoffeDto.createOrderCoffeItemDto) {
+
+      const company = this.companyRepository.findById(createOrderCoffeDto.fk_company);
+      if (!company) {
+        throw new NotFoundException(`Unidade não encontrada`)
+
+      }
 
       await Promise.all(
         createOrderCoffeDto.createOrderCoffeItemDto.map(async (item) => {
@@ -49,6 +57,7 @@ export class CreateOrderCoffeService {
 
 
           valueTotal = value + valueTotal;
+      
 
           createOrderItemDtoAlt.push({
             of_menu: true,

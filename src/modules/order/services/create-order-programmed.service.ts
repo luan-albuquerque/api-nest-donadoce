@@ -7,6 +7,7 @@ import { RevenuePerClientRepository } from 'src/modules/revenue-per-client/repos
 import { CreateOrderAlternativeDto } from '../dto/create-order-alternative.dto';
 import { MenuRepository } from 'src/modules/menu/repository/contract/MenuRepository';
 import * as dayjs from "dayjs"
+import { CompanyRepository } from 'src/modules/company/repository/contract/CompanyRepository';
 
 @Injectable()
 export class CreateOrderProgrammedService {
@@ -17,6 +18,7 @@ export class CreateOrderProgrammedService {
     private readonly revenuePerClientRepository: RevenuePerClientRepository,
     private readonly menuRepository: MenuRepository,
     private readonly categoryOrderItemRepository: CategoryOrderItemRepository,
+    private readonly companyRepository: CompanyRepository,
   ) { }
 
 
@@ -34,6 +36,11 @@ export class CreateOrderProgrammedService {
 
       await Promise.all(
         createOrderDto.createOrderItemDto.map(async (item) => {
+          const company = this.companyRepository.findById(createOrderDto.fk_company);
+          if (!company) {
+            throw new NotFoundException(`Unidade não encontrada`)
+
+          }
 
           const revenue = revenueAll.find((iRevenue) => iRevenue.id === item.fk_revenue);
           if (!revenue) {
