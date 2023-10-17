@@ -28,6 +28,11 @@ import { OrderBatchItemModule } from './modules/order_batch_item/order_batch_ite
 import { ControlProduction } from './modules/control_production/control-production.module';
 import { OrderItemModule } from './modules/order_item/order-item.module';
 
+import * as dayjs from "dayjs"
+import * as utc from "dayjs/plugin/utc"
+import * as timezone from "dayjs/plugin/timezone"
+
+
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -65,8 +70,16 @@ import { OrderItemModule } from './modules/order_item/order-item.module';
 })
 
 // export class AppModule {}
-  export class AppModule implements NestModule {
+export class AppModule implements NestModule {
+
   configure(consumer: MiddlewareConsumer) {
+    dayjs.extend(utc);
+    dayjs.extend(timezone);
+    dayjs.tz.setDefault('America/Manaus');
+
+    console.log({dayjs_inicial: dayjs()});
+    console.log({dayjs_inicial: dayjs().toDate()});
+
     consumer.apply(EnsureAuthenticatedMiddleware)
       .exclude(
 
