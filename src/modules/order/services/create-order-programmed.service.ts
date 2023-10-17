@@ -65,7 +65,7 @@ export class CreateOrderProgrammedService {
           createOrderItemDtoAlt.push({
             of_menu: true,
             amountItem: item.amountItem,
-            dateOrderItem: data,
+            dateOrderItem: dayjs().toDate(),
             method_of_preparation: item.method_of_preparation,
             delivery_date: dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate(),
             homologate: "APROVADO",

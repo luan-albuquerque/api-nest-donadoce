@@ -4,6 +4,7 @@ import { RevenuesRepository } from 'src/modules/revenue/repository/contract/Reve
 import { RevenuePerClientRepository } from 'src/modules/revenue-per-client/repository/contract/RevenuePerClientRepository';
 import { CreateOrderAlternativeDto } from '../dto/create-order-alternative.dto';
 import { CreateOrderCoffeDto } from '../dto/create-order-coffe.dto';
+import * as dayjs from "dayjs"
 
 @Injectable()
 export class CreateOrderCoffeService {
@@ -52,7 +53,7 @@ export class CreateOrderCoffeService {
           createOrderItemDtoAlt.push({
             of_menu: true,
             amountItem: item.amountItem,
-            dateOrderItem: data,
+            dateOrderItem: dayjs().toDate(),
             method_of_preparation: item.method_of_preparation,
             delivery_date: item.delivery_date,
             homologate: "APROVADO",
