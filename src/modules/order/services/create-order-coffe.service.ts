@@ -64,7 +64,7 @@ export class CreateOrderCoffeService {
             amountItem: item.amountItem,
             dateOrderItem: dayjs().utc(true).toDate(),
             method_of_preparation: item.method_of_preparation,
-            delivery_date: dayjs(item.delivery_date).utc(true).toDate(),
+            delivery_date: dayjs(item.delivery_date).toDate(),
             homologate: "APROVADO",
             fk_categoryOrderItem: "coffe-be56-11ee-sdsd-024dca12034542",
             fk_revenue: item.fk_revenue,
@@ -73,13 +73,7 @@ export class CreateOrderCoffeService {
 
         })
       );
-      console.log({
-        gte: dayjs().minute(0).second(0).millisecond(0).utc(true).toDate(),
-        lte: dayjs().minute(0).second(0).millisecond(0).utc(true).add(1, 'day').toDate(),
-        agora: dayjs().utc(true).toDate(),
-        agora_com_4: dayjs().utc(true).toDate(),
-      });
-      
+ 
     
 
       const createOrderAlternativeDto: CreateOrderAlternativeDto = {

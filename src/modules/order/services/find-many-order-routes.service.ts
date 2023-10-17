@@ -30,8 +30,8 @@ export class FindManyOrderRoutesService {
     
 
       const orders = await this.orderRepository.findManyOrderInRoute(
-        dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate(),
-        dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).add(1, 'day').toDate(),
+        dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).toDate(),
+        dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).add(1, 'day').toDate(),
         orderType
       );
 
