@@ -62,7 +62,7 @@ export class CreateOrderCoffeService {
           createOrderItemDtoAlt.push({
             of_menu: true,
             amountItem: item.amountItem,
-            dateOrderItem: dayjs().toDate(),
+            dateOrderItem: dayjs().hour(-4).toDate(),
             method_of_preparation: item.method_of_preparation,
             delivery_date: dayjs(item.delivery_date).toDate(),
             homologate: "APROVADO",
@@ -74,16 +74,16 @@ export class CreateOrderCoffeService {
         })
       );
       console.log({
-        gte: dayjs().minute(0).second(0).millisecond(0).toDate(),
-        lte: dayjs().minute(0).second(0).millisecond(0).add(1, 'day').toDate(),
-        t: dayjs().toDate(),
+        gte: dayjs().hour(-4).minute(0).second(0).millisecond(0).toDate(),
+        lte: dayjs().hour(-4).minute(0).second(0).millisecond(0).add(1, 'day').toDate(),
+        t: dayjs().hour(-4).toDate(),
       });
       
     
 
       const createOrderAlternativeDto: CreateOrderAlternativeDto = {
         fk_orderstatus: "022ac120002-1c69-11ee-be56-0242ac120002",
-        dateOrder: dayjs().toDate(),
+        dateOrder: dayjs().hour(-4).toDate(),
         valueOrder: valueTotal,
         fk_user: fk_user,
         fk_company: createOrderCoffeDto.fk_company,

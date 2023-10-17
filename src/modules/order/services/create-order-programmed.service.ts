@@ -72,7 +72,7 @@ export class CreateOrderProgrammedService {
           createOrderItemDtoAlt.push({
             of_menu: true,
             amountItem: item.amountItem,
-            dateOrderItem: dayjs().toDate(),
+            dateOrderItem: dayjs().hour(-4).toDate(),
             method_of_preparation: item.method_of_preparation,
             delivery_date: dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate(),
             homologate: "APROVADO",
@@ -120,7 +120,7 @@ export class CreateOrderProgrammedService {
             method_of_preparation: item.method_of_preparation,
             delivery_date: dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate(),
             amountItem: item.amountItem,
-            dateOrderItem: dayjs().toDate(),
+            dateOrderItem: dayjs().hour(-4).toDate(),
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             fk_revenue: item.fk_revenue,
             valueOrderItem: value
