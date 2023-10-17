@@ -73,7 +73,14 @@ export class CreateOrderCoffeService {
 
         })
       );
-      
+      console.log({
+        gte: dayjs().minute(0).second(0).millisecond(0).toDate(),
+        lte: dayjs().minute(0).second(0).millisecond(0).add(1, 'day').toDate(),
+        agora: dayjs().toDate(),
+        agora_com_4: dayjs().hour(-4).toDate(),
+        agora_com_newDate: dayjs(new Date()).hour(-4).toDate(),
+        newDate: new Date(),
+      });
       
     
 
