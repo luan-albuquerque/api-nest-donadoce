@@ -27,7 +27,7 @@ export class CreateOrderCoffeService {
     const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
     if (createOrderCoffeDto.createOrderCoffeItemDto) {
 
-      const company = this.companyRepository.findById(createOrderCoffeDto.fk_company);
+      const company = await this.companyRepository.findById(createOrderCoffeDto.fk_company);
       if (!company) {
         throw new NotFoundException(`Unidade não encontrada`)
 

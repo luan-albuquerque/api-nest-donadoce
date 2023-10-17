@@ -36,7 +36,7 @@ export class CreateOrderProgrammedService {
 
       await Promise.all(
         createOrderDto.createOrderItemDto.map(async (item) => {
-          const company = this.companyRepository.findById(createOrderDto.fk_company);
+          const company = await this.companyRepository.findById(createOrderDto.fk_company);
           if (!company) {
             throw new NotFoundException(`Unidade não encontrada`)
 
