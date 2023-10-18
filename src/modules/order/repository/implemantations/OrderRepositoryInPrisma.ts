@@ -18,6 +18,18 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async findOrderStatus(fk_status: string): Promise<boolean> {
+        const orderStatus = await this.prisma.orderStatus.findUnique({
+            where: {
+                id: fk_status,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return orderStatus != undefined ? true : false
+    }
+
     async findManyOrderInRoute(date_inicial: Date, date_final: Date, orderType: OrderType): Promise<Order[]> {
         return await this.prisma.order.findMany({
             include: {
@@ -28,7 +40,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 },
                 company: true,
                 user: true,
-      
+
             },
             where: {
                 order_type: orderType,
@@ -52,8 +64,8 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 company: {
                     priority: "asc",
                 },
-                
-                
+
+
             }
         }).finally(() => {
             this.prisma.$disconnect()

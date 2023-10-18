@@ -12,6 +12,7 @@ import { OrderType } from "../../types/ordertype.type";
 export abstract class OrderRepository {
     //Order
     abstract create(data: CreateOrderAlternativeDto): Promise<void>
+    abstract findOrderStatus(fk_status: string): Promise<boolean>
     abstract patchStatus(id: string, fk_status_order: string): Promise<void>
     abstract patchStatusByClient(id: string, fk_status_order: string, comment: string): Promise<void>
     abstract patchStatusOrderItem(id: string, data: PatchStatusOrderItemDto): Promise<void>
@@ -25,6 +26,7 @@ export abstract class OrderRepository {
     abstract addPaymentVoucherInOrder(id: string, file_payment_voucher: string): Promise<void>
     abstract addInvoiceInOrder(id: string, file_invoice: string, number_invoice: string): Promise<void>
     abstract findManyOrderInRoute(date_inicial: Date, date_final: Date, orderType: OrderType): Promise<Order[]>
+    
 
  
 }

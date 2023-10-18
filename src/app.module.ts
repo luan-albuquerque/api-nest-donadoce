@@ -31,6 +31,7 @@ import { OrderItemModule } from './modules/order_item/order-item.module';
 import * as dayjs from "dayjs"
 import * as utc from "dayjs/plugin/utc"
 import * as timezone from "dayjs/plugin/timezone"
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 
 @Module({
@@ -61,6 +62,7 @@ import * as timezone from "dayjs/plugin/timezone"
     OrderBatchModule,
     OrderBatchItemModule,
     ControlProduction,
+    DashboardModule,
 
   ],
   controllers: [],
