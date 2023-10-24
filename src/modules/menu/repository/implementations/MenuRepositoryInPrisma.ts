@@ -4,6 +4,7 @@ import { CreateMenuDto } from "../../dto/create-menu.dto";
 import { Menu } from "../../entities/menu.entity";
 import { PrismaService } from "src/shared/config/database/prisma/prisma.service";
 import { FiltersMenuDTO } from "../../dto/filters-menu.dto";
+import dayjs from "dayjs";
 
 
 @Injectable()
@@ -27,16 +28,16 @@ export class MenuRepositoryInPrisma implements MenuRepository {
     }
 
     async findAll({ dateMenu, skip, take, itensMenu }: FiltersMenuDTO): Promise<Menu[]> {
-        
+
         itensMenu = String(itensMenu) == 'false' ? false : true;
 
         return await this.prisma.menu.findMany({
-          
+
             select: {
                 id: true,
                 dateMenu: true,
                 itemMenu: {
-                    include:{
+                    include: {
                         revenues: itensMenu,
                     }
                 },
@@ -56,11 +57,44 @@ export class MenuRepositoryInPrisma implements MenuRepository {
         })
     }
 
+
+    async findAllToClient({ dateMenu, skip, take, itensMenu }: FiltersMenuDTO): Promise<Menu[]> {
+
+        itensMenu = String(itensMenu) == 'false' ? false : true;
+
+        return await this.prisma.menu.findMany({
+
+            select: {
+                id: true,
+                dateMenu: true,
+                itemMenu: {
+                    include: {
+                        revenues: itensMenu,
+                    }
+                },
+            },
+
+            where: {
+                is_enabled: true,
+                dateMenu: {
+                    gte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).add(2, 'day').utc(true).toDate(),
+                },
+            },
+            orderBy: {
+                dateMenu: "asc"
+            },
+            skip,
+            take
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
+
     async findOne(id: string): Promise<Menu> {
         return await this.prisma.menu.findUnique({
             include: {
                 itemMenu: {
-                    include:{
+                    include: {
                         revenues: true,
                     }
                 },
@@ -74,8 +108,8 @@ export class MenuRepositoryInPrisma implements MenuRepository {
     }
 
     async updateStatus(id: string): Promise<void> {
-         await this.prisma.menu.update({
-            data:{
+        await this.prisma.menu.update({
+            data: {
                 is_enabled: false,
             },
             where: {

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Query, DefaultValuePipe, ParseIntPipe, Req } from '@nestjs/common';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { CreateMenuService } from './services/create-menu.service';
 import { FindAllMenuService } from './services/find-all-menu.service';
@@ -64,12 +64,14 @@ export class MenuController {
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
     @Query('date') date = undefined,
     @Query('itensMenu') itensMenu = false,
+    @Req() req,
   ) {
     return await this.findAllMenuService.execute({
      skip,
      take: limit,
      itensMenu,
-     dateMenu: date
+     dateMenu: date,
+     userId: req.user.id
     });
   }
 

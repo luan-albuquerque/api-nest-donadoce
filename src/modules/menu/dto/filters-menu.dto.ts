@@ -5,5 +5,6 @@ export class FiltersMenuDTO {
     take?: number
     itensMenu?: boolean
     dateMenu?: Date
+    userId: string
 
 }
