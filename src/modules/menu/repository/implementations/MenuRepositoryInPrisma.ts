@@ -48,7 +48,7 @@ export class MenuRepositoryInPrisma implements MenuRepository {
                 dateMenu: dateMenu ? new Date(dateMenu) : undefined,
             },
             orderBy: {
-                dateMenu: "asc"
+                dateMenu: "desc"
             },
             skip,
             take
