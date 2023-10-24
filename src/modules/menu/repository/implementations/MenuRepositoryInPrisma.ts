@@ -4,7 +4,7 @@ import { CreateMenuDto } from "../../dto/create-menu.dto";
 import { Menu } from "../../entities/menu.entity";
 import { PrismaService } from "src/shared/config/database/prisma/prisma.service";
 import { FiltersMenuDTO } from "../../dto/filters-menu.dto";
-import dayjs from "dayjs";
+import * as dayjs from "dayjs";
 
 
 @Injectable()
@@ -77,7 +77,7 @@ export class MenuRepositoryInPrisma implements MenuRepository {
             where: {
                 is_enabled: true,
                 dateMenu: {
-                    gte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).add(2, 'day').utc(true).toDate(),
+                    gte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).add(1, 'day').utc(true).toDate(),
                 },
             },
             orderBy: {
