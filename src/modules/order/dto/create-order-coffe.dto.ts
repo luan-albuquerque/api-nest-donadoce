@@ -20,6 +20,10 @@ class CreateOrderCoffeItemDto {
     delivery_date: Date
 
     @ApiProperty()
+    @IsNotEmpty({ message: 'Variável delivery_date não pode ser vazio' })
+    order_time: Date
+
+    @ApiProperty()
     @IsNotEmpty({ message: 'Variável modo de preparo não pode ser vazia' })
     method_of_preparation: MethodOfPreparationType
 
