@@ -63,10 +63,10 @@ export class CreateOrderCoffeService {
 
           createOrderItemDtoAlt.push({
             of_menu: true,
-            amountItem: dat,
+            amountItem: item.amountItem,
             dateOrderItem: dayjs().utc(true).toDate(),
             method_of_preparation: item.method_of_preparation,
-            delivery_date: dayjs(item.delivery_date).toDate(),
+            delivery_date: dat,
             homologate: "APROVADO",
             fk_categoryOrderItem: "coffe-be56-11ee-sdsd-024dca12034542",
             fk_revenue: item.fk_revenue,
