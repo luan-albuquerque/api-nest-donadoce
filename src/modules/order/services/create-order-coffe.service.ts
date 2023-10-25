@@ -27,11 +27,11 @@ export class CreateOrderCoffeService {
     const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
     if (createOrderCoffeDto.createOrderCoffeItemDto) {
 
-      const company = await this.companyRepository.findById(createOrderCoffeDto.fk_company);
-      if (!company) {
-        throw new NotFoundException(`Unidade não encontrada`)
+      // const company = await this.companyRepository.findById(createOrderCoffeDto.fk_company);
+      // if (!company) {
+      //   throw new NotFoundException(`Unidade não encontrada`)
 
-      }
+      // }
 
       await Promise.all(
         createOrderCoffeDto.createOrderCoffeItemDto.map(async (item) => {
@@ -58,9 +58,12 @@ export class CreateOrderCoffeService {
 
           valueTotal = (value * item.amountItem) + valueTotal;
           
-
+          item.delivery_date = dayjs(item.delivery_date).utc(false).add(5, 'h').toDate();
+          item.order_time  = dayjs(item.order_time).utc(false).toDate();
+ 
+       
           const dat =  dayjs(`${item.delivery_date.getFullYear()}-${item.delivery_date.getMonth() + 1}-${item.delivery_date.getDate()} ${item.order_time.getHours()}:${item.order_time.getMinutes()}:${item.order_time.getSeconds()}`).toDate()
-
+         
           createOrderItemDtoAlt.push({
             of_menu: true,
             amountItem: item.amountItem,
