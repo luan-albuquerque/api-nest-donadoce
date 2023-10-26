@@ -129,7 +129,7 @@ export class OrderController {
   @ApiQuery({
     name: 'statusOrder',
     required: false,
-    type: Number,
+    type: String,
   })
 
   @Get("all")
