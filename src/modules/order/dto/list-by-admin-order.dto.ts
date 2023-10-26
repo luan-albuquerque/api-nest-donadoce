@@ -1,3 +1,4 @@
+import { OrderType } from "../types/ordertype.type"
 
 export class ListByAdminOrderDTO {
 
@@ -5,6 +6,8 @@ export class ListByAdminOrderDTO {
     take?: number
     desc_user?: string
     order_status?: string
+    orderType?: OrderType
     numberOrder?: number
+
 
 }

@@ -10,10 +10,10 @@ export class FindManyOrderService {
     private readonly orderRepository: OrderRepository
   ) { }
 
-  async execute({ desc_user, numberOrder, skip, take, order_status }: ListByAdminOrderDTO) {
+  async execute({ desc_user, numberOrder, skip, take, order_status, orderType }: ListByAdminOrderDTO) {
      
      try {
-      return await this.orderRepository.findMany({ desc_user, numberOrder, skip, take, order_status })
+      return await this.orderRepository.findMany({ desc_user, numberOrder, skip, take, order_status, orderType })
       
      } catch (error) {
 

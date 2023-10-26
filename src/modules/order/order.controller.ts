@@ -132,11 +132,18 @@ export class OrderController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
     @Query('numberOrder') numberOrder = undefined,
+    @Query('orderType') orderType = undefined,
     @Query('desc_user_or_client') desc_user = undefined,
     @Query('statusOrder') statusOrder = undefined,
 
   ) {
-    return await this.findManyOrderService.execute({ desc_user, numberOrder, skip, take: limit, order_status: statusOrder })
+    var orderTypeOfi: OrderType = undefined
+    if(orderType != undefined){
+      
+      orderType == "programmed" ? orderTypeOfi = "programmed" : orderTypeOfi = "coffe";
+
+    }
+    return await this.findManyOrderService.execute({ desc_user, numberOrder, skip, take: limit, order_status: statusOrder, orderType: orderTypeOfi })
   }
 
 
