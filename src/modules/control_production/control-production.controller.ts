@@ -47,6 +47,7 @@ export class ControlProductionController {
 
 
     @Patch("kambam/production")
+    @ApiBody({type: PatchSetControlProductionProductDto, isArray: true})
     @ApiOperation({ summary: "EndPoint para update de sequencial", description: "Rota para update de sequencial" })
 
     async patchKambam(@Body() data: PatchSetControlProductionProductDto[]) {
