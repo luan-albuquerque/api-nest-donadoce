@@ -8,6 +8,7 @@ export class ListByAdminOrderDTO {
     order_status?: string
     orderType?: OrderType
     numberOrder?: number
+    fk_client?: string
 
 
 }

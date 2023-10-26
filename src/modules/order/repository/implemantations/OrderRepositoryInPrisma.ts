@@ -222,7 +222,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
         return data;
     }
-    async findMany({ desc_user, numberOrder, skip, take, order_status, orderType }: ListByAdminOrderDTO): Promise<OrderAdmin[]> {
+    async findMany({ desc_user, numberOrder, skip, take, order_status, orderType, fk_client }: ListByAdminOrderDTO): Promise<OrderAdmin[]> {
         const data = await this.prisma.order.findMany({
             select: {
                 id: true,
@@ -282,6 +282,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             take,
             where: {
                 fk_orderstatus: order_status,
+                fk_user: fk_client,
                 user: {
                     OR: [
                         {
