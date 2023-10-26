@@ -115,6 +115,12 @@ export class OrderController {
     type: Number,
   })
   @ApiQuery({
+    name: 'orderType',
+    required: false,
+    type: String,
+  })
+
+  @ApiQuery({
     name: 'desc_user_or_client',
     required: false,
     type: String,
