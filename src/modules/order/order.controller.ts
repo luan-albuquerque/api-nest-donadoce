@@ -145,9 +145,14 @@ export class OrderController {
   ) {
     var orderTypeOfi: OrderType = undefined
     if(orderType != undefined){
-      
-      orderType == "programmed" ? orderTypeOfi = "programmed" : orderType == "coffe" ? orderTypeOfi = "coffe" : orderTypeOfi = undefined;
 
+      orderType == "programmed" ? orderTypeOfi = "programmed" : orderType == "coffe" ? orderTypeOfi = "coffe" : orderTypeOfi = undefined;
+    }
+    if(orderType.trim()  == ""){
+      orderType = undefined
+    }
+    if(desc_user.trim() == ""){
+      desc_user = undefined
     }
     return await this.findManyOrderService.execute({ desc_user, numberOrder, skip, take: limit, order_status: statusOrder, orderType: orderTypeOfi })
   }
