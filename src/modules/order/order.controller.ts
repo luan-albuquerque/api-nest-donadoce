@@ -158,11 +158,9 @@ export class OrderController {
     if(statusOrder.trim() == ""){
       statusOrder = undefined
     }
-    if(desc_user.trim() == ""){
-      desc_user = undefined
-    }
+   
     if(fk_client.trim() == ""){
-      desc_user = undefined
+      fk_client = undefined
     }
     return await this.findManyOrderService.execute({ desc_user, numberOrder, skip, take: limit, order_status: statusOrder, orderType: orderTypeOfi, fk_client })
   }
