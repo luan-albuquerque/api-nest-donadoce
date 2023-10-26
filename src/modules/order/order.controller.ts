@@ -148,8 +148,8 @@ export class OrderController {
 
       orderType == "programmed" ? orderTypeOfi = "programmed" : orderType == "coffe" ? orderTypeOfi = "coffe" : orderTypeOfi = undefined;
     }
-    if(orderType.trim()  == ""){
-      orderType = undefined
+    if(statusOrder.trim() == ""){
+      statusOrder = undefined
     }
     if(desc_user.trim() == ""){
       desc_user = undefined
