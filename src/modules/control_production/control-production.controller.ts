@@ -6,6 +6,7 @@ import { PatchUpdateSequencialService } from "./services/patch-update-sequencial
 import { OrderType } from "src/modules/order/types/ordertype.type";
 import { ModeKambamType } from "./types/modekambam.type";
 import { PatchUpdateSequencialClientService } from "./services/patch-update-sequencial-client.service";
+import { PatchSetControlProductionProductDto } from "./dtos/patch-set-control-production.dto";
 
 
 @Controller('control-production')
@@ -45,12 +46,12 @@ export class ControlProductionController {
     }
 
 
-    @Patch("kambam/:id/:seq")
+    @Patch("kambam/production")
     @ApiOperation({ summary: "EndPoint para update de sequencial", description: "Rota para update de sequencial" })
 
-    async patchKambam(@Param('id') id: string, @Param('seq') seq: number) {
+    async patchKambam(@Body() data: PatchSetControlProductionProductDto[]) {
 
-        return await this.patchUpdateSequencialService.execute(id, seq)
+        return await this.patchUpdateSequencialService.execute(data);
 
     }
 
