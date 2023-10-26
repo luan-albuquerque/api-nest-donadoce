@@ -4,6 +4,7 @@ import * as dayjs from "dayjs";
 import { IngredientsRepository } from "src/modules/ingredients/repository/contract/IngredientsRepository";
 import { UserRepository } from "src/modules/users/repository/contract/UserRepository";
 import { OrderRepository } from "src/modules/order/repository/contract/OrderRepository";
+import { OrderType } from "src/modules/order/types/ordertype.type";
 
 @Injectable()
 export class FindShoppingListService {
@@ -14,7 +15,7 @@ export class FindShoppingListService {
         private readonly ingredientsRepository: IngredientsRepository,
     ) { }
 
-    async execute(orderStatus: string = "", client: string = "", orderType: string = "") {
+    async execute(orderStatus: string = "", client: string = "", orderType: string = undefined) {
 
    
         if (client != "") {
@@ -31,12 +32,12 @@ export class FindShoppingListService {
             }
 
         }
-
-        if (orderType != "" && orderStatus != "coffe") {
-            orderStatus = "programmed"
+        var orderTypeOfi: OrderType = undefined
+        if(orderType != undefined){
+    
+          orderType == "programmed" ? orderTypeOfi = "programmed" : orderType == "coffe" ? orderTypeOfi = "coffe" : orderTypeOfi = undefined;
         }
-        
-        return await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderType);
+        return await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderTypeOfi);
 
     }
 
