@@ -32,12 +32,8 @@ export class FindShoppingListService {
             }
 
         }
-        var orderTypeOfi: OrderType = undefined
-        if(orderType != undefined){
-    
-          orderType == "programmed" ? orderTypeOfi = "programmed" : orderType == "coffe" ? orderTypeOfi = "coffe" : orderTypeOfi = undefined;
-        }
-        return await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderTypeOfi);
+        
+        return await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderType.toLowerCase());
 
     }
 
