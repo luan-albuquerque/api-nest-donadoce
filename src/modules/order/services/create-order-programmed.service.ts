@@ -68,13 +68,16 @@ export class CreateOrderProgrammedService {
           }
 
           valueTotal = (value * item.amountItem) + valueTotal;
+          menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(5, "h").utc(false).toDate()
+          
+          const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate()
 
           createOrderItemDtoAlt.push({
             of_menu: true,
             amountItem: item.amountItem,
             dateOrderItem: dayjs().utc(true).toDate(),
             method_of_preparation: item.method_of_preparation,
-            delivery_date: dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate(),
+            delivery_date: del,
             homologate: "APROVADO",
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             fk_revenue: item.fk_revenue,
@@ -111,14 +114,17 @@ export class CreateOrderProgrammedService {
           if (inter) {
             value = inter.unique_value;
           }
-
+         
           valueTotal = (value * item.amountItem) + valueTotal;
 
+          menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(5, "h").utc(false).toDate()
+
+          const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate()
           createOrderItemDtoAlt.push({
             of_menu: false,
             homologate: "EM_HOMOLOGACAO",
             method_of_preparation: item.method_of_preparation,
-            delivery_date: dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate(),
+            delivery_date: del,
             amountItem: item.amountItem,
             dateOrderItem: dayjs().utc(true).toDate(),
             fk_categoryOrderItem: item.fk_categoryOrderItem,
@@ -130,19 +136,19 @@ export class CreateOrderProgrammedService {
       );
 
 
-      const createOrderAlternativeDto: CreateOrderAlternativeDto = {
-        fk_orderstatus: "022ac120002-1c69-11ee-be56-0242ac120002",
-        dateOrder: dayjs().utc(true).toDate(),
-        valueOrder: valueTotal,
-        fk_user: fk_user,
-        fk_company: createOrderDto.fk_company,
-        order_type: 'programmed',
-        createOrderItemDto: createOrderItemDtoAlt,
-      }
+      // const createOrderAlternativeDto: CreateOrderAlternativeDto = {
+      //   fk_orderstatus: "022ac120002-1c69-11ee-be56-0242ac120002",
+      //   dateOrder: dayjs().utc(true).toDate(),
+      //   valueOrder: valueTotal,
+      //   fk_user: fk_user,
+      //   fk_company: createOrderDto.fk_company,
+      //   order_type: 'programmed',
+      //   createOrderItemDto: createOrderItemDtoAlt,
+      // }
 
 
 
-      await this.orderRepository.create(createOrderAlternativeDto)
+      // await this.orderRepository.create(createOrderAlternativeDto)
 
 
     } else {
