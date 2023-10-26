@@ -26,6 +26,10 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
                     lte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).add(1, 'day').toDate()
                 },
                 order_type,
+
+            },
+            orderBy:{
+                seq: "asc"
             }
         }).finally(() => {
             this.prisma.$disconnect();
@@ -110,6 +114,10 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
                     lte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).add(1, 'day').toDate()
                 },
                 order_type,
+                
+            },
+            orderBy:{
+                seq: "asc"
             }
         }).finally(() => {
             this.prisma.$disconnect();
