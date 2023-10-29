@@ -138,6 +138,12 @@ export class OrderController {
     type: String,
   })
 
+  @ApiQuery({
+    name: 'data',
+    required: false,
+    type: Date,
+  })
+
   @Get("all")
   @ApiOperation({ summary: "EndPoint em desenvolvimento", description: "" })
   async findAll(
@@ -148,6 +154,7 @@ export class OrderController {
     @Query('desc_user_or_client') desc_user = undefined,
     @Query('fk_client') fk_client = undefined,
     @Query('statusOrder') statusOrder = undefined,
+    @Query('data') data = undefined,
 
   ) {
     var orderTypeOfi: OrderType = undefined
@@ -162,7 +169,7 @@ export class OrderController {
     if(fk_client.trim() == ""){
       fk_client = undefined
     }
-    return await this.findManyOrderService.execute({ desc_user, numberOrder, skip, take: limit, order_status: statusOrder, orderType: orderTypeOfi, fk_client })
+    return await this.findManyOrderService.execute({ data,desc_user, numberOrder, skip, take: limit, order_status: statusOrder, orderType: orderTypeOfi, fk_client })
   }
 
 
