@@ -17,8 +17,8 @@ export class FindShoppingListService {
 
     async execute(data: Date = undefined, orderStatus: string = "", client: string = "", orderType: string = undefined) {
 
-        const dataInitial = dayjs(dayjs(data).format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate();
-        const dataFinal = dayjs(dayjs(data).format("YYYY-MM-DDT00:00:00Z")).add(1, 'day').utc(true).toDate()
+        const dataInitial = dayjs(data).utc(true).format("YYYY-MM-DD")
+        const dataFinal = dayjs(data).add(1, 'day').utc(true).format("YYYY-MM-DD")
         
         
    
@@ -36,6 +36,7 @@ export class FindShoppingListService {
             }
 
         }
+        
         
         return await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderType.toLowerCase(), dataInitial, dataFinal);
 

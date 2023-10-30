@@ -11,7 +11,7 @@ import { Prisma } from "@prisma/client";
 @Injectable()
 export class IngredientsRepositoryInPrisma implements IngredientsRepository {
     constructor(private readonly prisma: PrismaService) { }
-    async findManyOrderInProcessToListShopping(orderStatus: string, client: string, orderType: string,  dataInitial: Date, dataFinal: Date): Promise<any> {
+    async findManyOrderInProcessToListShopping(orderStatus: string, client: string, orderType: string,  dataInitial: string, dataFinal: string): Promise<any> {
         const sql = `
           select i.description,
             CAST(count(r.id)  AS INT) as "count_rev",
@@ -26,6 +26,8 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
                 where (oi.delivery_date >= '${dataInitial}' and oi.delivery_date <= '${dataFinal}' ) and o.fk_orderstatus like '%${orderStatus}%' and o.fk_user like '%${client}%' and CAST(o."order_type"  AS VARCHAR(255)) like '%${orderType}%'
                 group by i.id,i.description, i."unit_of_measurement";
         `
+
+        
         try {
             const result = await this.prisma.$queryRaw(Prisma.raw(sql)).finally(() => {
                 this.prisma.$disconnect()
