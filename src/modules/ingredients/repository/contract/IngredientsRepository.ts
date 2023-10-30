@@ -13,7 +13,7 @@ export abstract class IngredientsRepository {
     abstract findByDescription(description: string): Promise<Ingredient>
     abstract listFluxoIngredient(control: boolean): Promise<Ingredient[]>
     //Dash
-    abstract findManyOrderInProcessToListShopping(orderStatus: string, client: string, orderType: string): Promise<any>
+    abstract findManyOrderInProcessToListShopping(orderStatus: string, client: string, orderType: string, dataInitial: Date, dataFinal: Date): Promise<any>
 
 
 }

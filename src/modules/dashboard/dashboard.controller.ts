@@ -17,8 +17,9 @@ export class DashboardController {
     client,
     orderStatus,
     orderType,
+    data
   }: ShoppingListDto) {
-    return await this.findShoppingListService.execute(orderStatus, client, orderType);
+    return await this.findShoppingListService.execute(data,orderStatus, client, orderType);
   }
 
 }

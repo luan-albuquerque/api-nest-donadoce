@@ -18,7 +18,7 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
         })
     }
     async findPriority(priority: number): Promise<Company> {
-        return await this.prisma.company.findUnique({
+        return await this.prisma.company.findFirst({
             where: {
                 priority,
             }
@@ -85,11 +85,12 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
                 corporate_name: createCompanyDto.corporate_name,
                 address: createCompanyDto.address,
                 cep: createCompanyDto.cep,
+                priority: 0,
                 cnpj: createCompanyDto.cnpj,
                 county: createCompanyDto.county,
                 district: createCompanyDto.district,
                 uf: createCompanyDto.uf,
-                createdAt: new Date()
+                createdAt: new Date(),
             }
         }).catch(async (error) => {
             await this.prisma.$disconnect()

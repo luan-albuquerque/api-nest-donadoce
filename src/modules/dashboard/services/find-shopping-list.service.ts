@@ -15,8 +15,12 @@ export class FindShoppingListService {
         private readonly ingredientsRepository: IngredientsRepository,
     ) { }
 
-    async execute(orderStatus: string = "", client: string = "", orderType: string = undefined) {
+    async execute(data: Date = undefined, orderStatus: string = "", client: string = "", orderType: string = undefined) {
 
+        const dataInitial = dayjs(dayjs(data).format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate();
+        const dataFinal = dayjs(dayjs(data).format("YYYY-MM-DDT00:00:00Z")).add(1, 'day').utc(true).toDate()
+        
+        
    
         if (client != "") {
             const findClient = await this.userRepository.findById(client);
@@ -33,7 +37,7 @@ export class FindShoppingListService {
 
         }
         
-        return await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderType.toLowerCase());
+        return await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderType.toLowerCase(), dataInitial, dataFinal);
 
     }
 

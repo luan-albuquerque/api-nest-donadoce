@@ -9,4 +9,7 @@ export class ShoppingListDto {
 
     @ApiProperty()
     client?: string
+    
+    @ApiProperty()
+    data?: Date
 }
