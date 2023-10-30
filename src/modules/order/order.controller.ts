@@ -61,9 +61,9 @@ export class OrderController {
   async kambamRoute(
     @Query('statusOrder') statusOrder = undefined,
   ): Promise<any> {
-    
+
     const orderType: OrderType = statusOrder == 1 ? "programmed" : "coffe";
-    
+
     return await this.findManyOrderRoutesService.execute(orderType);
   }
 
@@ -158,18 +158,31 @@ export class OrderController {
 
   ) {
     var orderTypeOfi: OrderType = undefined
-    if(orderType != undefined){
+    var fk_clientOfi = undefined
+    var fk_status = undefined
+
+    if (orderType != undefined) {
 
       orderType == "programmed" ? orderTypeOfi = "programmed" : orderType == "coffe" ? orderTypeOfi = "coffe" : orderTypeOfi = undefined;
     }
-    if(statusOrder.trim() == ""){
-      statusOrder = undefined
+    if (statusOrder !== "undefined") {
+      fk_status = statusOrder
     }
-   
-    if(fk_client.trim() == ""){
-      fk_client = undefined
+
+    if (fk_client !== "undefined") {
+      fk_clientOfi = fk_client
     }
-    return await this.findManyOrderService.execute({ data,desc_user, numberOrder, skip, take: limit, order_status: statusOrder, orderType: orderTypeOfi, fk_client })
+
+    return await this.findManyOrderService.execute({
+      data,
+      desc_user,
+      numberOrder,
+      skip,
+      take: limit,
+      order_status: fk_status,
+      orderType: orderTypeOfi,
+      fk_client: fk_clientOfi
+    })
   }
 
 

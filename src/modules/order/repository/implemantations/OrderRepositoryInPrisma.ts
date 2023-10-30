@@ -222,9 +222,9 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
         return data;
     }
-    async findMany({ desc_user, numberOrder, skip, take, order_status, orderType, fk_client }: ListByAdminOrderDTO, dataInicial?: Date, dataFinal?: Date): Promise<OrderAdmin[]> {
+    async findMany({numberOrder, skip, take, order_status, orderType, fk_client }: ListByAdminOrderDTO, dataInicial: Date, dataFinal: Date): Promise<OrderAdmin[]> {
 
-
+   
         const data = await this.prisma.order.findMany({
             select: {
                 id: true,
@@ -286,50 +286,21 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 fk_orderstatus: order_status,
                 fk_user: fk_client,
                 orderItem: {
-                    every: {
-                        AND: [
-                            {
+                    some: {
+                    
+                    
                                 delivery_date: {
                                     gte: dataInicial,
-                                    // lte: dataFinal
-
-                                }
-                            },
-                            {
-                                delivery_date: {
                                     lte: dataFinal
 
                                 }
-                            }
-
-                        ]
+                            
+                         
 
 
 
                     }
                 },
-                user: {
-                    OR: [
-                        {
-                            Clients: {
-                                corporate_name: {
-                                    contains: desc_user,
-                                    mode: "insensitive"
-                                }
-                            },
-                        },
-                        {
-                            Person: {
-                                name: {
-                                    contains: desc_user,
-                                    mode: "insensitive"
-                                }
-                            }
-                        }
-
-                    ]
-                },
-
                 order_type: orderType,
                 numberOrder,
             },

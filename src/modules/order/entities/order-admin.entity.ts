@@ -14,6 +14,8 @@ export class OrderAdmin {
     orderItem: {
         homologate: string
         of_menu: boolean
+        method_of_preparation: any,
+        delivery_date: Date,
         categoryOrderItem: {
             description: string;
             time: Date
