@@ -29,6 +29,8 @@ import { multerOptionsPayment } from 'src/shared/http/middlewares/multerPaymentm
 import { multerOptionsInvoice } from 'src/shared/http/middlewares/multerInvoicemiddleware';
 import { FindManyOrderRoutesService } from './services/find-many-order-routes.service';
 import { OrderType } from './types/ordertype.type';
+import { FindManyOrderAllFiltersService } from './services/find-many-order-all-filters.service';
+import { FindManyOrderToBatchService } from './services/find-many-order-to-batch.service';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -48,7 +50,9 @@ export class OrderController {
     private readonly findOrderItemInHomologateService: FindOrderItemInHomologateService,
     private readonly patchAddInvoiceOrderService: PatchAddInvoiceOrderService,
     private readonly patchAddPaymentVoucherOrderService: PatchAddPaymentVoucherOrderService,
-    private readonly findManyOrderRoutesService: FindManyOrderRoutesService
+    private readonly findManyOrderRoutesService: FindManyOrderRoutesService,
+    private readonly findManyOrderAllFiltersService: FindManyOrderAllFiltersService,
+    private readonly findManyOrderToBatchService: FindManyOrderToBatchService
   ) { }
 
   @Get('kambamRoute')
@@ -352,6 +356,161 @@ export class OrderController {
 
 
 
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'numberOrder',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'orderType',
+    required: false,
+    type: String,
+  })
+
+  @ApiQuery({
+    name: 'desc_user_or_client',
+    required: false,
+    type: String,
+  })
+
+  @ApiQuery({
+    name: 'statusOrder',
+    required: false,
+    type: String,
+  })
+
+  @ApiQuery({
+    name: 'fk_client',
+    required: false,
+    type: String,
+  })
 
 
+  @Get("all2")
+  @ApiOperation({ summary: "EndPoint para listagem de pedidos ", description: "Utilizar apenas com modo Adm" })
+  async findAll2(
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
+    @Query('numberOrder') numberOrder = undefined,
+    @Query('orderType') orderType = undefined,
+    @Query('desc_user_or_client') desc_user = undefined,
+    @Query('fk_client') fk_client = undefined,
+    @Query('statusOrder') statusOrder = undefined,
+
+  ) {
+    var orderTypeOfi: OrderType = undefined
+    var fk_clientOfi = undefined
+    var fk_status = undefined
+
+    if (orderType != undefined) {
+
+      orderType == "programmed" ? orderTypeOfi = "programmed" : orderType == "coffe" ? orderTypeOfi = "coffe" : orderTypeOfi = undefined;
+    }
+    if (statusOrder !== "undefined") {
+      fk_status = statusOrder
+    }
+
+    if (fk_client !== "undefined") {
+      fk_clientOfi = fk_client
+    }
+
+    return await this.findManyOrderAllFiltersService.execute({
+      desc_user,
+      numberOrder,
+      skip,
+      take: limit,
+      order_status: fk_status,
+      orderType: orderTypeOfi,
+      fk_client: fk_clientOfi
+    })
+  }
+
+
+
+
+
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'numberOrder',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'orderType',
+    required: false,
+    type: String,
+  })
+
+  @ApiQuery({
+    name: 'statusOrder',
+    required: false,
+    type: String,
+  })
+
+  @ApiQuery({
+    name: 'fk_client',
+    required: false,
+    type: String,
+  })
+
+
+  @Get("allOrdersToBatch")
+  @ApiOperation({ summary: "EndPoint para listagem de pedidos para o Lote ", description: "Utilizar apenas com modo Adm e no modal de lotes" })
+  async findAllOrderToBatch(
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
+    @Query('numberOrder') numberOrder = undefined,
+    @Query('orderType') orderType = undefined,
+    @Query('fk_client') fk_client = undefined,
+    @Query('statusOrder') statusOrder = undefined,
+
+  ) {
+    var orderTypeOfi: OrderType = undefined
+    var fk_clientOfi = undefined
+    var fk_status = undefined
+
+    if (orderType != undefined) {
+
+      orderType == "programmed" ? orderTypeOfi = "programmed" : orderType == "coffe" ? orderTypeOfi = "coffe" : orderTypeOfi = undefined;
+    }
+    if (statusOrder !== "undefined") {
+      fk_status = statusOrder
+    }
+
+    if (fk_client !== "undefined") {
+      fk_clientOfi = fk_client
+    }
+
+    return await this.findManyOrderToBatchService.execute({
+      numberOrder,
+      skip,
+      take: limit,
+      order_status: fk_status,
+      orderType: orderTypeOfi,
+      fk_client: fk_clientOfi
+    })
+  }
+  
+
+
+  
 }

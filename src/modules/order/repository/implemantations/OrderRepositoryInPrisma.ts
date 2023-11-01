@@ -11,6 +11,7 @@ import { PatchStatusOrderItemDto } from "../../dto/patch-status-order-item.";
 import { PatchHomologateOrder } from "../../dto/patch-homologate-order.dto";
 import { OrderItem } from "../../../order_item/entities/order-item.entity";
 import { OrderType } from "../../types/ordertype.type";
+import { OrderToBatchDTO } from "../../entities/order-to-batch.entity";
 
 
 @Injectable()
@@ -18,6 +19,194 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async findManyAllToBatch({fk_client,numberOrder,orderType,order_status,skip,take}: ListByAdminOrderDTO): Promise<OrderToBatchDTO[]> {
+        
+        const data = await this.prisma.order.findMany({
+            select: {
+                id: true,
+                dateOrder: true,
+                numberOrder: true,
+                order_type: true,
+                amount_of_tray: true,
+                amount_of_boxes: true,
+                comment_by_client: true,
+                file_invoice: true,
+                file_payment_voucher: true,
+                invoice_number: true,
+                fk_orderstatus: true,
+                fk_user: true,
+                file_caution: true,
+                user: {
+
+                    select: {
+                        Clients: {
+                            select: {
+                                corporate_name: true
+                            }
+                        }
+                    }
+                },
+                // orderItem: {
+                //     select: {
+                //         homologate: true,
+                //         of_menu: true,
+                //         method_of_preparation: true,
+                //         delivery_date: true,
+                //         categoryOrderItem: {
+                //             select: {
+                //                 description: true,
+                //                 time: true,
+                //             }
+                //         },
+                //         amountItem: true,
+                //         dateOrderItem: true,
+                //         revenues: {
+                //             select: {
+                //                 description: true,
+                //                 imagem: true,
+                //             }
+                //         },
+                //         valueOrderItem: true,
+                //     }
+                // },
+                orderBatchItem:{
+                     select:{
+                        orderBatch:{
+                            select:{
+                                file_invoice: true,
+                                file_payment_voucher: true,
+                                fk_client: true,
+                                fk_user_open_orderbatch: true,
+                                invoice_number: true,
+                                numberOrderBatch: true,
+                                user:{
+                                    select:{
+                                        Clients:{
+                                            select:{
+                                                corporate_name: true,
+                                            }
+                                        }
+                                    }
+                                },
+                                userBatch:{
+                                    select:{
+                                        Clients:{
+                                            select:{
+                                                corporate_name: true,
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                     }
+                },
+                valueOrder: true,
+                orderStatus: {
+                    select: {
+                        description: true,
+                    }
+                }
+            },
+            skip,
+            take,
+            where: {
+                fk_orderstatus: order_status,
+                fk_user: fk_client,
+                order_type: orderType,
+                numberOrder,
+            },
+            orderBy: {
+                numberOrder: "desc"
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
+    async findManyAllFilter({desc_user,fk_client,numberOrder,orderType,order_status,skip,take}: ListByAdminOrderDTO): Promise<OrderAdmin[]> {
+        
+        const data = await this.prisma.order.findMany({
+            select: {
+                id: true,
+                dateOrder: true,
+                numberOrder: true,
+                order_type: true,
+                amount_of_tray: true,
+                amount_of_boxes: true,
+                comment_by_client: true,
+                file_invoice: true,
+                file_payment_voucher: true,
+                invoice_number: true,
+                fk_orderstatus: true,
+                fk_user: true,
+                file_caution: true,
+                user: {
+
+                    select: {
+                        Clients: {
+                            select: {
+                                corporate_name: true
+                            }
+                        }
+                    }
+                },
+                orderItem: {
+                    select: {
+                        homologate: true,
+                        of_menu: true,
+                        method_of_preparation: true,
+                        delivery_date: true,
+                        categoryOrderItem: {
+                            select: {
+                                description: true,
+                                time: true,
+                            }
+                        },
+                        amountItem: true,
+                        dateOrderItem: true,
+                        revenues: {
+                            select: {
+                                description: true,
+                                imagem: true,
+                            }
+                        },
+                        valueOrderItem: true,
+                    }
+                },
+                valueOrder: true,
+                orderStatus: {
+                    select: {
+                        description: true,
+                    }
+                }
+            },
+            skip,
+            take,
+            where: {
+                fk_orderstatus: order_status,
+                fk_user: fk_client,
+                user:{
+                    Clients:{
+                        corporate_name:{
+                            contains: desc_user,
+                            mode: 'insensitive',
+                        }
+                    }
+                },
+                order_type: orderType,
+                numberOrder,
+            },
+            orderBy: {
+                numberOrder: "asc"
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
     async findOrderStatus(fk_status: string): Promise<boolean> {
         const orderStatus = await this.prisma.orderStatus.findUnique({
             where: {

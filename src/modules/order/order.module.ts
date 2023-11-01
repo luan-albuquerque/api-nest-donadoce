@@ -15,6 +15,8 @@ import { FindOrderItemInHomologateService } from './services/find-order-item-in-
 import { PatchAddInvoiceOrderService } from './services/patch-add-invoice-order.service';
 import { PatchAddPaymentVoucherOrderService } from './services/patch-add-payment-voucher-order.service';
 import { FindManyOrderRoutesService } from './services/find-many-order-routes.service';
+import { FindManyOrderAllFiltersService } from './services/find-many-order-all-filters.service';
+import { FindManyOrderToBatchService } from './services/find-many-order-to-batch.service';
 
 @Module({
   imports:[
@@ -35,7 +37,9 @@ import { FindManyOrderRoutesService } from './services/find-many-order-routes.se
     FindOrderItemInHomologateService,
     PatchAddInvoiceOrderService,
     PatchAddPaymentVoucherOrderService,
-    FindManyOrderRoutesService
+    FindManyOrderRoutesService,
+    FindManyOrderAllFiltersService,
+    FindManyOrderToBatchService
   ]
 })
 export class OrderModule {}

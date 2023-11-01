@@ -8,6 +8,7 @@ import { PatchStatusOrderItemDto } from "../../dto/patch-status-order-item.";
 import { PatchHomologateOrder } from "../../dto/patch-homologate-order.dto";
 import { OrderItem } from "../../../order_item/entities/order-item.entity";
 import { OrderType } from "../../types/ordertype.type";
+import { OrderToBatchDTO } from "../../entities/order-to-batch.entity";
 
 export abstract class OrderRepository {
     //Order
@@ -18,6 +19,8 @@ export abstract class OrderRepository {
     abstract patchStatusOrderItem(id: string, data: PatchStatusOrderItemDto): Promise<void>
     abstract findManyByClient(data: ListByClientOrderDTO): Promise<OrderAlternative[]>
     abstract findMany(data: ListByAdminOrderDTO, dataInicial: Date, dataFinal: Date): Promise<OrderAdmin[]>
+    abstract findManyAllFilter(data: ListByAdminOrderDTO): Promise<OrderAdmin[]>
+    abstract findManyAllToBatch(data: ListByAdminOrderDTO): Promise<OrderToBatchDTO[]>
     abstract findOne(numberOrder: number): Promise<Order[]>
     abstract findById(id: string): Promise<Order>
     abstract findManyOrderByClientNotOrderBatch(fk_client: string): Promise<Order[]>
