@@ -8,7 +8,6 @@ export class PatchStatusOrderDTO {
     @ApiProperty()
     fk_order_status: string
 
-    @IsString({ message: 'Esta variável de comment precisa ser string' })
     @ApiProperty()
     comment?: string
 }
