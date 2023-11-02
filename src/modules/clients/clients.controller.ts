@@ -1,4 +1,4 @@
-import { Controller, Get, Post,Patch, Body, Put, Param, Delete, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post,Patch, Body, Put, Param, Delete, Query, DefaultValuePipe, ParseIntPipe, Req } from '@nestjs/common';
 
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
@@ -108,13 +108,18 @@ export class ClientsController {
 
   
   @Patch("order/:fk_order")
-  @ApiOperation({ summary: "Atualiza status do pedido e adiciona um comentario" })
+  @ApiOperation({ summary: "Atualiza status do pedido e adiciona um comentario", description: "pode servir tanto para mudar status, quanto para cancelamentos" })
   async UpdateItensOfOrder(
     @Param('fk_order') fk_order: string,
-    @Body() patchStatusOrderDTO: PatchStatusOrderDTO
+    @Body() patchStatusOrderDTO: PatchStatusOrderDTO,
+    @Req() req
   ) {
 
-    await this.patchStatusOrderByClientService.execute(fk_order,patchStatusOrderDTO.fk_order_status, patchStatusOrderDTO.comment);
+    await this.patchStatusOrderByClientService.execute(
+      fk_order, 
+      req.user.id,
+      patchStatusOrderDTO.fk_order_status, 
+      patchStatusOrderDTO.comment);
   }
 
 
