@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { OrderRepository } from '../repository/contract/OrderRepository';
 import { ListByAdminOrderDTO } from '../dto/list-by-admin-order.dto';
 import { RevenuesRepository } from 'src/modules/revenue/repository/contract/RevenuesRepository';
@@ -28,44 +28,48 @@ export class PatchOrderStatusService {
 
   async execute(id: string, fk_order_status: string) {
 
-    try {
 
-      const order = await this.orderRepository.findById(id);
-      const client = await this.clientsRepository.findById(order.fk_user);
+    const order = await this.orderRepository.findById(id);
+    const client = await this.clientsRepository.findById(order.fk_user);
 
-      if (!client) {
-        throw new UnauthorizedException("Usuario que realizou o pedido não pertencem a cadeia de usuarios cliente")
+    if (!client) {
+      throw new UnauthorizedException("Usuario que realizou o pedido não pertencem a cadeia de usuarios cliente")
+    }
+
+    if (order.fk_orderstatus == "1c69c120002-575f34-1c69-be56-0242ac1201c69") {
+      throw new UnauthorizedException("Pedido ja foi entregue")
+    }
+
+    if (fk_order_status == "022ac120002-1c69-11ee-be56-0242ac120002") {
+      throw new UnauthorizedException("Pedido não pode possui o status inicial")
+    }
+
+    if (fk_order_status == "55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4") {
+      if (
+        //Pré-Produção || Agendado || Solicitado
+        order.fk_orderstatus != "314e2828-1c69-11ee-be56-c691200020241" &&
+        order.fk_orderstatus != "11ee6828-1c69-11ee-be56-c691200020241" &&
+        order.fk_orderstatus != "022ac120002-1c69-11ee-be56-0242ac120002") {
+        throw new BadRequestException("Pedido não pode ser mais cancelado devido o status não está mais disponivel para cancelamento")
       }
+;
+      await this.orderRepository.patchStatus(id, "55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4");
 
-      if (order.fk_orderstatus == "1c69c120002-575f34-1c69-be56-0242ac1201c69") {
-        throw new UnauthorizedException("Pedido ja foi entregue")
-      }
-
-      if (fk_order_status == "022ac120002-1c69-11ee-be56-0242ac120002") {
-        throw new UnauthorizedException("Pedido não pode possui o status inicial")
-      }
-
-
-      if (fk_order_status == "55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4") {
-        throw new UnauthorizedException("Pedido não pode ser cancelado através dessa rota")
-      }
-
-
-      if (fk_order_status == "45690813-1c69-11ee-be56-c691200020241") {
-
-        await this.processIngredientes(order);
-        await this.processProductionByProduct(order);
-        await this.processProductionByClient(order, client);
-
-      }
-
-      await this.orderRepository.patchStatus(id, fk_order_status);
-
-    } catch (error) {
-
-      throw new InternalServerErrorException("Erro no servidor")
+      return;
 
     }
+
+
+    if (fk_order_status == "45690813-1c69-11ee-be56-c691200020241") {
+
+      await this.processIngredientes(order);
+      await this.processProductionByProduct(order);
+      await this.processProductionByClient(order, client);
+
+    }
+
+    await this.orderRepository.patchStatus(id, fk_order_status);
+
 
 
   }
@@ -81,7 +85,7 @@ export class PatchOrderStatusService {
         if (item.homologate == "EM_HOMOLOGACAO") {
           return;
         }
-        
+
         // Buscar dados de receitas , como ingredientes que compoem ela
         const revenue = await this.revenuesRepository.findByOne(item.fk_revenue);
 
@@ -171,7 +175,7 @@ export class PatchOrderStatusService {
   private async processIngredientes(order: Order) {
     await Promise.all(
       order.orderItem.map(async (item) => {
-        
+
         if (item.homologate == "EM_HOMOLOGACAO") {
           return;
         }
