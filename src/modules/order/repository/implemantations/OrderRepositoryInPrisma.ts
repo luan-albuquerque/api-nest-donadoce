@@ -546,6 +546,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                                 description: true,
                             }
                         },
+                        fk_revenue: true,
                         delivery_date: true,
                         method_of_preparation: true,
                         homologate: true,

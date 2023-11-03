@@ -11,6 +11,7 @@ export class OrderAlternative {
         categoryOrderItem: {
             description: string;
         },
+        fk_revenue?: string,
         amountItem: number;
         dateOrderItem: Date;
         revenues: {
