@@ -16,6 +16,7 @@ export abstract class RevenuesRepository {
         abstract findByAll(data?:FiltersRevenueDTO):Promise<Revenue[]>
         abstract findByAllNotFilter():Promise<Revenue[]>
         abstract findByAllSummarized(data?:FiltersRevenueDTO):Promise<FindAllRevenueSummarized[]>
+        abstract findByAllNotMenu(fk_menu: string):Promise<Revenue[]>
         abstract findByOneWithIngredients(id: string):Promise<Revenue>
         abstract update(id: string, updateRevenueDto:UpdateRevenueDto): Promise<void>
     

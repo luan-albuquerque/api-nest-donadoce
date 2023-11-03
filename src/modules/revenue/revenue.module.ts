@@ -7,6 +7,7 @@ import { FindOneRevenueWithIngredientService } from './services/find-one-revenue
 import { DeleteRevenueService } from './services/delete-revenue.service';
 import { UpdateRevenueService } from './services/update-revenue.service';
 import { FindAllRevenuesSummarizedService } from './services/find-all-revenues-summarized.service';
+import { FindAllRevenuesNotMenuService } from './services/find-all-revenues-not-menu.service';
 
 
 @Module({
@@ -18,7 +19,8 @@ import { FindAllRevenuesSummarizedService } from './services/find-all-revenues-s
     FindAllRevenueService, 
     FindOneRevenueWithIngredientService, 
     DeleteRevenueService,
-    UpdateRevenueService
+    UpdateRevenueService,
+    FindAllRevenuesNotMenuService
   ]
 
 })

@@ -13,6 +13,7 @@ import { CreateRevenueDto } from './dto/create-revenue.dto';
 import { UpdateRevenueService } from './services/update-revenue.service';
 import { UpdateRevenueDto } from './dto/update-revenue.dto';
 import { FindAllRevenuesSummarizedService } from './services/find-all-revenues-summarized.service';
+import { FindAllRevenuesNotMenuService } from './services/find-all-revenues-not-menu.service';
 @Controller('revenue')
 @ApiTags("Revenue")
 @ApiBearerAuth()
@@ -24,7 +25,8 @@ export class RevenueController {
     private readonly findOneRevenueWithIngredientService: FindOneRevenueWithIngredientService,
     private readonly deleteRevenueService: DeleteRevenueService,
     private readonly updateRevenueService: UpdateRevenueService,
-    private readonly findAllRevenuesSummarizedService: FindAllRevenuesSummarizedService
+    private readonly findAllRevenuesSummarizedService: FindAllRevenuesSummarizedService,
+    private readonly findAllRevenuesNotMenuService: FindAllRevenuesNotMenuService
   ) { }
 
   @Post()
@@ -121,6 +123,19 @@ export class RevenueController {
       skip,
       take: limit
     });
+  }
+
+  @ApiQuery({
+    name: 'fk_menu',
+    required: false,
+    type: String,
+  })
+  @ApiOperation({ summary: "EndPoint de listagem de todas as receitas de fora do menu", description: " " })
+  @Get("notMenu/:fk_menu")
+  async findAllNotMenu(
+    @Query('fk_menu') fk_menu = undefined,
+  ) {
+    return await this.findAllRevenuesNotMenuService.execute(fk_menu);
   }
 
 
