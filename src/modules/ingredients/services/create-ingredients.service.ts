@@ -19,6 +19,7 @@ export class CreateIngredientsService {
     }
 
     createIngredientDto.amount_actual = 0;
+    
 
     createIngredientDto.description = createIngredientDto.description.toUpperCase()
 

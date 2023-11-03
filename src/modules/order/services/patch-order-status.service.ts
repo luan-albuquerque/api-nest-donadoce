@@ -43,6 +43,25 @@ export class PatchOrderStatusService {
     if (fk_order_status == "022ac120002-1c69-11ee-be56-0242ac120002") {
       throw new UnauthorizedException("Pedido não pode possui o status inicial")
     }
+    if((
+     // Solicitado
+      order.fk_orderstatus == "314e2828-1c69-11ee-be56-c691200020241" || 
+     // Pré - Produção   
+      order.fk_orderstatus == "11ee6828-1c69-11ee-be56-c691200020241" ||
+     // Agendado     
+      order.fk_orderstatus == "022ac120002-1c69-11ee-be56-0242ac120002"  ||
+     // em pre processamento
+      order.fk_orderstatus == "45690813-1c69-11ee-be56-c691200020241"
+    ) && 
+    // Entregue
+    fk_order_status == "1c69c120002-575f34-1c69-be56-0242ac1201c69" || 
+      // Revisao admin
+    fk_order_status == "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" || 
+    // Finalizado
+    fk_order_status == "fer762d-erjr345d4s5f-dfkj3kd-39dsu49dshn3"){
+      throw new BadRequestException("Status como Solicitado Pre-Produção, Agendado e Em Processamento não podem ser mudado direatamente para Entregue, Revisao Adm ou Finalizado")
+
+    }
 
     if (fk_order_status == "55b4c3a6-4e7f-31ee-be56-0242ac12000224fe4") {
       if (
@@ -59,7 +78,7 @@ export class PatchOrderStatusService {
 
     }
 
-
+  // em processamento
     if (fk_order_status == "45690813-1c69-11ee-be56-c691200020241") {
 
       await this.processIngredientes(order);
