@@ -8,14 +8,11 @@ class RecreateItensMenuDto {
     @ApiProperty()
     fk_revenues: string
     
-    @IsNotEmpty({ message: 'Campo de max_amount não pode ser vazio' })
-    @ApiProperty()
+   
     max_amount: number
 
-    @IsNotEmpty({ message: 'Campo de min_amount não pode ser vazio' })
-    @ApiProperty()
+ 
     min_amount: number
-    @Transform(({ value }) => Number(value))
 
     revenue_value_on_the_day: number
 
