@@ -35,22 +35,24 @@ enum Homologate {
 }
 
 model User {
-  id                           String       @id @default(uuid())
+  id                           String          @id @default(uuid())
   password                     String
-  email                        String       @unique
-  is_enabled                   Boolean      @default(true)
-  is_admin                     Boolean      @default(false)
-  is_client                    Boolean      @default(false)
-  is_driver                    Boolean      @default(false)
-  is_production                Boolean      @default(false)
-  createdAt                    DateTime     @default(now())
+  email                        String          @unique
+  is_enabled                   Boolean         @default(true)
+  is_admin                     Boolean         @default(false)
+  is_client                    Boolean         @default(false)
+  is_company                   Boolean         @default(false)
+  is_driver                    Boolean         @default(false)
+  is_production                Boolean         @default(false)
+  createdAt                    DateTime        @default(now())
   updateAt                     DateTime?
   token                        Token[]
   Clients                      Client?
   Person                       Person?
+  Client_Company               Client_Company?
   Order                        Order[]
-  OrderBatchUserOpenOrderBatch OrderBatch[] @relation(name: "userOpenOrderBatch")
-  OrderBatchClient             OrderBatch[] @relation(name: "userClient")
+  OrderBatchUserOpenOrderBatch OrderBatch[]    @relation(name: "userOpenOrderBatch")
+  OrderBatchClient             OrderBatch[]    @relation(name: "userClient")
 }
 
 model Client {
@@ -157,7 +159,7 @@ model Revenues {
 
 model Company {
   id             String           @id @default(uuid())
-  priority       Int              
+  priority       Int
   corporate_name String
   cnpj           String           @unique
   county         String?
@@ -172,6 +174,7 @@ model Company {
 }
 
 model Client_Company {
+  id          String?  @unique
   fk_company  String
   fk_client   String
   fone        String   @unique
@@ -179,6 +182,7 @@ model Client_Company {
   createdAt   DateTime @default(now())
   clients     Client   @relation(fields: [fk_client], references: [id])
   company     Company  @relation(fields: [fk_company], references: [id])
+  user        User?    @relation(fields: [id], references: [id])
 
   @@id([fk_client, fk_company])
 }
@@ -227,7 +231,7 @@ model Order {
   fk_user              String
   fk_company           String?
   user                 User            @relation(fields: [fk_user], references: [id])
-  company              Company?         @relation(fields: [fk_company], references: [id])
+  company              Company?        @relation(fields: [fk_company], references: [id])
   orderStatus          OrderStatus     @relation(fields: [fk_orderstatus], references: [id])
   orderItem            OrderItem[]
   orderBatchItem       OrderBatchItem?

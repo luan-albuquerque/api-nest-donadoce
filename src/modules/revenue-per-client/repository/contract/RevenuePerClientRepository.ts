@@ -11,6 +11,7 @@ export abstract class RevenuePerClientRepository {
     abstract patchStatus(data: UpdateRevenuePerClientStatusDTO): Promise<void>
     abstract findAll(data: FiltersRevenuePerClientDTO): Promise<FindAllRevenuePerClient[]>
     abstract findAllNoFilter(): Promise<RevenuePerClient[]>
+    abstract findAllNoFilterCompany(fk_company: string): Promise<RevenuePerClient[]>
     abstract findOne(fk_revenue: string, fk_client: string): Promise<RevenuePerClient>
     abstract findRevenuesByClient(fk_client: string, skip: number, take: number): Promise<ListCrossJoinRevenueByClient[]>
     abstract findAllByUser(fk_client: string): Promise<RevenuePerClient[]>

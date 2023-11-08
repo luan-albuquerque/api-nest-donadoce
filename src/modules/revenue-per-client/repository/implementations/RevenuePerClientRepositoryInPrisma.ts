@@ -11,6 +11,35 @@ import { ListCrossJoinRevenueByClient } from '../../dto/list-cross-join-revenue-
 @Injectable()
 export class RevenuePerClientRepositoryInPrisma implements RevenuePerClientRepository {
     constructor(private prisma: PrismaService) { }
+    async findAllNoFilterCompany(fk_company: string): Promise<RevenuePerClient[]> {
+        const data = await this.prisma.revenuePerClient.findMany({
+            select: {
+                fk_client: true,
+                client: {
+                    include: {
+                        Client_Company: true,
+                    }
+                },
+                fk_revenue: true,
+                unique_value: true,
+            },
+            where: {
+                client: {
+                    AND: {
+                        Client_Company: {
+                            some: {
+                                fk_company,
+                            }
+                        }
+                    }
+                }
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
     async findRevenuesByClient(fk_client: string, skip: number, take: number): Promise<ListCrossJoinRevenueByClient[]> {
 
         const data: ListCrossJoinRevenueByClient[] = await this.prisma.$queryRaw`
@@ -38,6 +67,11 @@ export class RevenuePerClientRepositoryInPrisma implements RevenuePerClientRepos
         const data = await this.prisma.revenuePerClient.findMany({
             select: {
                 fk_client: true,
+                client: {
+                    include: {
+                        Client_Company: true,
+                    }
+                },
                 fk_revenue: true,
                 unique_value: true,
             }

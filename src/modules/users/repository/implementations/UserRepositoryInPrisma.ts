@@ -11,6 +11,7 @@ export class UserRepositoryInPrisma implements UserRepository {
             include:{
               Clients: true,
               Person: true,
+              Client_Company: true,
             },
             where: {
                 id

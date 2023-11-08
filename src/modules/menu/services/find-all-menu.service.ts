@@ -14,9 +14,11 @@ export class FindAllMenuService {
         private readonly revenuePerClientRepository: RevenuePerClientRepository
     ) { }
 
-    async execute(filtersMenuDTO: FiltersMenuDTO): Promise<Menu[]> {
+    async execute(filtersMenuDTO: FiltersMenuDTO): Promise<any> {
 
         const user = await this.userRepository.findById(filtersMenuDTO.userId);
+
+            
 
         if (user.is_client) {
             const revenuePerClient = await this.revenuePerClientRepository.findAllNoFilter()
@@ -34,8 +36,24 @@ export class FindAllMenuService {
                 })
             );
             return menus;
+        } else if (user.is_company) {
+            const menus = await this.menuRepository.findAllToClient(filtersMenuDTO)
+            // Buscar valores do cliente vinculado
+            const revenuePerClient = await this.revenuePerClientRepository.findAllNoFilterCompany(filtersMenuDTO.userId)
+
+            Promise.all(
+                menus.map((item) => {
+                    item.itemMenu.map((receitas) => {
+                        var revenue = revenuePerClient.find((busca) => receitas.fk_revenues === busca.fk_revenue && busca.fk_client === user.id)
+                        if (revenue) {
+                            receitas.revenue_value_on_the_day = revenue.unique_value
+                        }
+                    })
+                })
+            );
+            return menus;
         } else if (user.is_admin) {
-            
+
             const menus = await this.menuRepository.findAll(filtersMenuDTO)
 
 

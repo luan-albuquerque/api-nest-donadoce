@@ -5,6 +5,7 @@ export class User {
     is_enabled: boolean
     is_admin?: boolean
     is_client: boolean
+    is_company: boolean
     createdAt?: Date
     updateAt?: Date
 }
