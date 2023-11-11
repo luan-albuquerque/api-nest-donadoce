@@ -22,14 +22,13 @@ export class PatchItemInOrderProgrammedService {
 
         const order = await this.orderRepository.findById(fk_order);
 
-        if(     
+        //if(     
             //Pré-Produção || Agendado || Solicitado
-            order.fk_orderstatus != "314e2828-1c69-11ee-be56-c691200020241" && 
-            order.fk_orderstatus != "11ee6828-1c69-11ee-be56-c691200020241" &&
-            order.fk_orderstatus != "022ac120002-1c69-11ee-be56-0242ac120002" ){
-              throw new BadRequestException("Pedido não pode ser mais alterado devido o status não está mais disponivel para atualização")
-           }
+            //order.fk_orderstatus != "314e2828-1c69-11ee-be56-c691200020241" && 
+            //order.fk_orderstatus != "11ee6828-1c69-11ee-be56-c691200020241" &&
+            //order.fk_orderstatus != "022ac120002-1c69-11ee-be56-/ throw new BadRequestException("Pedido não pode ser mais alterado devido o status não está mais disponivel para atualização")
+          // }
 
-        await this.orderItemRepository.patchItemInOrder({ fk_categoryOrderItem, fk_order, fk_revenue, amountItem });
+        await this.#orderItemRepository.patchItemInOrder({ fk_categoryOrderItem, fk_order, fk_revenue, amountItem });
     }
 }
