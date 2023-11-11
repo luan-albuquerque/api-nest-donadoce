@@ -151,6 +151,7 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
         const data = await this.prisma.revenues.findFirst({
             where: {
                 description,
+                is_enabled: true,
             },
         }).finally(() => {
             this.prisma.$disconnect()
