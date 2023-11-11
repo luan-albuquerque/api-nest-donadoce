@@ -41,7 +41,7 @@ export class CreateRevenueIngredientService {
                     if (!ingredientAllExistInRevenue) {
 
                         efctiveCreateRevenueIngredientDto.push(item)
-                        value_defined_by_revenue += ingredient.value_per_serving * item.amount_ingredient;
+                        value_defined_by_revenue += item.ingredients.value_per_serving * item.amount_ingredient;
                     }
 
 

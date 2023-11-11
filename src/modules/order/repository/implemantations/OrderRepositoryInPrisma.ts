@@ -160,6 +160,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                         delivery_date: true,
                         categoryOrderItem: {
                             select: {
+                                id: true,
                                 description: true,
                                 time: true,
                             }
@@ -447,6 +448,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                         delivery_date: true,
                         categoryOrderItem: {
                             select: {
+                                id: true,
                                 description: true,
                                 time: true,
                             }
@@ -543,6 +545,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                     select: {
                         categoryOrderItem: {
                             select: {
+                                id: true,
                                 description: true,
                             }
                         },
