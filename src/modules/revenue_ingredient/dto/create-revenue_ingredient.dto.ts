@@ -18,6 +18,7 @@ export class CreateRevenueIngredientDto {
     @IsNumber()
     @IsNotEmpty({ message: 'amount_ingredient não pode ser vazio' })
     amount_ingredient: number
+    
     ingredients?: Ingredient
     revenue?: Revenue
 
