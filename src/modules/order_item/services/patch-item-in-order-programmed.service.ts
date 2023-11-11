@@ -29,6 +29,6 @@ export class PatchItemInOrderProgrammedService {
             //order.fk_orderstatus != "022ac120002-1c69-11ee-be56-/ throw new BadRequestException("Pedido não pode ser mais alterado devido o status não está mais disponivel para atualização")
           // }
 
-        await this.#orderItemRepository.patchItemInOrder({ fk_categoryOrderItem, fk_order, fk_revenue, amountItem });
+        await this.orderItemRepository.patchItemInOrder({ fk_categoryOrderItem, fk_order, fk_revenue, amountItem });
     }
 }
