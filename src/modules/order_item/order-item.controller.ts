@@ -30,7 +30,7 @@ export class OrderItemController {
     );
   }
 
-  @Delete("programmed")
+  @Delete("remove")
   @ApiOperation({ summary: "EndPoint para remove itens de pedidos" })
   async remove(
     @Body() removeItemInOrderDTO: RemoveItemInOrderDTO,
@@ -41,7 +41,7 @@ export class OrderItemController {
     );
   }
 
-  @Patch("programmed")
+  @Patch("updateQuantity")
   @ApiOperation({ summary: "EndPoint para atualização de quantidade" })
   async patch(
     @Body() patchItemInOrderDTO: PatchItemInOrderDTO,
