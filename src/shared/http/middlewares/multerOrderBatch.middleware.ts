@@ -5,7 +5,7 @@ import { extname } from 'path';
 import { v4 as uuid } from 'uuid';
 
 export const multerConfig = {
-  dest: process.cwd() + "/uploads/order_batch",
+  dest: process.cwd() + "/uploads/order_batch", 
 };
 
 export const multerOptionsOrderBatch = {
@@ -23,6 +23,9 @@ export const multerOptionsOrderBatch = {
         false,
       );
     }
+  },
+  limits: {
+    fileSize: 10 * 1024 * 1024, 
   },
   storage: diskStorage({
     destination(req, file, cb) {
