@@ -95,12 +95,8 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                 OrderBatchItem: true,
             },
             where: {
-                fk_client: {
-                    contains: fk_client,
-                },
-                invoice_number: {
-                    contains: invoice_number,
-                },
+                fk_client,
+                invoice_number,
                 numberOrderBatch: numberOrderBatch,
             },
             skip,
