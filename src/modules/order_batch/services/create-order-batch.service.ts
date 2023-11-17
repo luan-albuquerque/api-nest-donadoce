@@ -44,7 +44,7 @@ export class CreateOrderBatchService {
 
         if (!orderSem && orderSem.file_invoice != null && orderSem.fk_orderstatus != "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af") {
 
-          this.deleteFile(createOrderBatch.file_invoice_absolute);
+          // this.deleteFile(createOrderBatch.file_invoice_absolute);
 
           throw new BadRequestException('Pedido possivelmente está vinculado a um lote - fk_order: ' + item.fk_order);
 
