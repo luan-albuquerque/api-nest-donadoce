@@ -12,6 +12,7 @@ import { PatchHomologateOrder } from "../../dto/patch-homologate-order.dto";
 import { OrderItem } from "../../../order_item/entities/order-item.entity";
 import { OrderType } from "../../types/ordertype.type";
 import { OrderToBatchDTO } from "../../entities/order-to-batch.entity";
+import { OrderBatchItem } from "src/modules/order_batch_item/entities/order_batch_item.entity";
 
 
 @Injectable()
@@ -19,6 +20,17 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async findOrderUtilizetedInOrderBatch(fk_order: string): Promise<OrderBatchItem> {
+        const data = await this.prisma.orderBatchItem.findUnique({
+            where: {
+                fk_order,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data;
+    }
     async findManyAllToBatch({fk_client,numberOrder,orderType,order_status,skip,take}: ListByAdminOrderDTO): Promise<OrderToBatchDTO[]> {
         
         const data = await this.prisma.order.findMany({
@@ -367,18 +379,22 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     async findManyOrderByClientNotOrderBatch(fk_client: string): Promise<Order[]> {
         const data = await this.prisma.order.findMany({
             where: {
-                OR: [
-                    {
-                        fk_user: fk_client,
-                        orderBatchItem: null,
-                    },
-                    {
-                        fk_user: fk_client,
-                        orderBatchItem: {
-                            is_removed: true,
-                        },
-                    }
-                ]
+                // OR: [
+                //     {
+                //         fk_user: fk_client,
+                //         orderBatchItem: null,
+                //     },
+                //     {
+                //         fk_user: fk_client,
+                //         orderBatchItem: {
+                //             is_removed: true,
+                //         },
+                //     }
+                // ]
+                fk_user: fk_client,
+                orderBatchItem:{
+                    is_removed: false,
+                }
             },
             include: {
                 orderBatchItem: {

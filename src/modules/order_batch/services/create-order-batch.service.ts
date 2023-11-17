@@ -20,8 +20,8 @@ export class CreateOrderBatchService {
   async execute(createOrderBatch: CreateOrderBatch) {
 
     const orderAll: Order[] = await this.orderRepository.findManyNotFilter();
-    const orderSemOrderBatch = await this.orderRepository.findManyOrderByClientNotOrderBatch(createOrderBatch.fk_client)
-
+  
+    
     await Promise.all(
       createOrderBatch.createOrderBatchItem.map(async (item) => {
         var orderAlReadyExist = orderAll.find((order) => order.id === item.fk_order);
@@ -32,19 +32,26 @@ export class CreateOrderBatchService {
           throw new NotFoundException('Pedido ' + item.fk_order + ' não encontrado.')
         }
 
-        var orderSem = orderSemOrderBatch.find((t) => t.id === item.fk_order)
-        if(orderSem){
+        var orderSem = await this.orderRepository.findOrderUtilizetedInOrderBatch(item.fk_order);
+        var orderFK = await this.orderRepository.findById(item.fk_order);
+        
+        if (orderFK) {
 
-        if (  orderSem.fk_orderstatus != "1c69c120002-575f34-1c69-be56-0242ac1201c69" &&
-        orderSem.fk_orderstatus != "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" &&
-        orderSem.fk_orderstatus != "789850813-1c69-11ee-be56-c691200020241") {
-          this.deleteFile(createOrderBatch.file_invoice_absolute);
+          if (orderFK.fk_orderstatus != "1c69c120002-575f34-1c69-be56-0242ac1201c69" &&
+            orderFK.fk_orderstatus != "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" &&
+            orderFK.fk_orderstatus != "789850813-1c69-11ee-be56-c691200020241") {
 
-          throw new BadRequestException("Para adicionar nota fiscal o pedido deve está com staus 'Revisão Admin' ou 'Entregue' Erro: " + orderSem.numberOrder)
-      }
-    }
-    
-        if (!orderSem) {
+            this.deleteFile(createOrderBatch.file_invoice_absolute);
+
+            throw new BadRequestException("Para adicionar nota fiscal o pedido deve está com staus 'Revisão Admin' ou 'Entregue' Erro: " + orderFK.numberOrder)
+          } 
+        } 
+        else {
+          throw new BadRequestException("Pedido não encontrado. Erro: Id não encontrado " + item.fk_order)
+
+        }
+      
+        if (orderSem) {
 
           this.deleteFile(createOrderBatch.file_invoice_absolute);
 

@@ -9,6 +9,7 @@ import { PatchHomologateOrder } from "../../dto/patch-homologate-order.dto";
 import { OrderItem } from "../../../order_item/entities/order-item.entity";
 import { OrderType } from "../../types/ordertype.type";
 import { OrderToBatchDTO } from "../../entities/order-to-batch.entity";
+import { OrderBatchItem } from "src/modules/order_batch_item/entities/order_batch_item.entity";
 
 export abstract class OrderRepository {
     //Order
@@ -24,6 +25,7 @@ export abstract class OrderRepository {
     abstract findOne(numberOrder: number): Promise<Order[]>
     abstract findById(id: string): Promise<Order>
     abstract findManyOrderByClientNotOrderBatch(fk_client: string): Promise<Order[]>
+    abstract findOrderUtilizetedInOrderBatch(fk_order: string): Promise<OrderBatchItem>
     abstract findManyNotFilter(): Promise<Order[]>
     abstract addCautionInOrder(id: string, file_caution: string): Promise<void>
     abstract addPaymentVoucherInOrder(id: string, file_payment_voucher: string): Promise<void>
