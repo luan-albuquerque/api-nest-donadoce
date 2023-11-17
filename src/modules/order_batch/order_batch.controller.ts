@@ -100,7 +100,7 @@ export class OrderBatchController {
     @Query('invoice_number') invoice_number = undefined,
     @Query('numberOrderBatch') numberOrderBatch = undefined,
   ) {
-    await this.findManyOrderBatchService.execute({
+    return await this.findManyOrderBatchService.execute({
       fk_client,
       invoice_number,
       numberOrderBatch,
