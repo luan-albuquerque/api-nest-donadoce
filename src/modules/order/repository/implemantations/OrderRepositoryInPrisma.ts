@@ -137,7 +137,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
         return data;
     }
-    async findManyAllFilter({desc_user,fk_client,numberOrder,orderType,order_status,skip,take}: ListByAdminOrderDTO): Promise<OrderAdmin[]> {
+    async findManyAllFilter({desc_user,fk_client,numberOrder,orderType,order_status,skip,take}: ListByAdminOrderDTO, where: any): Promise<OrderAdmin[]> {
         
         const data = await this.prisma.order.findMany({
             select: {
@@ -197,20 +197,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             },
             skip,
             take,
-            where: {
-                fk_orderstatus: order_status,
-                fk_user: fk_client,
-                user:{
-                    Clients:{
-                        corporate_name:{
-                            contains: desc_user,
-                            mode: 'insensitive',
-                        }
-                    }
-                },
-                order_type: orderType,
-                numberOrder,
-            },
+            where,
             orderBy: {
                 numberOrder: "asc"
             }

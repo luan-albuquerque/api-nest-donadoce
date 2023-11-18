@@ -1,29 +1,74 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { OrderRepository } from '../repository/contract/OrderRepository';
 import { ListByAdminOrderDTO } from '../dto/list-by-admin-order.dto';
 import * as dayjs from "dayjs";
+import { UserRepository } from 'src/modules/users/repository/contract/UserRepository';
 
 
 @Injectable()
 export class FindManyOrderAllFiltersService {
 
   constructor(
-    private readonly orderRepository: OrderRepository
+    private readonly orderRepository: OrderRepository,
+    private readonly userRepository: UserRepository
   ) { }
 
-  async execute({desc_user = undefined, numberOrder = undefined, skip, take, order_status = undefined, orderType  = undefined, fk_client = undefined }: ListByAdminOrderDTO) {
-     
-     try {
+  async execute({ desc_user = undefined, numberOrder = undefined, skip, take, order_status = undefined, orderType = undefined, fk_client = undefined }: ListByAdminOrderDTO, listWithOrderBatchNull = false) {
 
-       
-    
-      return await this.orderRepository.findManyAllFilter({ desc_user, numberOrder, skip, take, order_status, orderType, fk_client })
+    try {
+      const order = await this.orderRepository.findOne(Number(numberOrder))
+
+      if (!order) {
+        throw new NotFoundException("Numero de pedido não encontrado")
+      }
+
+      const user = await this.userRepository.findById(fk_client)
+
+      if (!user && user.is_client == false) {
+        throw new NotFoundException("Cliente não encontrado")
+      }
+      var where: any = {
+        fk_orderstatus: order_status,
+        fk_user: fk_client,
+        user: {
+          Clients: {
+            corporate_name: {
+              contains: desc_user,
+              mode: 'insensitive',
+            }
+          }
+        },
+
+        order_type: orderType,
+        numberOrder: Number(numberOrder),
+      }
+      console.log({listWithOrderBatchNull});
       
-     } catch (error) {
+      if (listWithOrderBatchNull) {
+        where = {
+          fk_orderstatus: order_status,
+          fk_user: fk_client,
+          user: {
+            Clients: {
+              corporate_name: {
+                contains: desc_user,
+                mode: 'insensitive',
+              }
+            }
+          },
+          order_type: orderType,
+          numberOrder: Number(numberOrder),
+          orderBatchItem: null,
+        }
+      }
 
-        throw new InternalServerErrorException("Erro: " + error)
-     }
-    
+      return await this.orderRepository.findManyAllFilter({ desc_user, numberOrder, skip, take, order_status, orderType, fk_client }, where)
+
+    } catch (error) {
+
+      throw new InternalServerErrorException("Erro: " + error)
+    }
+
 
   }
 }

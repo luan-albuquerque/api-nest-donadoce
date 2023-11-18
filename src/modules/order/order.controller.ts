@@ -395,6 +395,12 @@ export class OrderController {
     type: String,
   })
 
+  @ApiQuery({
+    name: 'listWithOrderBatchNull',
+    required: false,
+    type: Number,
+  })
+
 
   @Get("all2")
   @ApiOperation({ summary: "EndPoint para listagem de pedidos ", description: "Utilizar apenas com modo Adm" })
@@ -406,11 +412,18 @@ export class OrderController {
     @Query('desc_user_or_client') desc_user = undefined,
     @Query('fk_client') fk_client = undefined,
     @Query('statusOrder') statusOrder = undefined,
+    @Query('listWithOrderBatchNull') listWithOrderBatchNull = 0,
+    
 
   ) {
     var orderTypeOfi: OrderType = undefined
     var fk_clientOfi = undefined
     var fk_status = undefined
+    var listWithOrderBatchNullOf = false;
+
+    if(listWithOrderBatchNull == 1){
+      listWithOrderBatchNullOf = true
+    }
 
     if (orderType != undefined) {
 
@@ -432,7 +445,9 @@ export class OrderController {
       order_status: fk_status,
       orderType: orderTypeOfi,
       fk_client: fk_clientOfi
-    })
+    },
+    listWithOrderBatchNullOf
+    )
   }
 
 

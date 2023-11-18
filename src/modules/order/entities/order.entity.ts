@@ -13,14 +13,14 @@ export class Order {
     valueOrder: number
     amount_of_boxes?: number
     comment_by_client?: string
-    fk_orderstatus: string
+    fk_orderstatus?: string
     fk_company?: string
     file_caution?: string
     file_invoice?: string
     invoice_number?: string
     file_payment_voucher?: string
-    fk_user: string
-    order_type: OrderType
+    fk_user?: string
+    order_type?: OrderType
     orderBatchItem?: OrderBatchItem
     orderItem?: OrderItem[]
     user?: User

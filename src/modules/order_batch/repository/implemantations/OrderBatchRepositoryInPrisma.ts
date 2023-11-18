@@ -84,7 +84,7 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
 
 
     async findAllOrderBatch({ fk_client, invoice_number, numberOrderBatch, skip, take }: FilterOrderBatch): Promise<OrderBatch[]> {
-        var data: OrderBatch[] = await this.prisma.orderBatch.findMany({
+        var data = await this.prisma.orderBatch.findMany({
             select: {
                 id: true,
                 file_invoice: true,
@@ -92,7 +92,32 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                 fk_client: true,
                 invoice_number: true,
                 numberOrderBatch: true,
-                OrderBatchItem: true,
+                user:{
+                    select:{
+                        Clients: true,
+                        id: true,
+                        email: true,
+                        is_company: true,
+                        is_enabled: true,
+                        is_client: true,
+                    }
+                },
+                OrderBatchItem: {
+                    select: {
+
+                        fk_order: true,
+                        order:{
+                            select:{
+                                id: true,
+                                dateOrder: true,
+                                file_caution: true,
+                                numberOrder: true,
+                                valueOrder: true,
+                        
+                            }
+                        },
+                    }
+                },
             },
             where: {
                 fk_client: {
@@ -101,7 +126,7 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                 invoice_number: {
                     contains: invoice_number,
                 },
-                numberOrderBatch: numberOrderBatch,
+                numberOrderBatch: numberOrderBatch != undefined ? Number(numberOrderBatch): numberOrderBatch,
             },
             skip,
             take

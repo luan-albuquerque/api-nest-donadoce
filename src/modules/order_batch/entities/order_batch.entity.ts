@@ -1,4 +1,5 @@
 import { OrderBatchItem } from "src/modules/order_batch_item/entities/order_batch_item.entity"
+import { User } from "src/modules/users/entities/user.entity"
 
 export class OrderBatch {
 
@@ -9,6 +10,7 @@ export class OrderBatch {
     fk_client: string
     invoice_number: string
     numberOrderBatch: number
-    OrderBatchItem?: OrderBatchItem[]
+    OrderBatchItem?: OrderBatchItem[];
+    user?: User
 
 }
