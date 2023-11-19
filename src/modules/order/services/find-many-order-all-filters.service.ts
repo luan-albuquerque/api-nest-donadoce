@@ -16,10 +16,13 @@ export class FindManyOrderAllFiltersService {
   async execute({ desc_user = undefined, numberOrder = undefined, skip, take, order_status = undefined, orderType = undefined, fk_client = undefined }: ListByAdminOrderDTO, listWithOrderBatchNull = false) {
 
     try {
+
+      if(numberOrder != undefined){
       const order = await this.orderRepository.findOne(Number(numberOrder))
 
-      if (!order) {
-        throw new NotFoundException("Numero de pedido não encontrado")
+        if (!order) {
+          throw new NotFoundException("Numero de pedido não encontrado")
+        }
       }
 
       const user = await this.userRepository.findById(fk_client)
