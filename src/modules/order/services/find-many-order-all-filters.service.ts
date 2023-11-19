@@ -43,7 +43,7 @@ export class FindManyOrderAllFiltersService {
         },
 
         order_type: orderType,
-        numberOrder: Number(numberOrder),
+        numberOrder: numberOrder != undefined ? Number(numberOrder) : numberOrder,
       }
       console.log({listWithOrderBatchNull});
       
@@ -60,7 +60,7 @@ export class FindManyOrderAllFiltersService {
             }
           },
           order_type: orderType,
-          numberOrder: Number(numberOrder),
+          numberOrder: numberOrder != undefined ? Number(numberOrder) : numberOrder,
           orderBatchItem: null,
         }
       }
