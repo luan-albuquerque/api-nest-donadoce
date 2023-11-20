@@ -126,7 +126,7 @@ export class OrderBatchController {
     @Body() addPaymentVoucherOrderBatch: AddPaymentVoucherOrderBatch,
     @UploadedFiles() files: any
   ) {
-    const file_payment_voucher = files ? files.file_invoice ? files.file_payment_voucher[0].filename : null : null;
+    const file_payment_voucher = files ? files.file_payment_voucher ? files.file_payment_voucher[0].filename : null : null;
 
     await this.addPaymentVoucherInOrderBatchService.execute(id, file_payment_voucher, files.file_payment_voucher[0].path);
   }
