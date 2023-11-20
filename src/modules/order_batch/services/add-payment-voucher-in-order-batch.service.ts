@@ -31,7 +31,7 @@ export class AddPaymentVoucherInOrderBatchService {
     }
 
 
-    await this.orderBatchRepository.addPaymentVoucher(id, file_payment_voucher).then(async () => {
+    await this.orderBatchRepository.addPaymentVoucher(id, file_payment_voucher).finally(async () => {
       orderBatchAllReadyExist.OrderBatchItem.map(async (item) => {
         await this.orderRepository.addPaymentVoucherInOrder(item.fk_order, file_payment_voucher);
       })
