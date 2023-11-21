@@ -12,6 +12,19 @@ export class OrderBatchItemRepositoryInPrisma implements OrderBatchItemRepositor
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async delete(id: string): Promise<void> {
+        try {
+             await this.prisma.orderBatchItem.deleteMany({
+                where:{
+                    fk_orderBatch: id,
+                }
+             })
+        } catch (error) {
+            throw new InternalServerErrorException(error)
+        } finally {
+            this.prisma.$disconnect()
+        }
+    }
     async findBy(fk_order: string, fk_orderBatch: string): Promise<OrderBatchItem> {
         try {
             return await this.prisma.orderBatchItem.findUnique({

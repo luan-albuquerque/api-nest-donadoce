@@ -13,6 +13,16 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async delete(id: string): Promise<void> {
+        await this.prisma.orderBatch.delete({
+            where: {
+                id,
+            },
+        }).catch(() => {
+            this.prisma.$disconnect()
+
+        });
+    }
     async addPaymentVoucher(id: string, file: string): Promise<void> {
         await this.prisma.orderBatch.update({
             where: {

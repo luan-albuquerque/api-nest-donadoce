@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors, UploadedFiles, Param, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors, UploadedFiles, Param, Req, Delete } from '@nestjs/common';
 import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateOrderBatch } from './dto/create_order_batch.dto';
 import { FindManyOrderBatchService } from './services/find-many-order-batch.service';
@@ -9,6 +9,7 @@ import { AddPaymentVoucherOrderBatch } from './dto/add_payment_voucher_order_bat
 import { AddPaymentVoucherInOrderBatchService } from './services/add-payment-voucher-in-order-batch.service';
 import { multerOptionsPayment } from 'src/shared/http/middlewares/multerPaymentmiddleware';
 import { multerOptionsInvoice } from 'src/shared/http/middlewares/multerInvoicemiddleware';
+import { DeleteOrderBatchService } from './services/delete-orderbatch.service';
 
 
 @Controller('order_batch')
@@ -18,7 +19,8 @@ export class OrderBatchController {
   constructor(
     private readonly findManyOrderBatchService: FindManyOrderBatchService,
     private readonly createOrderBatchService: CreateOrderBatchService,
-    private readonly addPaymentVoucherInOrderBatchService: AddPaymentVoucherInOrderBatchService
+    private readonly addPaymentVoucherInOrderBatchService: AddPaymentVoucherInOrderBatchService,
+    private readonly deleteOrderBatchService: DeleteOrderBatchService
   ) { }
 
 
@@ -129,6 +131,16 @@ export class OrderBatchController {
     const file_payment_voucher = files ? files.file_invoice ? files.file_payment_voucher[0].filename : null : null;
 
     await this.addPaymentVoucherInOrderBatchService.execute(id, file_payment_voucher, files.file_payment_voucher[0].path);
+  }
+
+
+  @Delete(":id")
+  @ApiOperation({ summary: "EndPoint para deletar lote e itens dentro do lote" })
+  async deleteOrderBatch(
+    @Param("id") id: string,
+  
+  ) {
+    return await this.deleteOrderBatchService.execute(id);
   }
 
 
