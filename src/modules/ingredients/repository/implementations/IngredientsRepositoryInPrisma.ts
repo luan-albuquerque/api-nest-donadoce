@@ -18,8 +18,8 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
        (CAST(sum(ir.amount_ingredient) AS INT)) as "quantity_to_buy_no_stock", 
         CAST((sum(ir.amount_ingredient)  * value_per_serving) AS DECIMAL(12, 2)) as "value_prediction_no_stock",
         max(i.amount_actual) as "stock",
-        ((max(i.amount_actual) - CAST(sum(ir.amount_ingredient) AS INT))) as "quantity_to_buy", 
-        CAST(((max(i.amount_actual) - CAST(sum(ir.amount_ingredient) AS INT))) * value_per_serving AS DECIMAL(12, 2)) as "value_prediction",
+        ABS((max(i.amount_actual) - CAST(sum(ir.amount_ingredient) AS INT))) as "quantity_to_buy", 
+        ABS(CAST(((max(i.amount_actual) - CAST(sum(ir.amount_ingredient) AS INT))) * value_per_serving AS DECIMAL(12, 2))) as "value_prediction",
         i."unit_of_measurement" 
                 from "Ingredients" i 
                 inner join "Ingredients_Revenues" ir on i.id = ir.fk_ingredient
