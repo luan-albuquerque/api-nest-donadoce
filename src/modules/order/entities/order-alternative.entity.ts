@@ -7,7 +7,8 @@ export class OrderAlternative {
     order_type: OrderType
     orderItem: {
         homologate: string
-        of_menu: boolean
+        of_menu: boolean,
+        comment?: string,
         categoryOrderItem: {
             description: string;
         },

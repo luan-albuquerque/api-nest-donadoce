@@ -81,7 +81,8 @@ export class CreateOrderProgrammedService {
             homologate: "APROVADO",
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             fk_revenue: item.fk_revenue,
-            valueOrderItem: value
+            valueOrderItem: value,
+            comment: item.comment,
           })
           revenuesAproved.push({
             fk_revenue: item.fk_revenue,
@@ -129,7 +130,8 @@ export class CreateOrderProgrammedService {
             dateOrderItem: dayjs().utc(true).toDate(),
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             fk_revenue: item.fk_revenue,
-            valueOrderItem: value
+            valueOrderItem: value,
+            comment: item.comment,
           })
 
         })

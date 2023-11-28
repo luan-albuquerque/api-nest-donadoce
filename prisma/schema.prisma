@@ -249,6 +249,7 @@ model OrderItem {
   fk_categoryOrderItem  String // Status 
   valueOrderItem        Float //Valor da receita ou alterada
   of_menu               Boolean // Se esse item pertence algum Menu
+  comment               String?              @db.Text
   method_of_preparation Method_of_preparation // METODO DE PREPARO -> COFFE OU PROGRAMADO
   delivery_date         DateTime
   homologate            Homologate?           @default(EM_HOMOLOGACAO) // STATUS DE ITEM DE PEDIDOS (obs: Fora de Menu é EM_HOMO)

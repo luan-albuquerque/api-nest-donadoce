@@ -24,6 +24,9 @@ class CreateOrderItemDto {
     @IsNotEmpty({ message: 'Variável modo de preparo não pode ser vazia' })
     method_of_preparation: MethodOfPreparationType
 
+    @ApiProperty()
+    comment?: string
+
 
 }
 

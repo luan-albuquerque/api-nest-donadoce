@@ -168,6 +168,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                     select: {
                         homologate: true,
                         of_menu: true,
+                        comment: true,
                         method_of_preparation: true,
                         delivery_date: true,
                         categoryOrderItem: {
@@ -447,6 +448,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                     select: {
                         homologate: true,
                         of_menu: true,
+                        comment: true,
                         method_of_preparation: true,
                         delivery_date: true,
                         categoryOrderItem: {
@@ -552,6 +554,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                                 description: true,
                             }
                         },
+                        comment: true,
                         fk_revenue: true,
                         delivery_date: true,
                         method_of_preparation: true,

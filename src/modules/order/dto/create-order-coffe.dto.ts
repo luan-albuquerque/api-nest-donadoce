@@ -28,6 +28,10 @@ class CreateOrderCoffeItemDto {
     method_of_preparation: MethodOfPreparationType
 
 
+    @ApiProperty()
+    comment?: string;
+
+
 }
 
 

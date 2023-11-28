@@ -73,7 +73,8 @@ export class CreateOrderCoffeService {
             homologate: "APROVADO",
             fk_categoryOrderItem: "coffe-be56-11ee-sdsd-024dca12034542",
             fk_revenue: item.fk_revenue,
-            valueOrderItem: value
+            valueOrderItem: value,
+            comment: item.comment
           })
 
         })
