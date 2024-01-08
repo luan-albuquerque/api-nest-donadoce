@@ -5,6 +5,7 @@ import { CompanyRepository } from 'src/modules/company/repository/contract/Compa
 import * as dayjs from "dayjs"
 import { Company } from 'src/modules/company/entities/company.entity';
 import { OrderType } from '../types/ordertype.type';
+import { cwd } from 'process';
 
 
 interface ListDelivery {
@@ -14,6 +15,7 @@ interface ListDelivery {
   company: Company
   revenueDescription: string
   deliveryDate: Date
+  quantity?: number
 }
 
 @Injectable()
@@ -27,7 +29,7 @@ export class FindManyOrderRoutesService {
   async execute(orderType: OrderType) {
 
     try {
-    
+
 
       const orders = await this.orderRepository.findManyOrderInRoute(
         dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate(),
@@ -40,6 +42,18 @@ export class FindManyOrderRoutesService {
       await Promise.all(
         orders.map((order) => {
           order.orderItem.map((orderItem) => {
+
+
+            var revenueE = oListDelivery.find((e) => e.revenueDescription == orderItem.revenues.description && e.company.id == order.fk_company);
+
+            if (revenueE) {
+              const comparacaoData = orderItem.delivery_date.getTime() - orderItem.delivery_date.getTime();
+              if (comparacaoData == 0) {
+                revenueE.quantity = revenueE.quantity + orderItem.amountItem;
+                return;
+              }
+            }
+
             oListDelivery.push({
               orderNumber: order.numberOrder,
               orderId: order.id,
@@ -47,6 +61,7 @@ export class FindManyOrderRoutesService {
               company: order.company,
               revenueDescription: orderItem.revenues.description,
               deliveryDate: orderItem.delivery_date,
+              quantity: orderItem.amountItem,
             })
           })
         })
@@ -59,6 +74,8 @@ export class FindManyOrderRoutesService {
         oListDelivery.sort((a, b) => {
           // Comparação por data
           const comparacaoData = a.deliveryDate.getTime() - b.deliveryDate.getTime();
+
+
 
           // Se as datas forem iguais, compare por prioridade
           return comparacaoData !== 0 ? comparacaoData : a.company.priority - b.company.priority;
