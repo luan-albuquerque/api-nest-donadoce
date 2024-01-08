@@ -6,5 +6,6 @@ export class ListByClientOrderDTO {
     take?: number
     fk_user: string
     numberOrder?: number
+    fk_company?: string
 
 }

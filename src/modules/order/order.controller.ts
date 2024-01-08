@@ -248,6 +248,12 @@ export class OrderController {
     type: Number,
   })
 
+  @ApiQuery({
+    name: 'fk_company',
+    required: false,
+    type: String,
+  })
+
   @Get("client")
   @ApiOperation({ summary: "EndPoint para listagem de pedidos", description: "Listagem de pedidos, obs: esta listando os do admin também por questões de resjuste" })
   async findAllByClient(
@@ -256,12 +262,14 @@ export class OrderController {
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
     @Query('numberOrder') numberOrder = undefined,
     @Query('statusOrder') statusOrder = undefined,
+    @Query('fk_company') fk_company = undefined,
   ) {
     return await this.findManyOrderByClientService.execute({
       fk_user: req.user.id,
       numberOrder,
       skip,
       take: limit,
+      fk_company,
       order_status: statusOrder,
     });
 

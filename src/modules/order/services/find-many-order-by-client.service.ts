@@ -10,10 +10,10 @@ export class FindManyOrderByClientService {
     private readonly orderRepository: OrderRepository
   ) { }
 
-  async execute({ fk_user, numberOrder, skip, take, order_status }: ListByClientOrderDTO) {
+  async execute({ fk_user, numberOrder, skip, take, order_status, fk_company }: ListByClientOrderDTO) {
 
 
-      return await this.orderRepository.findManyByClient({ fk_user, numberOrder, skip, take, order_status })
+      return await this.orderRepository.findManyByClient({ fk_user, numberOrder, skip, take, order_status, fk_company })
 
 
 
