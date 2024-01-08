@@ -10,6 +10,7 @@ export class ListByAdminOrderDTO {
     numberOrder?: number
     fk_client?: string
     data?: Date
+    fk_company?: string
 
 
 }

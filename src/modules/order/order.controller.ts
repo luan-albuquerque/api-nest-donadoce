@@ -143,6 +143,12 @@ export class OrderController {
   })
 
   @ApiQuery({
+    name: "fk_company",
+    required: false,
+    type: String
+  })
+
+  @ApiQuery({
     name: 'data',
     required: false,
     type: Date,
@@ -157,13 +163,14 @@ export class OrderController {
     @Query('orderType') orderType = undefined,
     @Query('desc_user_or_client') desc_user = undefined,
     @Query('fk_client') fk_client = undefined,
+    @Query('fk_company') fk_company = undefined,
     @Query('statusOrder') statusOrder = undefined,
     @Query('data') data = undefined,
-
   ) {
     var orderTypeOfi: OrderType = undefined
     var fk_clientOfi = undefined
     var fk_status = undefined
+    var fk_companyOfi = undefined
 
     if (orderType != undefined) {
 
@@ -177,12 +184,17 @@ export class OrderController {
       fk_clientOfi = fk_client
     }
 
+    if (fk_company !== "fk_company") {
+      fk_companyOfi = fk_company
+    }
+
     return await this.findManyOrderService.execute({
       data,
       desc_user,
       numberOrder,
       skip,
       take: limit,
+      fk_company: fk_companyOfi,
       order_status: fk_status,
       orderType: orderTypeOfi,
       fk_client: fk_clientOfi

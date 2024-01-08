@@ -11,7 +11,7 @@ export class FindManyOrderService {
     private readonly orderRepository: OrderRepository
   ) { }
 
-  async execute({ data = undefined,desc_user  = undefined, numberOrder = undefined, skip, take, order_status = undefined, orderType  = undefined, fk_client = undefined }: ListByAdminOrderDTO) {
+  async execute({ data = undefined,desc_user  = undefined, numberOrder = undefined, skip, take, order_status = undefined, orderType  = undefined, fk_client = undefined, fk_company = undefined }: ListByAdminOrderDTO) {
      
      try {
      const dataInitial = dayjs(dayjs(data).format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate();
@@ -19,7 +19,7 @@ export class FindManyOrderService {
      
      
 
-      return await this.orderRepository.findMany({ desc_user, numberOrder, skip, take, order_status, orderType, fk_client }, dataInitial,dataFinal)
+      return await this.orderRepository.findMany({ desc_user, numberOrder, skip, take, order_status, orderType, fk_client, fk_company }, dataInitial,dataFinal)
       
      } catch (error) {
 
