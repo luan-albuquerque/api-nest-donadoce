@@ -545,7 +545,6 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
     }
     async findManyByClient({ fk_user, numberOrder, skip, take, order_status, fk_company }: ListByClientOrderDTO): Promise<OrderAlternative[]> {
-         console.log({fk_company})
         const data = await this.prisma.order.findMany({
             select: {
                 id: true,
@@ -602,7 +601,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 fk_company,
             },
             orderBy: {
-                numberOrder: "asc"
+                numberOrder: "desc"
             }
         }).finally(() => {
             this.prisma.$disconnect()
