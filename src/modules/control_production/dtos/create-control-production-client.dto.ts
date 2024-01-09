@@ -12,4 +12,6 @@ export class CreateControlProductionClientDto {
     delivery_date: Date
     order_type: OrderType
     amount_actual: number
+    company_name?: string
+    fk_company?: string
 }

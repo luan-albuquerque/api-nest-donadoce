@@ -28,7 +28,7 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
                 order_type,
 
             },
-            orderBy:{
+            orderBy: {
                 seq: "asc"
             }
         }).finally(() => {
@@ -73,7 +73,7 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
     }
     async createItemProductionTypeClient(
         { amount_actual, corporate_name, delivery_date, description,
-            description_category, fk_categoryOrderItem, fk_revenue, fk_user, order_type, seq
+            description_category, fk_categoryOrderItem, fk_revenue, fk_user, order_type, seq, company_name, fk_company
         }: CreateControlProductionClientDto): Promise<void> {
         await this.prisma.controlProductionClient.create({
             data: {
@@ -86,7 +86,10 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
                 fk_revenue,
                 order_type,
                 corporate_name,
-                fk_user
+                fk_user,
+                company_name,
+                fk_company,
+
             }
         }).finally(() => {
             this.prisma.$disconnect();
@@ -105,8 +108,8 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
         })
     }
     async findAllControlProductionProduct(order_type: OrderType): Promise<ControlProductionProductEntity[]> {
-     
-        
+
+
         return await this.prisma.controlProductionProduct.findMany({
             where: {
                 delivery_date: {
@@ -114,9 +117,9 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
                     lte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).add(1, 'day').toDate()
                 },
                 order_type,
-                
+
             },
-            orderBy:{
+            orderBy: {
                 seq: "asc"
             }
         }).finally(() => {

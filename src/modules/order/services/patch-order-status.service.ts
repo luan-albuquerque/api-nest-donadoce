@@ -139,6 +139,8 @@ export class PatchOrderStatusService {
             order_type: order.order_type,
             fk_user: client.id,
             corporate_name: client.corporate_name,
+            company_name: order.company.corporate_name,
+            fk_company: order.fk_company
           });
         }
       })

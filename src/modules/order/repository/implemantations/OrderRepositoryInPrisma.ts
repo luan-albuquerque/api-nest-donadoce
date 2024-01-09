@@ -353,6 +353,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         const data = await this.prisma.order.findUnique({
             include: {
                 orderItem: true,
+                company: true,
             },
             where: {
                 id,

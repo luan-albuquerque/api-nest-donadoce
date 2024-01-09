@@ -315,6 +315,8 @@ model ControlProductionClient {
   seq                  Int
   fk_user              String
   corporate_name       String
+  company_name         String?
+  fk_company           String?
   fk_revenue           String
   description          String
   fk_categoryOrderItem String

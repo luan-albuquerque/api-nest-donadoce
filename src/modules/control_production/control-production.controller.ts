@@ -31,7 +31,7 @@ export class ControlProductionController {
         type: String
     })
     @Get("kambam")
-    @ApiOperation({ summary: "EndPoint para listaagen do kambam por produto", 
+    @ApiOperation({ summary: "EndPoint para listaagen do kambam ", 
     description: "É pertimido o filtro por order_type 'programmed' ou 'coffe' e mode_kambam como 'product'  ou 'client' " })
     async listKambam(
         @Query('order_type') orderIfType = "programmed",
