@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+ import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { OrderRepository } from "../contract/OrderRepository";
 import { CreateOrderAlternativeDto } from "../../dto/create-order-alternative.dto";
 import { PrismaService } from "src/shared/config/database/prisma/prisma.service";
@@ -233,7 +233,6 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
             },
             where: {
-                order_type: orderType,
                 fk_orderstatus: "789850813-1c69-11ee-be56-c691200020241",
                 orderItem: {
                     every: {

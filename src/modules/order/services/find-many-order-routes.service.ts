@@ -15,7 +15,6 @@ interface ListDelivery {
   company: Company
   revenueDescription: string
   deliveryDate: Date
-  quantity?: number
 }
 
 @Injectable()
@@ -44,12 +43,11 @@ export class FindManyOrderRoutesService {
           order.orderItem.map((orderItem) => {
 
 
-            var revenueE = oListDelivery.find((e) => e.revenueDescription == orderItem.revenues.description && e.company.id == order.fk_company);
+            var revenueE = oListDelivery.find((e) =>  e.company.id == order.fk_company);
 
             if (revenueE) {
               const comparacaoData = orderItem.delivery_date.getTime() - orderItem.delivery_date.getTime();
               if (comparacaoData == 0) {
-                revenueE.quantity = revenueE.quantity + orderItem.amountItem;
                 return;
               }
             }
@@ -61,7 +59,7 @@ export class FindManyOrderRoutesService {
               company: order.company,
               revenueDescription: orderItem.revenues.description,
               deliveryDate: orderItem.delivery_date,
-              quantity: orderItem.amountItem,
+            
             })
           })
         })
