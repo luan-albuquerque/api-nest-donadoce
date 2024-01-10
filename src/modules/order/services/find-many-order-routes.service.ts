@@ -43,13 +43,31 @@ export class FindManyOrderRoutesService {
           order.orderItem.map((orderItem) => {
 
 
-            var revenueE = oListDelivery.find((e) =>  e.company.id == order.fk_company);
+            var revenueE = oListDelivery.filter((e) => e.company.id == order.fk_company);
+
 
             if (revenueE) {
-              const comparacaoData = orderItem.delivery_date.getTime() - orderItem.delivery_date.getTime();
-              if (comparacaoData == 0) {
-                return;
+              var teste = revenueE.map((e) => {
+                const comparacaoData = e.deliveryDate.getTime() - orderItem.delivery_date.getTime()
+                if (comparacaoData == 0) {
+                  return;
+                }
+
+              });
+
+              if (!teste) {
+                oListDelivery.push({
+                  orderNumber: order.numberOrder,
+                  orderId: order.id,
+                  clientId: order.fk_user,
+                  company: order.company,
+                  revenueDescription: orderItem.revenues.description,
+                  deliveryDate: orderItem.delivery_date,
+
+                })
               }
+
+              return;
             }
 
             oListDelivery.push({
@@ -59,8 +77,9 @@ export class FindManyOrderRoutesService {
               company: order.company,
               revenueDescription: orderItem.revenues.description,
               deliveryDate: orderItem.delivery_date,
-            
+
             })
+
           })
         })
       );
