@@ -1,4 +1,5 @@
 import { Client } from "src/modules/clients/entities/client.entity"
+import { ClientCompany } from "src/modules/clients_company/entities/clients_company.entity"
 
 export class Company {
     id?: string
@@ -12,5 +13,6 @@ export class Company {
     cep: string
     createdAt: Date
     updateAt?: Date
+    Client_Company?: ClientCompany[];
 
 }

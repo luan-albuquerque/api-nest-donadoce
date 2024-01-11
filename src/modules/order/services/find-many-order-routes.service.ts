@@ -6,6 +6,7 @@ import * as dayjs from "dayjs"
 import { Company } from 'src/modules/company/entities/company.entity';
 import { OrderType } from '../types/ordertype.type';
 import { cwd } from 'process';
+import { ClientCompany } from 'src/modules/clients_company/entities/clients_company.entity';
 
 
 interface ListDelivery {
@@ -13,6 +14,7 @@ interface ListDelivery {
   orderId: string
   clientId: string
   company: Company
+  companyClient: ClientCompany
   revenueDescription: string
   deliveryDate: Date
 }
@@ -38,7 +40,7 @@ export class FindManyOrderRoutesService {
 
       const oListDelivery: ListDelivery[] = [];
       const seq = 0;
-      
+
       await Promise.all(
 
         orders.map((order) => {
@@ -47,20 +49,21 @@ export class FindManyOrderRoutesService {
             if (oListDelivery.length > 0) {
 
               var revenueE = oListDelivery.find((e) => e.company.id == order.fk_company && e.deliveryDate.getTime() == orderItem.delivery_date.getTime());
-              
+              var companyClient = order.company.Client_Company.find((c) => c.fk_client == order.fk_user);
+
               if (!revenueE) {
                 oListDelivery.push({
                   orderNumber: order.numberOrder,
                   orderId: order.id,
                   clientId: order.fk_user,
                   company: order.company,
+                  companyClient,
                   revenueDescription: orderItem.revenues.description,
                   deliveryDate: orderItem.delivery_date,
 
                 })
               }
             } else {
-
               oListDelivery.push({
                 orderNumber: order.numberOrder,
                 orderId: order.id,
@@ -68,7 +71,7 @@ export class FindManyOrderRoutesService {
                 company: order.company,
                 revenueDescription: orderItem.revenues.description,
                 deliveryDate: orderItem.delivery_date,
-
+                companyClient,
               })
 
             }
