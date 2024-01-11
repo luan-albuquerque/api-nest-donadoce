@@ -50,8 +50,6 @@ export class FindManyOrderRoutesService {
 
               var revenueE = oListDelivery.find((e) => e.company.id == order.fk_company && e.deliveryDate.getTime() == orderItem.delivery_date.getTime());
               var companyClient = order.company.Client_Company.find((c) => c.fk_client == order.fk_user);
-              var company = order.company;
-              delete company.Client_Company;
               
 
               if (!revenueE) {
@@ -59,7 +57,7 @@ export class FindManyOrderRoutesService {
                   orderNumber: order.numberOrder,
                   orderId: order.id,
                   clientId: order.fk_user,
-                  company: company,
+                  company: order.company,
                   companyClient,
                   revenueDescription: orderItem.revenues.description,
                   deliveryDate: orderItem.delivery_date,
@@ -71,7 +69,7 @@ export class FindManyOrderRoutesService {
                 orderNumber: order.numberOrder,
                 orderId: order.id,
                 clientId: order.fk_user,
-                company: company,
+                company: order.company,
                 revenueDescription: orderItem.revenues.description,
                 deliveryDate: orderItem.delivery_date,
                 companyClient,
@@ -91,8 +89,9 @@ export class FindManyOrderRoutesService {
           // Comparação por data
           const comparacaoData = a.deliveryDate.getTime() - b.deliveryDate.getTime();
 
-
-
+          delete a.company.Client_Company;
+          delete b.company.Client_Company;
+          
           // Se as datas forem iguais, compare por prioridade
           return comparacaoData !== 0 ? comparacaoData : a.company.priority - b.company.priority;
         })
