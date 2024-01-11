@@ -42,15 +42,15 @@ export class FindManyOrderRoutesService {
       const seq = 0;
 
       await Promise.all(
+        
 
         orders.map((order) => {
           order.orderItem.map((orderItem) => {
+            var companyClient = order.company.Client_Company.find((c) => c.fk_client == order.fk_user);
 
             if (oListDelivery.length > 0) {
 
               var revenueE = oListDelivery.find((e) => e.company.id == order.fk_company && e.deliveryDate.getTime() == orderItem.delivery_date.getTime());
-              var companyClient = order.company.Client_Company.find((c) => c.fk_client == order.fk_user);
-              
 
               if (!revenueE) {
                 oListDelivery.push({
@@ -91,7 +91,7 @@ export class FindManyOrderRoutesService {
 
           delete a.company.Client_Company;
           delete b.company.Client_Company;
-          
+
           // Se as datas forem iguais, compare por prioridade
           return comparacaoData !== 0 ? comparacaoData : a.company.priority - b.company.priority;
         })
