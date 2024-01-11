@@ -41,20 +41,19 @@ export class FindManyOrderRoutesService {
       
       await Promise.all(
 
-        orders.map(async (order) => {
-          var companyOrder = await this.companyRepository.findById(order.fk_company);
-
-          order.orderItem.map(async (orderItem) => {
+        orders.map((order) => {
+          order.orderItem.map((orderItem) => {
 
             if (oListDelivery.length > 0) {
 
               var revenueE = oListDelivery.find((e) => e.company.id == order.fk_company && e.deliveryDate.getTime() == orderItem.delivery_date.getTime());
+              
               if (!revenueE) {
                 oListDelivery.push({
                   orderNumber: order.numberOrder,
                   orderId: order.id,
                   clientId: order.fk_user,
-                  company: companyOrder,
+                  company: order.company,
                   revenueDescription: orderItem.revenues.description,
                   deliveryDate: orderItem.delivery_date,
 
@@ -66,7 +65,7 @@ export class FindManyOrderRoutesService {
                 orderNumber: order.numberOrder,
                 orderId: order.id,
                 clientId: order.fk_user,
-                company: companyOrder,
+                company: order.company,
                 revenueDescription: orderItem.revenues.description,
                 deliveryDate: orderItem.delivery_date,
 
