@@ -38,24 +38,17 @@ export class FindManyOrderRoutesService {
 
       const oListDelivery: ListDelivery[] = [];
       const seq = 0;
+      
       await Promise.all(
+
         orders.map((order) => {
           order.orderItem.map((orderItem) => {
 
+            if (oListDelivery.length > 0) {
 
-            var revenueE = oListDelivery.filter((e) => e.company.id == order.fk_company);
-
-
-            if (revenueE) {
-              var teste = revenueE.map((e) => {
-                const comparacaoData = e.deliveryDate.getTime() - orderItem.delivery_date.getTime()
-                if (comparacaoData == 0) {
-                  return;
-                }
-
-              });
-
-              if (!teste) {
+              var revenueE = oListDelivery.find((e) => e.company.id == order.fk_company && e.deliveryDate.getTime() == orderItem.delivery_date.getTime());
+              
+              if (!revenueE) {
                 oListDelivery.push({
                   orderNumber: order.numberOrder,
                   orderId: order.id,
@@ -66,19 +59,19 @@ export class FindManyOrderRoutesService {
 
                 })
               }
+            } else {
 
-              return;
+              oListDelivery.push({
+                orderNumber: order.numberOrder,
+                orderId: order.id,
+                clientId: order.fk_user,
+                company: order.company,
+                revenueDescription: orderItem.revenues.description,
+                deliveryDate: orderItem.delivery_date,
+
+              })
+
             }
-
-            oListDelivery.push({
-              orderNumber: order.numberOrder,
-              orderId: order.id,
-              clientId: order.fk_user,
-              company: order.company,
-              revenueDescription: orderItem.revenues.description,
-              deliveryDate: orderItem.delivery_date,
-
-            })
 
           })
         })
