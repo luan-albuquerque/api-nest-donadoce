@@ -100,6 +100,9 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
 
     async findById(id: string): Promise<Company> {
         const data = await this.prisma.company.findUnique({
+            include:{
+                Client_Company: true,
+            },
             where: {
                 id,
             }
