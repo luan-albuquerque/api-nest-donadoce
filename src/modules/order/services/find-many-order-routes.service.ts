@@ -50,6 +50,7 @@ export class FindManyOrderRoutesService {
 
               var revenueE = oListDelivery.find((e) => e.company.id == order.fk_company && e.deliveryDate.getTime() == orderItem.delivery_date.getTime());
               var companyClient = order.company.Client_Company.find((c) => c.fk_client == order.fk_user);
+              delete order.company.Client_Company;
 
               if (!revenueE) {
                 oListDelivery.push({
