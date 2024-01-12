@@ -7,12 +7,14 @@ import { Company } from 'src/modules/company/entities/company.entity';
 import { OrderType } from '../types/ordertype.type';
 import { cwd } from 'process';
 import { ClientCompany } from 'src/modules/clients_company/entities/clients_company.entity';
+import { User } from 'src/modules/users/entities/user.entity';
 
 
 interface ListDelivery {
   orderNumber: number
   orderId: string
   clientId: string
+  user?: User;
   company: Company
   companyClient: ClientCompany
   revenueDescription: string
@@ -50,13 +52,17 @@ export class FindManyOrderRoutesService {
 
             if (oListDelivery.length > 0) {
 
-              var revenueE = oListDelivery.find((e) => e.company.id == order.fk_company && e.deliveryDate.getTime() == orderItem.delivery_date.getTime());
+              var revenueE = oListDelivery.find((e) => 
+              e.company.id == order.fk_company 
+              && 
+              e.deliveryDate.getTime() == orderItem.delivery_date.getTime());
 
               if (!revenueE) {
                 oListDelivery.push({
                   orderNumber: order.numberOrder,
                   orderId: order.id,
                   clientId: order.fk_user,
+                  user: order.user,
                   company: order.company,
                   companyClient,
                   revenueDescription: orderItem.revenues.description,
@@ -71,6 +77,7 @@ export class FindManyOrderRoutesService {
                 clientId: order.fk_user,
                 company: order.company,
                 revenueDescription: orderItem.revenues.description,
+                user: order.user,
                 deliveryDate: orderItem.delivery_date,
                 companyClient,
               })
