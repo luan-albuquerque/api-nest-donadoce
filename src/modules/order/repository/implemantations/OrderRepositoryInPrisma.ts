@@ -244,7 +244,16 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                         Client_Company: true,
                     }
                 },
-                user: true,
+                user: {
+                    select:{
+                        id: true,
+                        email: true,
+                        Clients: true,
+                        is_enabled: true,
+                        is_client: true,
+                        is_company: true,                        
+                    }
+                },
 
             },
             where: {
