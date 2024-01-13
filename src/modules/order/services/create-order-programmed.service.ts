@@ -68,7 +68,7 @@ export class CreateOrderProgrammedService {
           }
 
           valueTotal = (value * item.amountItem) + valueTotal;
-          menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(5, "h").utc(false).toDate()
+          menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(30, "m").utc(false).toDate()
           
           const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate()
 
@@ -118,7 +118,7 @@ export class CreateOrderProgrammedService {
          
           valueTotal = (value * item.amountItem) + valueTotal;
 
-          menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(5, "h").utc(false).toDate()
+          menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(30, "m").utc(false).toDate()
 
           const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate()
           createOrderItemDtoAlt.push({
