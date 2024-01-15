@@ -23,10 +23,8 @@ export class CreateOrderBatch {
     // file_caution_absolute?: string
     // file_payment_voucher_absolute?: string
 
-    @IsString({ message: 'invoice_number precisa ser string' })
-    @IsNotEmpty({ message: 'invoice_number não pode esvaziar' })
     @ApiProperty()
-    invoice_number: string
+    invoice_number?: string
 
     @IsNotEmpty({ message: 'end_date não pode esvaziar' })
     @ApiProperty()

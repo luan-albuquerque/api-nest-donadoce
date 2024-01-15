@@ -6,9 +6,7 @@ export class AddInvoiceInOrder {
     file_invoice?: string
 
     @ApiProperty()
-    @IsString()
-    @IsNotEmpty({ message: "Numero de nota fiscal necessario"})
-    number_invoice: string
+    number_invoice?: string
 
     
 

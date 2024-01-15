@@ -277,7 +277,7 @@ model OrderBatch {
   id                      String           @id @default(uuid())
   file_invoice            String
   file_payment_voucher    String?
-  invoice_number          String
+  invoice_number          String?
   numberOrderBatch        Int              @default(autoincrement())
   fk_client               String
   fk_user_open_orderbatch String
