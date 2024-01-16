@@ -10,6 +10,8 @@ import { AddPaymentVoucherInOrderBatchService } from './services/add-payment-vou
 import { multerOptionsPayment } from 'src/shared/http/middlewares/multerPaymentmiddleware';
 import { multerOptionsInvoice } from 'src/shared/http/middlewares/multerInvoicemiddleware';
 import { DeleteOrderBatchService } from './services/delete-orderbatch.service';
+import { UpdateInvoiceOrderBatch } from './dto/update_invoice_order_batch.dto';
+import { UpdateInvoiceInOrderBatch } from './services/update-invoice-in-order-batch.service';
 
 
 @Controller('order_batch')
@@ -20,7 +22,8 @@ export class OrderBatchController {
     private readonly findManyOrderBatchService: FindManyOrderBatchService,
     private readonly createOrderBatchService: CreateOrderBatchService,
     private readonly addPaymentVoucherInOrderBatchService: AddPaymentVoucherInOrderBatchService,
-    private readonly deleteOrderBatchService: DeleteOrderBatchService
+    private readonly deleteOrderBatchService: DeleteOrderBatchService,
+    private readonly updateInvoiceInOrderBatch: UpdateInvoiceInOrderBatch
   ) { }
 
 
@@ -141,6 +144,34 @@ export class OrderBatchController {
   
   ) {
     return await this.deleteOrderBatchService.execute(id);
+  }
+
+  
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'file_invoice', maxCount: 1 },
+      ],
+      multerOptionsInvoice,
+    ),
+  )
+  @ApiConsumes('multipart/form-data')
+  @Patch("invoice/:id")
+  @ApiOperation({ summary: "EndPoint para Atualizar Nota Fiscal" })
+  async updateInvoice(
+    @Param("id") id: string,
+    @Body() updateInvoiceOrderBatch: UpdateInvoiceOrderBatch,
+    @UploadedFiles() files: any
+  ) {
+    const file_invoice = files ? files.file_invoice ? files.file_invoice[0].filename : null : null;
+    var bodyFinal: UpdateInvoiceOrderBatch;
+
+    const bodyform:UpdateInvoiceOrderBatch = Object(updateInvoiceOrderBatch)
+
+   bodyFinal.invoice_number = bodyform.invoice_number;
+   bodyFinal.file_invoice = file_invoice;
+
+    await this.updateInvoiceInOrderBatch.execute(id, bodyFinal);
   }
 
 
