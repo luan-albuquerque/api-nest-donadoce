@@ -37,7 +37,7 @@ async function main() {
       {
         id: "518a6828-1c69-11ee-be56-0242ac120002",
         description: "Lanche 1",
-        time: '2023-09-04T07:00:00.000Z',
+        time: '2023-09-04T08:00:00.000Z',
         order_type: "programmed",
         
       },

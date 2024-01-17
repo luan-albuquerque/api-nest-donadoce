@@ -32,6 +32,8 @@ export class CreateOrderProgrammedService {
     const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
     const menuSeleted = await this.menuRepository.findOne(createOrderDto.fk_menu);
     const revenuesAproved: { fk_revenue: string, amountItem: number }[] = [];
+    menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(30, "m").utc(false).toDate()
+
     if (createOrderDto.createOrderItemDto) {
 
       await Promise.all(
@@ -68,10 +70,9 @@ export class CreateOrderProgrammedService {
           }
 
           valueTotal = (value * item.amountItem) + valueTotal;
-          menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(30, "m").utc(false).toDate()
+          const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getUTCDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).utc(false).toDate()
           
-          const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate()
-
+          
           createOrderItemDtoAlt.push({
             of_menu: true,
             amountItem: item.amountItem,
@@ -90,6 +91,7 @@ export class CreateOrderProgrammedService {
           })
         })
       );
+
 
       await Promise.all(
         createOrderDto.createOrderNotMenuItemDto.map(async (item) => {
@@ -118,9 +120,8 @@ export class CreateOrderProgrammedService {
          
           valueTotal = (value * item.amountItem) + valueTotal;
 
-          menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(30, "m").utc(false).toDate()
 
-          const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate()
+          const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getUTCDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).utc(false).toDate()
           createOrderItemDtoAlt.push({
             of_menu: false,
             homologate: "EM_HOMOLOGACAO",
