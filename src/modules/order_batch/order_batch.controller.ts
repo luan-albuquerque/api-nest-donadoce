@@ -147,6 +147,7 @@ export class OrderBatchController {
   }
 
   
+  @Patch("invoice/:id")
   @UseInterceptors(
     FileFieldsInterceptor(
       [
@@ -156,7 +157,6 @@ export class OrderBatchController {
     ),
   )
   @ApiConsumes('multipart/form-data')
-  @Patch("invoice/:id")
   @ApiOperation({ summary: "EndPoint para Atualizar Nota Fiscal" })
   async updateInvoice(
     @Param("id") id: string,
@@ -164,14 +164,15 @@ export class OrderBatchController {
     @UploadedFiles() files: any
   ) {
     const file_invoice = files ? files.file_invoice ? files.file_invoice[0].filename : null : null;
-    var bodyFinal: UpdateInvoiceOrderBatch;
 
-    const bodyform:UpdateInvoiceOrderBatch = Object(updateInvoiceOrderBatch)
+    
 
-   bodyFinal.invoice_number = bodyform.invoice_number;
-   bodyFinal.file_invoice = file_invoice;
+    const bodyform = JSON.parse(JSON.stringify(updateInvoiceOrderBatch))
 
-    await this.updateInvoiceInOrderBatch.execute(id, bodyFinal);
+
+   
+
+    await this.updateInvoiceInOrderBatch.execute(id, {invoice_number:bodyform.invoice_number, file_invoice });
   }
 
 

@@ -23,7 +23,6 @@ export class UpdateInvoiceInOrderBatch {
 
 
 
-
     var orderBatchAllReadyExist = await this.orderBatchRepository.findOneOrderBatch(id);
 
     if (!orderBatchAllReadyExist) {
