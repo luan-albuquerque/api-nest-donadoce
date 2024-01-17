@@ -14,21 +14,20 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
     async findManyOrderInProcessToListShopping(orderStatus: string, client: string, orderType: string,  dataInitial: string, dataFinal: string): Promise<any> {
         const sql = `
         select i.description,
-        CAST(count(r.id)  AS INT) as "count_rev",
-       (CAST(sum(ir.amount_ingredient) AS INT)) as "quantity_to_buy_no_stock", 
-        CAST((sum(ir.amount_ingredient)  * value_per_serving) AS DECIMAL(12, 2)) as "value_prediction_no_stock",
-        max(i.amount_actual) as "stock",
-        ABS((max(i.amount_actual) - CAST(sum(ir.amount_ingredient) AS INT))) as "quantity_to_buy", 
-        ABS(CAST(((max(i.amount_actual) - CAST(sum(ir.amount_ingredient) AS INT))) * value_per_serving AS DECIMAL(12, 2))) as "value_prediction",
-        i."unit_of_measurement" 
-                from "Ingredients" i 
+          CAST(count(r.id)  * sum(oi."amountItem")   AS INT) as "count_rev",
+          CAST(sum(ir.amount_ingredient)  * sum(oi."amountItem")  AS INT) as "quantity_to_buy_no_stock", 
+          CAST(sum((ir.amount_ingredient * value_per_serving)) * sum(oi."amountItem") AS DECIMAL(12, 2)) as "value_prediction_no_stock" ,
+          max(i.amount_actual) as "stock",
+          ABS((max(i.amount_actual) - CAST(sum(ir.amount_ingredient)*  sum(oi."amountItem") AS INT))) as "quantity_to_buy", 
+          ABS(CAST(((max(i.amount_actual) - CAST(sum(ir.amount_ingredient) *  sum(oi."amountItem") AS INT))) * value_per_serving AS DECIMAL(12, 2))) as "value_prediction"
+          from "Ingredients" i 
                 inner join "Ingredients_Revenues" ir on i.id = ir.fk_ingredient
                 inner join "Revenues" r on ir.fk_revenues  = r.id 
                 inner join "OrderItem" oi on oi.fk_revenue = r.id
                 inner join "Order" o on o.id = oi.fk_order 
                 where (oi.delivery_date >= '${dataInitial}' and oi.delivery_date <= '${dataFinal}' ) and o.fk_orderstatus like '%${orderStatus}%' and o.fk_user like '%${client}%' and CAST(o."order_type"  AS VARCHAR(255)) like '%${orderType}%'
                 group by i.id,i.description, i."unit_of_measurement"
-                having ((max(i.amount_actual) - CAST(sum(ir.amount_ingredient) AS INT))) < 0;
+                having ((max(i.amount_actual) - CAST(sum(ir.amount_ingredient) * sum(oi."amountItem") AS INT))) < 0;
         `
 
         
