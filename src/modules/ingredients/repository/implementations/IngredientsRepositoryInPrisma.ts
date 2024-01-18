@@ -11,6 +11,20 @@ import { Prisma } from "@prisma/client";
 @Injectable()
 export class IngredientsRepositoryInPrisma implements IngredientsRepository {
     constructor(private readonly prisma: PrismaService) { }
+    async updateQuantity(id: string, amount: number): Promise<void> {
+         await this.prisma.ingredients.updateMany({
+            data: {
+
+                amount_actual: amount,
+                updated_t: new Date()
+            },
+            where: {
+                id,
+            }
+        }).finally(() => {
+            this.prisma.$disconnect()
+        });
+    }
     async findManyOrderInProcessToListShopping(orderStatus: string, client: string, orderType: string,  dataInitial: string, dataFinal: string): Promise<any> {
         const sql = `
         select i.description,
@@ -46,8 +60,8 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
 
     }
 
-    async updateAmount(id: string, amount: number): Promise<void> {
-        await this.prisma.ingredients.update({
+    async updateAmount(id: string, amount: number): Promise<Ingredient> {
+        return await this.prisma.ingredients.update({
             data: {
 
                 amount_actual: amount,

@@ -7,7 +7,8 @@ export abstract class IngredientsRepository {
     abstract create(createIngredientDto: CreateIngredientDto): Promise<void>
     abstract remove(id: string): Promise<void>
     abstract update(id: string, updateIngredientDto: UpdateIngredientDto): Promise<void>
-    abstract updateAmount(id: string, amount: number): Promise<void>
+    abstract updateAmount(id: string, amount: number): Promise<Ingredient>
+    abstract updateQuantity(id: string, amount: number): Promise<void>
     abstract list(data: PaginationOptions): Promise<Ingredient[]>
     abstract findById(id: string): Promise<Ingredient>
     abstract findByDescription(description: string): Promise<Ingredient>

@@ -81,7 +81,7 @@ export class PatchOrderStatusService {
   // em processamento
     if (fk_order_status == "45690813-1c69-11ee-be56-c691200020241") {
 
-      await this.processIngredientes(order);
+      await this.processIngredientes2(order);
       await this.processProductionByProduct(order);
       await this.processProductionByClient(order, client);
 
@@ -193,37 +193,36 @@ export class PatchOrderStatusService {
       })
     )
   }
-  private async processIngredientes(order: Order) {
-    await Promise.all(
-      order.orderItem.map(async (item) => {
+  
+  private async processIngredientes2(order: Order) {
+    await Promise.all(order.orderItem.map(async (item, index) => {
+      if (item.homologate === "EM_HOMOLOGACAO") {
+        return;
+      }
 
-        if (item.homologate == "EM_HOMOLOGACAO") {
-          return;
-        }
-        // Buscar dados de receitas , como ingredientes que compoem ela
-        const revenue = await this.revenuesRepository.findByOneWithIngredients(item.fk_revenue);
+      // Buscar dados de receitas, como ingredientes que compõem ela
 
-        // Mapear o ingredientes que fazem a receita
-        revenue.ingredients_Revenues.map(async (ingredientesItem) => {
-          // Busco dados mais especificos do ingrediente - Quantidade total em estoque
-          const findIngredient = await this.ingredientsRepository.findById(ingredientesItem.fk_ingredient)
+      await this.revenuesRepository.findByOneWithIngredients(item.fk_revenue).then(async (revenue) => {
 
-          // Pego o valor atual de itens daquele ingredientes no estoque
-          var actulQtd: number = findIngredient.amount_actual
+        // Mapear os ingredientes que fazem a receita
+        
+        await Promise.all(revenue.ingredients_Revenues.map(async (ingredientesItem) => {
 
-          // Sinalizo uma retirada de ingredientes_control - (estoque de ingredientes)
+
+          // Sinalizar uma retirada de ingredientes_control - (estoque de ingredientes)
           await this.ingredientControlRepository.createFluxoIngredient({
             amount: ingredientesItem.amount_ingredient * item.amountItem,
             is_output: true,
             fk_ingredient: ingredientesItem.fk_ingredient,
-            unit_of_measurement: findIngredient.unit_of_measurement,
+            unit_of_measurement: ingredientesItem.ingredients.unit_of_measurement,
             unitary_value: 0
-          })
-          // Montar calculo de acordo com a quantidade de receita que o cliente pediu
-          actulQtd = actulQtd - (ingredientesItem.amount_ingredient * item.amountItem);
-          // Atualizar retirada 
-          await this.ingredientsRepository.updateAmount(findIngredient.id, actulQtd);
-        })
-      }));
+          });
+          
+        }))
+
+      })
+
+
+    }));
   }
 }
