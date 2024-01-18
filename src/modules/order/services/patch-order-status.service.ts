@@ -10,6 +10,7 @@ import { CategoryOrderItemRepository } from 'src/modules/category_order_items/re
 import { Order } from '../entities/order.entity';
 import { ClientsRepository } from 'src/modules/clients/repository/contract/ClientsRepository';
 import { Client } from 'src/modules/clients/entities/client.entity';
+import { Ingredient } from 'src/modules/ingredients/entities/ingredient.entity';
 
 
 @Injectable()
@@ -30,6 +31,8 @@ export class PatchOrderStatusService {
 
 
     const order = await this.orderRepository.findById(id);
+
+
     const client = await this.clientsRepository.findById(order.fk_user);
 
     if (!client) {
@@ -80,7 +83,7 @@ export class PatchOrderStatusService {
 
   // em processamento
     if (fk_order_status == "45690813-1c69-11ee-be56-c691200020241") {
-
+      await this.validateEstoque(order);
       await this.processIngredientes2(order);
       await this.processProductionByProduct(order);
       await this.processProductionByClient(order, client);
@@ -193,7 +196,47 @@ export class PatchOrderStatusService {
       })
     )
   }
-  
+
+  private async validateEstoque(order: Order) {
+    const contIngred:{amount: number, ingredient: Ingredient}[] = [];
+
+    await Promise.all(order.orderItem.map(async (item, index) => {
+      if (item.homologate === "EM_HOMOLOGACAO") {
+        return;
+      }
+
+      // Buscar dados de receitas, como ingredientes que compõem ela
+      await this.revenuesRepository.findByOneWithIngredients(item.fk_revenue).then(async (revenue) => {
+        
+        await Promise.all(revenue.ingredients_Revenues.map(async (ingredientesItem) => {
+         const i = contIngred.find((e)=> e.ingredient.id == ingredientesItem.fk_ingredient);
+         if(i){
+            i.amount = i.amount + (ingredientesItem.amount_ingredient * item.amountItem);
+        
+         }else{
+          contIngred.push({
+            amount: ingredientesItem.amount_ingredient * item.amountItem,
+            ingredient: ingredientesItem.ingredients
+          })
+         }
+          
+        }))
+
+      })
+
+
+    }));
+
+   await Promise.all(contIngred.map(async (item)=>{
+        const ingredient = await this.ingredientsRepository.findById(item.ingredient.id);
+        if(ingredient.amount_actual < item.amount){
+          throw new BadRequestException(`Não é possivel modificar status de pedido devido a falta de ${item.ingredient.description} em estoque - Quantidade Nescessaria ${item.amount}${item.ingredient.unit_of_measurement} - Quantidade Atual ${ingredient.amount_actual}${item.ingredient.unit_of_measurement}`)
+
+        }
+    }))
+    
+  }
+
   private async processIngredientes2(order: Order) {
     await Promise.all(order.orderItem.map(async (item, index) => {
       if (item.homologate === "EM_HOMOLOGACAO") {
@@ -221,7 +264,6 @@ export class PatchOrderStatusService {
         }))
 
       })
-
 
     }));
   }
