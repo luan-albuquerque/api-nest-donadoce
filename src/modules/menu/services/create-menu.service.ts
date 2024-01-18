@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateMenuDto } from "../dto/create-menu.dto";
 import { MenuRepository } from "../repository/contract/MenuRepository";
 import { RevenuesRepository } from "src/modules/revenue/repository/contract/RevenuesRepository";
@@ -13,6 +13,13 @@ export class CreateMenuService {
     ) { }
 
     async execute({ dateMenu, createItensMenu }: CreateMenuDto) {
+
+
+        const menu =  await this.menuRepository.findOneByDate(dateMenu);
+
+        if(menu){
+            throw new BadRequestException(`Ja existe um Menu com essa data - ${menu.dateMenu}`)
+        }
 
         await Promise.all(
             createItensMenu.map(async (item) => {

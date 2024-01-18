@@ -12,6 +12,15 @@ export class MenuRepositoryInPrisma implements MenuRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async findOneByDate(date: Date): Promise<Menu> {
+        return await this.prisma.menu.findFirst({
+            where: {
+             dateMenu: date
+            },
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
     async create(createMenuDto: CreateMenuDto): Promise<Menu> {
         return await this.prisma.menu.create({
             data: {
