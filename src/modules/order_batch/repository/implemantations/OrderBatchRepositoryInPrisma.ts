@@ -42,7 +42,7 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                 id,
             },
             data: {
-                file_payment_voucher: file,
+                file_invoice: file,
                 invoice_number: numberInvoice
             }
         }).catch(() => {
