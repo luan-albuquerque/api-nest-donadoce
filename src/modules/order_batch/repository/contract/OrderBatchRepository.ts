@@ -11,4 +11,5 @@ export abstract class OrderBatchRepository {
      abstract create(createOrderBatch: CreateOrderBatch): Promise<void>
      abstract update(id: string, updateOrderBatch: UpdateOrderBatch): Promise<void>
      abstract addPaymentVoucher(id: string, file: string): Promise<void>
+     abstract addInvoice(id: string, file: string, numberInvoice: string): Promise<void>
 }

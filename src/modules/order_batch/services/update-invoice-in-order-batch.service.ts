@@ -34,7 +34,7 @@ export class UpdateInvoiceInOrderBatch {
     if (updateInvoiceOrderBatch.invoice_number) { orderBatchAllReadyExist.invoice_number = updateInvoiceOrderBatch.invoice_number }
 
 
-    await this.orderBatchRepository.addPaymentVoucher(id, orderBatchAllReadyExist.file_invoice).finally(async () => {
+    await this.orderBatchRepository.addInvoice(id, orderBatchAllReadyExist.file_invoice, orderBatchAllReadyExist.invoice_number).finally(async () => {
       orderBatchAllReadyExist.OrderBatchItem.map(async (item) => {
         await this.orderRepository.addInvoiceInOrder(item.fk_order, orderBatchAllReadyExist.file_invoice, orderBatchAllReadyExist.invoice_number);
       })

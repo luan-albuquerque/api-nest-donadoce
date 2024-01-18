@@ -36,6 +36,19 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
         })
     }
 
+    async addInvoice(id: string, file: string, numberInvoice: string): Promise<void> {
+        await this.prisma.orderBatch.update({
+            where: {
+                id,
+            },
+            data: {
+                file_payment_voucher: file,
+                invoice_number: numberInvoice
+            }
+        }).catch(() => {
+            this.prisma.$disconnect()
+        })
+    }
     //Não atualizei por conta de não saber se ia usar
     async update(id: string, updateOrderBatch: UpdateOrderBatch): Promise<void> {
         await this.prisma.orderBatch.update({
