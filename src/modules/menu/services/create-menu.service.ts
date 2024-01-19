@@ -15,7 +15,11 @@ export class CreateMenuService {
     async execute({ dateMenu, createItensMenu }: CreateMenuDto) {
 
 
-        const menu =  await this.menuRepository.findOneByDate(dateMenu);
+        
+
+        const dataa = dayjs(dayjs(dateMenu).format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate();
+
+        const menu =  await this.menuRepository.findOneByDate(dataa);
 
         if(menu){
             throw new BadRequestException(`Ja existe um Menu com essa data - ${menu.dateMenu}`)
