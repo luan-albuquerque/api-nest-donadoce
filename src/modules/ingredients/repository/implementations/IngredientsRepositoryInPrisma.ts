@@ -28,12 +28,13 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
     async findManyOrderInProcessToListShopping(orderStatus: string, client: string, orderType: string,  dataInitial: string, dataFinal: string): Promise<any> {
         const sql = `
         select i.description,
-          CAST( sum(oi."amountItem")   AS INT) as "count_rev",
+          CAST(count(r.id)  * sum(oi."amountItem")   AS INT) as "count_rev",
           CAST(max(ir.amount_ingredient)  * sum(oi."amountItem")  AS INT) as "quantity_to_buy_no_stock", 
           CAST(max((ir.amount_ingredient * value_per_serving)) * sum(oi."amountItem") AS DECIMAL(12, 2)) as "value_prediction_no_stock" ,
           max(i.amount_actual) as "stock",
           ABS((max(i.amount_actual) - CAST(max(ir.amount_ingredient)*  sum(oi."amountItem") AS INT))) as "quantity_to_buy", 
           ABS(CAST(((max(i.amount_actual) - CAST(max(ir.amount_ingredient) *  sum(oi."amountItem") AS INT))) * value_per_serving AS DECIMAL(12, 2))) as "value_prediction"
+          from "Ingredients" i
                 inner join "Ingredients_Revenues" ir on i.id = ir.fk_ingredient
                 inner join "Revenues" r on ir.fk_revenues  = r.id 
                 inner join "OrderItem" oi on oi.fk_revenue = r.id
