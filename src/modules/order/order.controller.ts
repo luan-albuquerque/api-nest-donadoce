@@ -290,6 +290,7 @@ export class OrderController {
 
     await this.patchOrderStatusService.execute(id, patchOrderDto.fk_orderstatus);
   }
+  
 
   @Patch('tray/:id')
   @ApiOperation({ summary: "EndPoint para atualizar e adicionar bandejas em pedidos'" })
