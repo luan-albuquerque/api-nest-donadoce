@@ -19,10 +19,10 @@ export class UpdateIngredientsService {
     updateIngredientDto.unit_of_measurement = updateIngredientDto.unit_of_measurement.toLowerCase() as any;
 
     const verifyNewDescription = await this.ingredientsRepository.findByDescription(updateIngredientDto.description)
+
     if (verifyNewDescription && findIngredient.description != updateIngredientDto.description) {
       throw new UnauthorizedException("Descrição já existente em outro ingrediente")
     }
-    updateIngredientDto.amount_actual = updateIngredientDto.amount;
 
     updateIngredientDto.description = updateIngredientDto.description.toUpperCase()
 
