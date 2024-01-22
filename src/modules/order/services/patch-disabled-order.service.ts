@@ -23,7 +23,11 @@ export class PatchDisabledOrderService {
                 //Pré-Produção || Agendado || Solicitado
                 order.fk_orderstatus != "314e2828-1c69-11ee-be56-c691200020241" && 
                 order.fk_orderstatus != "11ee6828-1c69-11ee-be56-c691200020241" &&
-                order.fk_orderstatus != "022ac120002-1c69-11ee-be56-0242ac120002" ){
+                order.fk_orderstatus != "022ac120002-1c69-11ee-be56-0242ac120002" &&
+                order.fk_orderstatus != "fer762d-erjr345d4s5f-dfkj3kd-39dsu49dshn3" &&
+                order.fk_orderstatus != "1c69c120002-575f34-1c69-be56-0242ac1201c69" &&
+                order.fk_orderstatus != "789850813-1c69-11ee-be56-c691200020241" 
+                ){
                   throw new BadRequestException("Pedido não pode ser mais cancelado devido o status não está mais disponivel para cancelamento")
                }
 
