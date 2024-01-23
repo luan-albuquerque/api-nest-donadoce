@@ -19,9 +19,9 @@ export class FindShoppingListService {
 
         const dataInitial = dayjs(data).utc(true).format("YYYY-MM-DD")
         const dataFinal = dayjs(data).add(1, 'day').utc(true).format("YYYY-MM-DD")
-        
-        
-   
+
+
+
         if (client != "") {
             const findClient = await this.userRepository.findById(client);
             if (!findClient) {
@@ -35,9 +35,6 @@ export class FindShoppingListService {
                 throw new NotFoundException("Status não encontrado")
             }
 
-        }
-
-        
             // Se pedido não possuir status Solicitado, Agendado ou Pré-Produção ele não pode retornar a lista
             if (
                 //Pré-Produção || Agendado || Solicitado
@@ -46,9 +43,14 @@ export class FindShoppingListService {
                 orderStatus != "022ac120002-1c69-11ee-be56-0242ac120002"
             ) {
                 return [];
-             }
-        
-        
+            }
+
+        }
+
+
+
+
+
         return await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderType.toLowerCase(), dataInitial, dataFinal);
 
     }
