@@ -36,6 +36,17 @@ export class FindShoppingListService {
             }
 
         }
+
+        
+            // Se pedido não possuir status Solicitado, Agendado ou Pré-Produção ele não pode retornar a lista
+            if (
+                //Pré-Produção || Agendado || Solicitado
+                orderStatus != "314e2828-1c69-11ee-be56-c691200020241" &&
+                orderStatus != "11ee6828-1c69-11ee-be56-c691200020241" &&
+                orderStatus != "022ac120002-1c69-11ee-be56-0242ac120002"
+            ) {
+                return [];
+             }
         
         
         return await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderType.toLowerCase(), dataInitial, dataFinal);
