@@ -44,7 +44,7 @@ export class IngredientsController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
   ) {
-    limit = limit > 10 ? 10 : limit;
+    
     return await this.findAllIngredientsService.execute({limit, skip});
   }
   @ApiOperation({ summary: "EndPoint para buscar de ingrediente especifico por identificador", description: "Nescessario niveis administrador e (a definir)" })
