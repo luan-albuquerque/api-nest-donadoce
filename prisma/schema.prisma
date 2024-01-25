@@ -127,7 +127,7 @@ model Ingredients_Revenues {
   fk_ingredient       String
   fk_revenues         String
   unit_of_measurement Unit_of_measurement?
-  amount_ingredient   Int
+  amount_ingredient   Float
   ingredients         Ingredients          @relation(fields: [fk_ingredient], references: [id])
   revenues            Revenues             @relation(fields: [fk_revenues], references: [id])
 
