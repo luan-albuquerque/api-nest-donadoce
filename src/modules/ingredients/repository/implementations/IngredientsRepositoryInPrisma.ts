@@ -27,7 +27,8 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
     }
     async findManyOrderInProcessToListShopping(orderStatus: string, client: string, orderType: string,  dataInitial: string, dataFinal: string): Promise<any> {
         const sql = `
-        select i.description,
+          select i.description,
+          i."unit_of_measurement" as "unit_of_measurement",
           CAST(count(r.id)  * sum(oi."amountItem")   AS INT) as "count_rev",
           CAST(max(ir.amount_ingredient)  * sum(oi."amountItem")  AS INT) as "quantity_to_buy_no_stock", 
           CAST(max((ir.amount_ingredient * value_per_serving)) * sum(oi."amountItem") AS DECIMAL(12, 2)) as "value_prediction_no_stock" ,
