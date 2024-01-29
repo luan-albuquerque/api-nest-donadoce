@@ -31,10 +31,10 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
           i."unit_of_measurement" as "unit_of_measurement",
           CAST(sum(oi."amountItem")   AS INT) as "count_rev",
           CAST(max(ir.amount_ingredient)  * sum(oi."amountItem")  AS INT) as "quantity_to_buy_no_stock", 
-          CAST(max((ir.amount_ingredient * value_per_serving)) * sum(oi."amountItem") AS DECIMAL(12, 2)) as "value_prediction_no_stock" ,
+          CAST(max((ir.amount_ingredient * value_per_serving)) * sum(oi."amountItem") AS DECIMAL(12, 4)) as "value_prediction_no_stock" ,
           max(i.amount_actual) as "stock",
           ABS((max(i.amount_actual) - CAST(max(ir.amount_ingredient)*  sum(oi."amountItem") AS INT))) as "quantity_to_buy", 
-          ABS(CAST(((max(i.amount_actual) - CAST(max(ir.amount_ingredient) *  sum(oi."amountItem") AS INT))) * value_per_serving AS DECIMAL(12, 2))) as "value_prediction"
+          ABS(CAST(((max(i.amount_actual) - CAST(max(ir.amount_ingredient) *  sum(oi."amountItem") AS INT))) * value_per_serving AS DECIMAL(12, 4))) as "value_prediction"
           from "Ingredients" i
                 inner join "Ingredients_Revenues" ir on i.id = ir.fk_ingredient
                 inner join "Revenues" r on ir.fk_revenues  = r.id 
