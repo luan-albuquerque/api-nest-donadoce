@@ -51,8 +51,40 @@ export class FindShoppingListService {
 
 
 
-        return await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderType.toLowerCase(), dataInitial, dataFinal);
-
+        var dadosDaBanco = await this.ingredientsRepository.findManyOrderInProcessToListShopping(orderStatus, client, orderType.toLowerCase(), dataInitial, dataFinal);
+        return await this.sumValuesByDescription(dadosDaBanco);
     }
+
+
+
+    private async sumValuesByDescription(items) {
+        const result = [];
+    
+        items.forEach(item => {
+            const { description, count_rev, quantity_to_buy_no_stock, value_prediction_no_stock, quantity_to_buy, value_prediction } = item;
+            const findDescription = result.find((i) => i.description == description);
+            if (!findDescription) {
+                result.push({
+                    description,
+                    count_rev,
+                    quantity_to_buy_no_stock: parseFloat(quantity_to_buy_no_stock),
+                    value_prediction_no_stock:  parseFloat(value_prediction_no_stock),
+                    quantity_to_buy: parseFloat(quantity_to_buy),
+                    value_prediction: parseFloat(value_prediction)
+                });
+                return;
+            }
+    
+           findDescription.count_rev += count_rev;
+           findDescription.quantity_to_buy_no_stock += parseFloat(quantity_to_buy_no_stock);
+           findDescription.value_prediction_no_stock += parseFloat(value_prediction_no_stock);
+           findDescription.quantity_to_buy += parseFloat(quantity_to_buy);
+           findDescription.value_prediction += parseFloat(value_prediction);
+        });
+    
+        return result;
+    }
+    
+
 
 }
