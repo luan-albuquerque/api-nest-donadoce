@@ -61,7 +61,7 @@ export class FindShoppingListService {
         const result = [];
     
         items.forEach(item => {
-            const { description, count_rev, quantity_to_buy_no_stock, value_prediction_no_stock, quantity_to_buy, value_prediction } = item;
+            const { description, count_rev, quantity_to_buy_no_stock, value_prediction_no_stock, quantity_to_buy, value_prediction, unit_of_measurement } = item;
             const findDescription = result.find((i) => i.description == description);
             if (!findDescription) {
                 result.push({
@@ -69,6 +69,7 @@ export class FindShoppingListService {
                     count_rev,
                     quantity_to_buy_no_stock: parseFloat(quantity_to_buy_no_stock),
                     value_prediction_no_stock:  parseFloat(value_prediction_no_stock),
+                    unit_of_measurement,
                     quantity_to_buy: parseFloat(quantity_to_buy),
                     value_prediction: parseFloat(value_prediction)
                 });
