@@ -71,7 +71,7 @@ export class CreateOrderProgrammedService {
           }
 
           valueTotal = (value * item.amountItem) + valueTotal;
-          const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getUTCDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).utc(false).toDate()
+          const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getUTCDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate()
           
           
           createOrderItemDtoAlt.push({
@@ -122,7 +122,7 @@ export class CreateOrderProgrammedService {
           valueTotal = (value * item.amountItem) + valueTotal;
 
 
-          const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getUTCDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).utc(false).toDate()
+          const del = dayjs(`${menuSeleted.dateMenu.getFullYear()}-${menuSeleted.dateMenu.getMonth() + 1}-${menuSeleted.dateMenu.getUTCDate()} ${category.time.getHours()}:${category.time.getMinutes()}:${category.time.getSeconds()}`).toDate()
           createOrderItemDtoAlt.push({
             of_menu: false,
             homologate: "EM_HOMOLOGACAO",
