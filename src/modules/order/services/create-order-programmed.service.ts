@@ -32,7 +32,8 @@ export class CreateOrderProgrammedService {
     const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
     const menuSeleted = await this.menuRepository.findOne(createOrderDto.fk_menu);
     const revenuesAproved: { fk_revenue: string, amountItem: number }[] = [];
-    menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(30, "m").utc(false).toDate()
+    menuSeleted.dateMenu = dayjs(menuSeleted.dateMenu).add(30, "m").toDate();
+
 
     if (createOrderDto.createOrderItemDto) {
 
