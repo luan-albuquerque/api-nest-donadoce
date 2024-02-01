@@ -134,7 +134,7 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
                 }
             },
             orderBy: {
-                createdAt: "desc"
+                corporate_name: "asc"
             }
         }).finally(() => {
             this.prisma.$disconnect()

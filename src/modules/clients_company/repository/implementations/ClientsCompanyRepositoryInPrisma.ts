@@ -32,6 +32,11 @@ export class ClientsCompanyRepositoryInPrisma implements ClientsCompanyRepositor
             clients: true,
             company: true,
           },
+          orderBy: {
+            company: {
+                corporate_name: "asc"
+            }
+         },
           skip: page.skip,
           take: page.limit
         }).finally(()=>{
@@ -46,7 +51,12 @@ export class ClientsCompanyRepositoryInPrisma implements ClientsCompanyRepositor
           },
           include:{
             company: true,
-          }
+          },
+          orderBy: {
+            company: {
+                corporate_name: "asc"
+            }
+         },
          }).finally(()=>{
              this.prisma.$disconnect()
          })

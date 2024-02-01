@@ -66,7 +66,8 @@ export class PersonRepositoryInPrisma implements PersonRepository {
                         is_production: true,
                     }
                 }
-            }
+            },
+           
         }).finally(async () => {
             await this.prisma.$disconnect()
         })

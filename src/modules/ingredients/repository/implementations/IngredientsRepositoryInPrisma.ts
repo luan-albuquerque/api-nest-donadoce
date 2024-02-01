@@ -127,7 +127,7 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
                 skip: data.skip,
                 take: data.limit,
                 orderBy: {
-                    created_at: "desc"
+                    description: "asc"
                 }
             },
         ).finally(() => {

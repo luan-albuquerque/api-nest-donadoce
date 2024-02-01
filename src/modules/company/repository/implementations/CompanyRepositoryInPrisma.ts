@@ -42,7 +42,9 @@ export class CompanyRepositoryInPrisma implements CompanyRepository {
 
     async findAll(): Promise<Company[]> {
         const data = await this.prisma.company.findMany({
-
+            orderBy: {
+                corporate_name: "asc"
+            }
         }).finally(() => {
             this.prisma.$disconnect()
         })
