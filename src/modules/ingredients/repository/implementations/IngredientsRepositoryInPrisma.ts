@@ -80,6 +80,9 @@ export class IngredientsRepositoryInPrisma implements IngredientsRepository {
         const data = await this.prisma.ingredients.findMany({
             include: {
                 Ingredient_control: control,
+            },
+            orderBy:{
+                description: "asc"
             }
         }).finally(() => {
             this.prisma.$disconnect()
