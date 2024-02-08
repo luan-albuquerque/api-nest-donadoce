@@ -75,7 +75,7 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
             take,
             skip,
             orderBy: {
-                created_at: "asc"
+                description: "asc"
             }
         }).finally(() => {
             this.prisma.$disconnect()
@@ -172,7 +172,7 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
             take,
             skip,
             orderBy: {
-                created_at: "asc"
+                description: "asc"
             }
         }).finally(() => {
             this.prisma.$disconnect()
