@@ -32,6 +32,12 @@ export class RevenuePerClientRepositoryInPrisma implements RevenuePerClientRepos
                             }
                         }
                     }
+                },
+                
+            },
+            orderBy:{
+                revenues:{
+                    description: "asc"
                 }
             }
         }).finally(() => {
@@ -127,6 +133,11 @@ export class RevenuePerClientRepositoryInPrisma implements RevenuePerClientRepos
 
                     }
                 }
+            },
+            orderBy:{
+               revenues:{
+                 description: "asc"
+               }  
             },
             take,
             skip,
