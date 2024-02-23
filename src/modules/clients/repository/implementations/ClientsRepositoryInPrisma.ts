@@ -116,7 +116,7 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
     }
 
     async findByCNPJ(cnpj: string): Promise<Client> {
-        const data = await this.prisma.client.findUnique({
+        const data = await this.prisma.client.findFirst({
             where: {
                 cnpj
             }
