@@ -31,9 +31,7 @@ class UpdateClientService {
       const clientFindByCNPJ= await this.clientsRepository.findByCNPJ(updateClientDto.cnpj);
       const clientFindByCNPJInCompany = await this.companyRepository.findByCNPJ(updateClientDto.cnpj);
   
-      if (clientFindByCNPJ && updateClientDto.cnpj != clientFindByCNPJ.cnpj || clientFindByCNPJInCompany) {
-        throw new HttpException('CNPJ já existente', HttpStatus.CONFLICT)
-      }
+   
   
       const passwordHash: string = await this.hashPassword.generateHash(updateClientDto.updateUserDto.password)
   

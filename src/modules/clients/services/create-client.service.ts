@@ -30,16 +30,7 @@ class CreateClientService {
     }
 
     const clientFindByCNPJ = await this.clientsRepository.findByCNPJ(createClientDto.cnpj);
-    const companyFindByCNPJ = await this.companyRepository.findByCNPJ(createClientDto.cnpj);
-
-
-    if (clientFindByCNPJ) {
-      throw new HttpException('CNPJ já existente', HttpStatus.CONFLICT)
-    }
-
-    if (companyFindByCNPJ) {
-      throw new HttpException('CNPJ já cadastrado em empresas', HttpStatus.CONFLICT)
-    }
+   
 
     const passwordHash: string = await this.hashPassword.generateHash(createClientDto.createUser.password)
 

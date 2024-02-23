@@ -19,10 +19,7 @@ export class CreateCompanyService {
     createCompanyDto.corporate_name = createCompanyDto.corporate_name.toUpperCase();
 
 
-    const findByCNPJ = await this.companyRepository.findByCNPJ(createCompanyDto.cnpj);
-    if (findByCNPJ) {
-      throw new NotFoundException("CNPJ já Existe.")
-    }
+
     const findByCNPJInClinte = await this.clientsRepository.findByCNPJ(createCompanyDto.cnpj);
     if (findByCNPJInClinte) {
       throw new NotFoundException("CNPJ utilizado por um cliente.")

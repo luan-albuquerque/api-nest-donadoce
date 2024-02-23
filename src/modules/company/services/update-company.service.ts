@@ -25,16 +25,6 @@ export class UpdateCompanyService {
     }
 
   
-    const findByCNPJ = await this.companyRepository.findByCNPJ(updateCompanyDto.cnpj);
-    if (findByCNPJ && updateCompanyDto.cnpj != findByCNPJ.cnpj ) {
-      throw new NotFoundException("CNPJ já Existe.")
-    }
-
-    const findByCNPJInClient = await this.clientsRepository.findByCNPJ(updateCompanyDto.cnpj);
-
-    if (findByCNPJInClient ) {
-      throw new NotFoundException("CNPJ já utilizado em um clente.")
-    }
 
   
     const create: UpdateCompanyDto = {

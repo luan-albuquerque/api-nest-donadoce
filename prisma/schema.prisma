@@ -59,7 +59,7 @@ model Client {
   id               String             @id
   corporate_name   String
   name_fantasy     String
-  cnpj             String             @unique
+  cnpj             String             
   county           String?
   district         String?
   ie               String
@@ -161,7 +161,7 @@ model Company {
   id             String           @id @default(uuid())
   priority       Int
   corporate_name String
-  cnpj           String           @unique
+  cnpj           String           
   county         String?
   district       String?
   uf             String?
