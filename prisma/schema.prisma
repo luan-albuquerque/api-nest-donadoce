@@ -119,7 +119,7 @@ model Ingredient_control {
   created_at          DateTime             @default(now())
   is_output           Boolean
   unitary_value       Float?
-  amount              Int
+  amount              Float
   ingredients         Ingredients          @relation(fields: [fk_ingredient], references: [id])
 }
 
@@ -141,8 +141,8 @@ model Revenues {
   value_defined_by_revenue Float?
   yield_per_quantity       Int?
   time_in_hours            Int?
-  base_max_amount          Int
-  base_min_amount          Int
+  base_max_amount          Float
+  base_min_amount          Float
   presumed_profit          Float?
   imagem                   String?
   created_at               DateTime               @default(now())
