@@ -9,7 +9,21 @@ import { PaginationOptions } from "../../dto/pagination-options.dto";
 @Injectable()
 export class ClientsCompanyRepositoryInPrisma implements ClientsCompanyRepository {
     constructor(private prisma: PrismaService) { }
- 
+    async createOne(accountable:string, fone: string, fk_client: string, fk_company: string, fk_user: string): Promise<void> {
+        await this.prisma.client_Company.create({
+            data: {
+                accountable: accountable,
+                fone: fone,
+                fk_client: fk_client,
+                fk_company: fk_company,
+                fk_user,
+                
+            },
+        }).finally(async ()=>{
+            await this.prisma.$disconnect()
+        })
+    }
+  
     async removeAll(fk_client: string): Promise<void> {
         await this.prisma.client_Company.deleteMany({
             where:{
@@ -21,7 +35,8 @@ export class ClientsCompanyRepositoryInPrisma implements ClientsCompanyRepositor
     }
     async create(createClientCompany: CreateClientCompany[]): Promise<void> {
        await this.prisma.client_Company.createMany({
-            data: createClientCompany
+            data: createClientCompany ,
+            skipDuplicates: true,
         }).finally(async ()=>{
             await this.prisma.$disconnect()
         })

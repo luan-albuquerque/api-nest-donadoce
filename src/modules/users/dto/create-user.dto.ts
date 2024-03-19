@@ -42,6 +42,10 @@ export class CreateUserDto {
     @ApiProperty()
     @IsBoolean({ message: 'O status da is_production precisa ser um boolean' })
     is_production?: boolean
+
+    @ApiProperty()
+    @IsBoolean({ message: 'O status da is_company precisa ser um boolean' })
+    is_company?: boolean
     
      
  

@@ -6,6 +6,7 @@ import { CreateOrderAlternativeDto } from '../dto/create-order-alternative.dto';
 import { CreateOrderCoffeDto } from '../dto/create-order-coffe.dto';
 import * as dayjs from "dayjs"
 import { CompanyRepository } from 'src/modules/company/repository/contract/CompanyRepository';
+import { UserRepository } from 'src/modules/users/repository/contract/UserRepository';
 
 @Injectable()
 export class CreateOrderCoffeService {
@@ -15,6 +16,7 @@ export class CreateOrderCoffeService {
     private readonly revenuesRepository: RevenuesRepository,
     private readonly companyRepository: CompanyRepository,
     private readonly revenuePerClientRepository: RevenuePerClientRepository,
+    private readonly userRepository: UserRepository,
   ) { }
 
 
@@ -24,14 +26,17 @@ export class CreateOrderCoffeService {
     var valueTotal = 0
     const data = new Date();
     const revenueAll = await this.revenuesRepository.findByAllNotFilter();
+    const user = await this.userRepository.finInforUser(fk_user);
+  
     const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
+
+       
+    if(user.is_company){  
+      fk_user = user?.Client_Company.clients.id;
+    
+    }
+
     if (createOrderCoffeDto.createOrderCoffeItemDto) {
-
-      // const company = await this.companyRepository.findById(createOrderCoffeDto.fk_company);
-      // if (!company) {
-      //   throw new NotFoundException(`Unidade não encontrada`)
-
-      // }
 
       await Promise.all(
         createOrderCoffeDto.createOrderCoffeItemDto.map(async (item) => {
@@ -70,6 +75,7 @@ export class CreateOrderCoffeService {
             dateOrderItem: dayjs().utc(true).toDate(),
             method_of_preparation: item.method_of_preparation,
             delivery_date: dat,
+            is_created_by_company: user.is_company ? true : false,
             homologate: "APROVADO",
             fk_categoryOrderItem: "coffe-be56-11ee-sdsd-024dca12034542",
             fk_revenue: item.fk_revenue,

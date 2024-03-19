@@ -13,17 +13,17 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - pgdata:/data/postgres
-  app:
-    build: .
-    container_name: api_dona_doce
-    ports:
-      - 3000:3000
-    volumes:
-      - .:/usr/app
-    links:
-      - database_donadoce #nome do serviço do banco
-    depends_on:
-      - database_donadoce #nome do serviço do banco
+  # app:
+  #   build: .
+  #   container_name: api_dona_doce
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - .:/usr/app
+  #   links:
+  #     - database_donadoce #nome do serviço do banco
+  #   depends_on:
+  #     - database_donadoce #nome do serviço do banco
   
 volumes:
   pgdata:

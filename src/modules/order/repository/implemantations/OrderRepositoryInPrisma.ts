@@ -151,6 +151,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 file_invoice: true,
                 file_payment_voucher: true,
                 invoice_number: true,
+                is_created_by_company: true,
                 fk_orderstatus: true,
                 fk_user: true,
                 file_caution: true,
@@ -453,6 +454,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 amount_of_boxes: true,
                 comment_by_client: true,
                 file_invoice: true,
+                is_created_by_company: true,
                 file_payment_voucher: true,
                 invoice_number: true,
                 fk_orderstatus: true,
@@ -547,13 +549,14 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         return data;
     }
 
-    async create({ createOrderItemDto, dateOrder, fk_user, fk_orderstatus, valueOrder, order_type, fk_company }: CreateOrderAlternativeDto): Promise<void> {
+    async create({ createOrderItemDto, dateOrder, fk_user, fk_orderstatus, valueOrder, order_type, fk_company,is_created_by_company }: CreateOrderAlternativeDto): Promise<void> {
 
         await this.prisma.order.create({
             data: {
                 fk_user,
                 fk_orderstatus,
                 valueOrder,
+                is_created_by_company,
                 fk_company,
                 dateOrder,
                 order_type,

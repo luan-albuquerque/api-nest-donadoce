@@ -56,10 +56,10 @@ model User {
 }
 
 model Client {
-  id               String             @id  @default(uuid())
+  id               String             @id @default(uuid())
   corporate_name   String
   name_fantasy     String
-  cnpj             String             
+  cnpj             String
   county           String?
   district         String?
   ie               String
@@ -161,7 +161,7 @@ model Company {
   id             String           @id @default(uuid())
   priority       Int
   corporate_name String
-  cnpj           String           
+  cnpj           String
   county         String?
   district       String?
   uf             String?
@@ -174,15 +174,15 @@ model Company {
 }
 
 model Client_Company {
-  id          String?  @unique
   fk_company  String
   fk_client   String
   fone        String   @unique
   accountable String
+  fk_user     String?  @unique
   createdAt   DateTime @default(now())
   clients     Client   @relation(fields: [fk_client], references: [id])
   company     Company  @relation(fields: [fk_company], references: [id])
-  user        User?    @relation(fields: [id], references: [id])
+  user        User?    @relation(fields: [fk_user], references: [id])
 
   @@id([fk_client, fk_company])
 }
@@ -215,26 +215,27 @@ model CategoryOrderItem {
 }
 
 model Order {
-  id                   String          @id @default(uuid())
-  numberOrder          Int             @unique() @default(autoincrement())
-  dateOrder            DateTime        @default(now())
-  valueOrder           Float
-  order_type           Order_type? // Tipo de pedido -> Programado e Coffe
-  amount_of_tray       Int?
-  amount_of_boxes      Int?
-  comment_by_client    String?
-  file_caution         String?
-  file_invoice         String?
-  invoice_number       String?
-  file_payment_voucher String?
-  fk_orderstatus       String
-  fk_user              String
-  fk_company           String?
-  user                 User            @relation(fields: [fk_user], references: [id])
-  company              Company?        @relation(fields: [fk_company], references: [id])
-  orderStatus          OrderStatus     @relation(fields: [fk_orderstatus], references: [id])
-  orderItem            OrderItem[]
-  orderBatchItem       OrderBatchItem?
+  id                    String          @id @default(uuid())
+  numberOrder           Int             @unique() @default(autoincrement())
+  dateOrder             DateTime        @default(now())
+  valueOrder            Float
+  order_type            Order_type? // Tipo de pedido -> Programado e Coffe
+  amount_of_tray        Int?
+  amount_of_boxes       Int?
+  comment_by_client     String?
+  file_caution          String?
+  file_invoice          String?
+  invoice_number        String?
+  file_payment_voucher  String?
+  fk_orderstatus        String
+  fk_user               String
+  fk_company            String?
+  is_created_by_company Boolean?        @default(false)
+  user                  User            @relation(fields: [fk_user], references: [id])
+  company               Company?        @relation(fields: [fk_company], references: [id])
+  orderStatus           OrderStatus     @relation(fields: [fk_orderstatus], references: [id])
+  orderItem             OrderItem[]
+  orderBatchItem        OrderBatchItem?
 }
 
 model OrderStatus {
@@ -249,7 +250,7 @@ model OrderItem {
   fk_categoryOrderItem  String // Status 
   valueOrderItem        Float //Valor da receita ou alterada
   of_menu               Boolean // Se esse item pertence algum Menu
-  comment               String?              @db.Text
+  comment               String?               @db.Text
   method_of_preparation Method_of_preparation // METODO DE PREPARO -> COFFE OU PROGRAMADO
   delivery_date         DateTime
   homologate            Homologate?           @default(EM_HOMOLOGACAO) // STATUS DE ITEM DE PEDIDOS (obs: Fora de Menu é EM_HOMO)

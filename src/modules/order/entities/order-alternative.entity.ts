@@ -4,7 +4,8 @@ export class OrderAlternative {
     id: string;
     dateOrder: Date;
     numberOrder: number;
-    order_type: OrderType
+    order_type: OrderType;
+    is_created_by_company?: boolean;
     orderItem: {
         homologate: string
         of_menu: boolean,

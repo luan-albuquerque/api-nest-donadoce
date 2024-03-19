@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { IsNotEmpty, IsString } from "class-validator"
+import { Type } from "class-transformer"
+import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator"
+import { CreateUserDto } from "src/modules/users/dto/create-user.dto"
 
 export class CreateClientCompany {
     @IsString({ message: 'Esta variável de fk_client precisa ser string' })
@@ -22,4 +24,10 @@ export class CreateClientCompany {
     @ApiProperty()
     accountable: string
 
-}
+    
+    @ApiProperty({ type: CreateUserDto})
+    @Type(()=> CreateUserDto)
+    user?: CreateUserDto
+
+  }
+

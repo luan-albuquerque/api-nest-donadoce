@@ -23,6 +23,7 @@ export class CreateOrderAlternativeDto {
     dateOrder: Date
     order_type: OrderType
     valueOrder: number
+    is_created_by_company?: boolean
     fk_company: string
     fk_orderstatus: string
     createOrderItemDto: CreateOrderItemDto[]

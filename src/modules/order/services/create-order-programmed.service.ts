@@ -8,6 +8,7 @@ import { CreateOrderAlternativeDto } from '../dto/create-order-alternative.dto';
 import { MenuRepository } from 'src/modules/menu/repository/contract/MenuRepository';
 import * as dayjs from "dayjs"
 import { CompanyRepository } from 'src/modules/company/repository/contract/CompanyRepository';
+import { UserRepository } from 'src/modules/users/repository/contract/UserRepository';
 
 @Injectable()
 export class CreateOrderProgrammedService {
@@ -17,6 +18,7 @@ export class CreateOrderProgrammedService {
     private readonly revenuesRepository: RevenuesRepository,
     private readonly revenuePerClientRepository: RevenuePerClientRepository,
     private readonly menuRepository: MenuRepository,
+    private readonly userRepository: UserRepository,
     private readonly categoryOrderItemRepository: CategoryOrderItemRepository,
     private readonly companyRepository: CompanyRepository,
   ) { }
@@ -32,7 +34,13 @@ export class CreateOrderProgrammedService {
     const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
     const menuSeleted = await this.menuRepository.findOne(createOrderDto.fk_menu);
     const revenuesAproved: { fk_revenue: string, amountItem: number }[] = [];
+    const user = await this.userRepository.finInforUser(fk_user);
 
+     
+    if(user.is_company){  
+        fk_user = user?.Client_Company.clients.id;
+        
+      }
 
 
     if (createOrderDto.createOrderItemDto) {
@@ -147,6 +155,7 @@ export class CreateOrderProgrammedService {
         dateOrder: dayjs().utc(true).toDate(),
         valueOrder: valueTotal,
         fk_user: fk_user,
+        is_created_by_company: user.is_company ? true : false,
         fk_company: createOrderDto.fk_company,
         order_type: 'programmed',
         createOrderItemDto: createOrderItemDtoAlt,
