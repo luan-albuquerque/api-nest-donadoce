@@ -31,7 +31,7 @@ export abstract class OrderRepository {
     abstract addPaymentVoucherInOrder(id: string, file_payment_voucher: string): Promise<void>
     abstract addInvoiceInOrder(id: string, file_invoice: string, number_invoice: string): Promise<void>
     abstract findManyOrderInRoute(date_inicial: Date, date_final: Date, orderType: OrderType): Promise<Order[]>
-    
+    abstract findListExportFaturamento(orderStatus: string, client: string, orderType: string,  dataInitial: string, dataFinal: string): Promise<any>   
 
  
 }

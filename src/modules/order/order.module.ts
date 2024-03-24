@@ -17,6 +17,7 @@ import { PatchAddPaymentVoucherOrderService } from './services/patch-add-payment
 import { FindManyOrderRoutesService } from './services/find-many-order-routes.service';
 import { FindManyOrderAllFiltersService } from './services/find-many-order-all-filters.service';
 import { FindManyOrderToBatchService } from './services/find-many-order-to-batch.service';
+import { FindExportListFaturamento } from './services/find-exportorders.service';
 
 @Module({
   imports:[
@@ -30,6 +31,7 @@ import { FindManyOrderToBatchService } from './services/find-many-order-to-batch
     PatchOrderStatusService,
     PatchStatusOrderItemService,
     PatchTrayOrderService,
+    FindExportListFaturamento,
     PatchDisabledOrderService,
     FindManyOrderInProcess,
     CreateOrderCoffeService,

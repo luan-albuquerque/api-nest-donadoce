@@ -31,6 +31,9 @@ import { FindManyOrderRoutesService } from './services/find-many-order-routes.se
 import { OrderType } from './types/ordertype.type';
 import { FindManyOrderAllFiltersService } from './services/find-many-order-all-filters.service';
 import { FindManyOrderToBatchService } from './services/find-many-order-to-batch.service';
+import { FindExportListFaturamento } from './services/find-exportorders.service';
+import { ShoppingListDto } from '../dashboard/dtos/shoppinglist.dto';
+import { ListExportFaturamentoDTO } from '../ingredients/dto/list-export-faturamento.dto';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -52,7 +55,8 @@ export class OrderController {
     private readonly patchAddPaymentVoucherOrderService: PatchAddPaymentVoucherOrderService,
     private readonly findManyOrderRoutesService: FindManyOrderRoutesService,
     private readonly findManyOrderAllFiltersService: FindManyOrderAllFiltersService,
-    private readonly findManyOrderToBatchService: FindManyOrderToBatchService
+    private readonly findManyOrderToBatchService: FindManyOrderToBatchService,
+    private readonly findExportListFaturamento: FindExportListFaturamento
   ) { }
 
   @Get('kambamRoute')
@@ -284,6 +288,18 @@ export class OrderController {
     return data;
   }
 
+  @Patch("findExportFaturamento")
+  async findExportFaturamento(@Body() {
+    client,
+    orderStatus,
+    orderType,
+    dataInicial,
+    dataFinal,
+  }: ListExportFaturamentoDTO) {
+   
+    return await this.findExportListFaturamento.execute(dataInicial,dataFinal,orderStatus, client, orderType);
+  }
+  
   @Patch(':id')
   @ApiOperation({ summary: "EndPoint para atualizar status de pedidos" })
   async update(@Param('id') id: string, @Body() patchOrderDto: PatchOrderDto) {
@@ -544,7 +560,11 @@ export class OrderController {
       orderType: orderTypeOfi,
       fk_client: fk_clientOfi
     })
+
+    
   }
+
+  
   
 
 

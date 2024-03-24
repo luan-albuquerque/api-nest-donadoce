@@ -13,6 +13,7 @@ import { OrderItem } from "../../../order_item/entities/order-item.entity";
 import { OrderType } from "../../types/ordertype.type";
 import { OrderToBatchDTO } from "../../entities/order-to-batch.entity";
 import { OrderBatchItem } from "src/modules/order_batch_item/entities/order_batch_item.entity";
+import { Prisma } from "@prisma/client";
 
 
 @Injectable()
@@ -20,6 +21,34 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async findListExportFaturamento(orderStatus: string, client: string, orderType: string, dataInitial: string, dataFinal: string): Promise<any> {
+        try {
+            const sql = `
+            select o."dateOrder" , o."numberOrder", os.description as "descriptionStatus", c.corporate_name as "client", c2.corporate_name  as "company" , 
+            r.description , oi."amountItem", oi."valueOrderItem", 
+            (oi."amountItem" * oi."valueOrderItem") as "valueItemTotal" from "Order" o 
+            inner join "OrderItem" oi on oi.fk_order = o.id
+            inner join "Client" c on o.fk_user = c.id
+            inner join "Company" c2 on o.fk_company  = c2.id 
+            inner join  "OrderStatus" os on os.id = o.fk_orderstatus
+            inner join "Revenues" r on oi.fk_revenue = r.id 
+            where 
+            CAST(o."order_type"  AS VARCHAR(25)) like '%${orderType}%' and
+            (oi.delivery_date >= '${dataInitial}' and oi.delivery_date <= '${dataFinal}' ) and o.fk_orderstatus like '%${orderStatus}%' 
+            and o.fk_user like '%${client}%'
+            order by o."dateOrder" desc;
+            `;
+            
+            const result = await this.prisma.$queryRaw(Prisma.raw(sql)).finally(() => {
+                this.prisma.$disconnect()
+            });
+
+            return result;
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
     async findOrderUtilizetedInOrderBatch(fk_order: string): Promise<OrderBatchItem> {
         const data = await this.prisma.orderBatchItem.findUnique({
             where: {
