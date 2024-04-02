@@ -21,7 +21,7 @@ export class ClientsRepositoryInPrisma implements ClientsRepository {
         })
     }
     async findByFone(fone: string): Promise<Client> {
-        return await this.prisma.client.findUnique({
+        return await this.prisma.client.findFirst({
             where: {
                 fone
             }

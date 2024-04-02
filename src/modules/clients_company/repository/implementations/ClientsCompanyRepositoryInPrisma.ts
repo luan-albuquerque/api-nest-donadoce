@@ -3,7 +3,6 @@ import { ClientCompany } from "../../entities/clients_company.entity";
 import { ClientsCompanyRepository } from "../contract/ClientsCompanyRepository";
 import { CreateClientCompany } from "../../dto/create-client-company.dto";
 import { Injectable } from '@nestjs/common';
-import { UpdateCompanyDto } from "../../dto/update-company.dto";
 import { PaginationOptions } from "../../dto/pagination-options.dto";
 
 @Injectable()

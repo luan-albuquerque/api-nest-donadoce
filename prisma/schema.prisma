@@ -64,7 +64,7 @@ model Client {
   district         String?
   ie               String
   uf               String?
-  fone             String?            @unique
+  fone             String?            
   address          String
   cep              String
   accountable      String
@@ -176,7 +176,7 @@ model Company {
 model Client_Company {
   fk_company  String
   fk_client   String
-  fone        String   @unique
+  fone        String   
   accountable String
   fk_user     String?  @unique
   createdAt   DateTime @default(now())

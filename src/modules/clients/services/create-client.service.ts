@@ -7,6 +7,7 @@ import { UserRepository } from "src/modules/users/repository/contract/UserReposi
 import { CompanyRepository } from "src/modules/company/repository/contract/CompanyRepository";
 import { ClientsCompanyRepository } from "src/modules/clients_company/repository/contract/ClientsCompanyRepository";
 import { CreateClientCompany } from "src/modules/clients_company/dto/create-client-company.dto";
+import { User } from "src/modules/users/entities/user.entity";
 
 @Injectable()
 class CreateClientService {
@@ -21,6 +22,7 @@ class CreateClientService {
 
   async execute(createClientDto: CreateClientDto) {
 
+  
     createClientDto.corporate_name = createClientDto.corporate_name.toUpperCase();
 
     const clientFindByMail = await this.userRepository.findByMail(createClientDto.createUser.email);
@@ -30,11 +32,12 @@ class CreateClientService {
     }
 
     const clientFindByCNPJ = await this.clientsRepository.findByCNPJ(createClientDto.cnpj);
-   
+
 
     const passwordHash: string = await this.hashPassword.generateHash(createClientDto.createUser.password)
 
     if (createClientDto.createCompany) {
+      await Promise.all(
       createClientDto.createCompany.map(async (item) => {
 
         const company = await this.companyRepository.findById(item.fk_company)
@@ -44,21 +47,13 @@ class CreateClientService {
         }
 
 
-
-        const findByFoneInClient = await this.clientsRepository.findByFone(item.fone);
-        if (findByFoneInClient) {
-          throw new NotFoundException("Fone já cadastrado em um Cliente")
-        }
-
-
-        const emailClient = await this.userRepository.findByMail(item.email);
+        const emailClient = await this.userRepository.findByMail(item.user.email);
         if (emailClient) {
-          throw new NotFoundException(`${item.email} já cadastrado`)
+          throw new NotFoundException(`${item.user.email} já cadastrado`)
         }
-
-
 
       })
+      );
     }
 
 
@@ -88,26 +83,43 @@ class CreateClientService {
     }
 
     const newClient = await this.clientsRepository.create(data);
-
-    const newData: CreateClientCompany[] = []
+    
+    console.log({newClient});
+    const newData: CreateClientCompany[] = []    
 
     if (createClientDto.createCompany) {
-      Promise.all(
-        createClientDto.createCompany.map((item) => {
-          newData.push(
-            {
-              accountable: item.accountable,
-              fk_client: newClient.id,
-              fk_company: item.fk_company,
-              fone: item.fone,
+      await Promise.all(
+        createClientDto.createCompany.map(async (item) => {
+          console.log({item: item});
 
-            }
-          )
+          const passwordHash: string = await this.hashPassword.generateHash(item.user.password)
+
+          item.user.email = item.user.email;
+          item.user.password = passwordHash;
+          item.user.is_admin = false;
+          item.user.is_client = false;
+          item.user.is_driver = false;
+          item.user.is_enabled = true;
+          item.user.is_production = false;
+          item.user.is_company = true;
+
+          await this.userRepository.create(item.user).then(async (user: User) => {
+            
+          await this.clientsCompanyRepository.createOne(
+              item.accountable,
+              item.fone,
+              newClient.id,
+              item.fk_company,
+              user.id,
+            )
+          }).catch((error)=> {
+            throw new HttpException('Não foi possivel realizar vinculo', HttpStatus.BAD_REQUEST)
+  
+          })
 
 
         })
       )
-      await this.clientsCompanyRepository.create(newData)
     }
 
 
