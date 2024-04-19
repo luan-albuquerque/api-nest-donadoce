@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, DefaultValuePipe, ParseIntPipe, BadRequestException, Put } from '@nestjs/common';
 
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateClientCompany } from './dto/create-client-company.dto';
@@ -8,6 +8,8 @@ import FindOneByClientCompanyService from './services/find-one-by-client-company
 import { DeleteClientCompanyService } from './services/delete-client-company.service';
 import { DeleteClientCompany } from './dto/delete-client-company.dto';
 import CreateClientCompanyService from './services/create-client-company.service';
+import { UpdateClientCompany } from './dto/update-client-company.dto';
+import UpdateClientCompanyService from './services/update-client-company.service';
 
 @ApiTags('Clients_company')
 @ApiBearerAuth()
@@ -18,9 +20,10 @@ export class ClientsCompanyController {
     private readonly findAllClientCompanyService: FindAllClientCompanyService,
     private readonly findOneByClientCompanyService: FindOneByClientCompanyService,
     private readonly deleteCompanyService: DeleteClientCompanyService,
+    private readonly updateClientCompanyService: UpdateClientCompanyService,
   ) { }
 
-  @ApiOperation({ summary: "", description: "" })
+  @ApiOperation({ summary: "Vincular uma unidade a um cliente criando um responsavél", description: "" })
   @Post()
   @ApiBody({type:[CreateClientCompany]})
   async create(@Body() createClientCompany: CreateClientCompany[]) {
@@ -49,17 +52,25 @@ export class ClientsCompanyController {
   }
 
 
-  @ApiOperation({ summary: ""})
+  @ApiOperation({ summary: "Buscar todas as unidade de cliente X"})
   @Get(':fk_client')
   async findOneByClient(@Param('fk_client') fk_client: string) {
     return await this.findOneByClientCompanyService.execute(fk_client)
   }
 
+  @ApiOperation({ summary: "Atualização de dados do vinculo de cliente e unidade."})
+  @Put()
+  async Update(@Body() data: UpdateClientCompany) {
+      return await this.updateClientCompanyService.execute(data)
+
+  }
+
  
-  @ApiOperation({ summary: ""})
+  @ApiOperation({ summary: "Rota desativada"})
   @Delete()
   async remove(@Body() data: DeleteClientCompany) {
-    return await this.deleteCompanyService.execute(data)
+     throw new BadRequestException("Rota defasada devido a atualização de banco de dados em 04/2024")
+      return await this.deleteCompanyService.execute(data)
 
   }
 }

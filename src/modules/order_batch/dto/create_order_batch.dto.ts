@@ -4,10 +4,10 @@ import { IsNotEmpty, IsString } from "class-validator"
 import { CreateOrderBatchItem } from "src/modules/order_batch_item/dto/create_order_batch_item.dto"
 
 export class CreateOrderBatch {
-    @IsString({ message: 'fk_client precisa ser string' })
-    @IsNotEmpty({ message: 'fk_client não pode esvaziar' })
+    @IsString({ message: 'fk_user precisa ser string' })
+    @IsNotEmpty({ message: 'fk_user não pode esvaziar' })
     @ApiProperty()
-    fk_client: string
+    fk_user: string
 
 
     @ApiProperty({ type: 'string', format: 'binary', required: false })

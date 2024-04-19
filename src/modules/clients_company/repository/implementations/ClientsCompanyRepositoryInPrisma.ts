@@ -4,10 +4,31 @@ import { ClientsCompanyRepository } from "../contract/ClientsCompanyRepository";
 import { CreateClientCompany } from "../../dto/create-client-company.dto";
 import { Injectable } from '@nestjs/common';
 import { PaginationOptions } from "../../dto/pagination-options.dto";
+import { UpdateClientCompany } from "../../dto/update-client-company.dto";
 
 @Injectable()
 export class ClientsCompanyRepositoryInPrisma implements ClientsCompanyRepository {
     constructor(private prisma: PrismaService) { }
+
+    async update(updateClientCompany: UpdateClientCompany): Promise<void> {
+        await this.prisma.client_Company.update({
+            data: {
+                accountable: updateClientCompany.accountable,
+                fone: updateClientCompany.fone,
+                         
+            },
+            where:{
+                fk_client_fk_company:{
+                    fk_client: updateClientCompany.fk_client,
+                    fk_company: updateClientCompany.fk_company, 
+                }
+         
+            }
+        }).finally(async ()=>{
+            await this.prisma.$disconnect()
+        })
+    }
+    
     async createOne(accountable:string, fone: string, fk_client: string, fk_company: string, fk_user: string): Promise<void> {
         await this.prisma.client_Company.create({
             data: {
@@ -57,6 +78,21 @@ export class ClientsCompanyRepositoryInPrisma implements ClientsCompanyRepositor
             this.prisma.$disconnect()
         })
     }
+    
+
+    async findOneByClientAndCompany(fk_client: string, fk_company: string): Promise<ClientCompany> {
+        return await this.prisma.client_Company.findFirst({
+          where:{
+            fk_client,
+            fk_company,
+          },
+          include:{
+            user: true,
+          }
+         }).finally(()=>{
+             this.prisma.$disconnect()
+         })
+     }
 
     async findOneByClient(fk_client: string): Promise<ClientCompany[]> {
         return await this.prisma.client_Company.findMany({

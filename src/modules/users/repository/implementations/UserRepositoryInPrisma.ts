@@ -3,10 +3,36 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../shared/config/database/prisma/prisma.service';
 import { UserRepository } from '../contract/UserRepository';
 import { CreateUserDto } from '../../dto/create-user.dto';
+import { UpdateUserDto } from '../../dto/update-user.dto';
 
 @Injectable()
 export class UserRepositoryInPrisma implements UserRepository {
     constructor(private prisma: PrismaService) { }
+    async listUserToOrderBatch(): Promise<User[]> {
+        const data = await this.prisma.user.findMany({
+            select:{
+                id: true,
+                is_company: true,
+                is_client: true,
+                is_enabled: true,
+                email: true,
+                Clients: true,
+                Client_Company: {
+                    select:{
+                        company: true,
+                    }
+                }    
+            }, 
+             where: {
+                 OR:[
+                    { is_company: true },
+                    {  is_enabled: true },
+                    {  is_client: true }
+                ],
+             }
+        })
+        return data
+    }
     async create(createUserDto: CreateUserDto): Promise<User> {
         const data = await this.prisma.user.create({
             data: createUserDto,
@@ -15,6 +41,24 @@ export class UserRepositoryInPrisma implements UserRepository {
 
         return data;
     }
+
+   
+    async update(id: string, updateUserDto: UpdateUserDto): Promise<User>{
+        const data = await this.prisma.user.update({
+            data: {
+                email: updateUserDto.email,
+                password: updateUserDto.password,
+                updateAt: new Date(),
+            },
+            where:{
+                id,
+            }
+
+        })
+
+        return data;
+    }
+
     async finInforUser(id: string): Promise<User> {
         const data = await this.prisma.user.findUnique({
 

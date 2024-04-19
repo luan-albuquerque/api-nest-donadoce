@@ -12,6 +12,7 @@ import { multerOptionsInvoice } from 'src/shared/http/middlewares/multerInvoicem
 import { DeleteOrderBatchService } from './services/delete-orderbatch.service';
 import { UpdateInvoiceOrderBatch } from './dto/update_invoice_order_batch.dto';
 import { UpdateInvoiceInOrderBatch } from './services/update-invoice-in-order-batch.service';
+import { ListUsersForOrderBatchService } from './services/list-users-for-order-batch.service';
 
 
 @Controller('order_batch')
@@ -23,7 +24,8 @@ export class OrderBatchController {
     private readonly createOrderBatchService: CreateOrderBatchService,
     private readonly addPaymentVoucherInOrderBatchService: AddPaymentVoucherInOrderBatchService,
     private readonly deleteOrderBatchService: DeleteOrderBatchService,
-    private readonly updateInvoiceInOrderBatch: UpdateInvoiceInOrderBatch
+    private readonly updateInvoiceInOrderBatch: UpdateInvoiceInOrderBatch,
+    private readonly listUsersForOrderBatchService: ListUsersForOrderBatchService
   ) { }
 
 
@@ -51,7 +53,7 @@ export class OrderBatchController {
       createOrderBatchItem: Object(JSON.parse(bodyform.createOrderBatchItem)),
       end_date: new Date(bodyform.end_date),
       initial_date: new Date(bodyform.initial_date),
-      fk_client: bodyform.fk_client,
+      fk_user: bodyform.fk_user,
       invoice_number: bodyform.invoice_number,
       userOpenOrderBatch: req.user.id,
       // file_caution: file_caution,
@@ -101,9 +103,10 @@ export class OrderBatchController {
   async findAll(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
-    @Query('fk_client') fk_client = undefined,
+    @Query('fk_user') fk_client = undefined,
     @Query('invoice_number') invoice_number = undefined,
     @Query('numberOrderBatch') numberOrderBatch = undefined,
+
   ) {
     return await this.findManyOrderBatchService.execute({
       fk_client,
@@ -113,6 +116,38 @@ export class OrderBatchController {
       take: limit
     })
   }
+
+
+  @Get("findOrderBatchByToken")
+  @ApiOperation({ summary: "EndPoint em listagem de lotes de pedidos", description: "" })
+  async findOrderBatchByToken(
+    @Req() req,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
+    @Query('invoice_number') invoice_number = undefined,
+    @Query('numberOrderBatch') numberOrderBatch = undefined,
+  ) {
+
+    
+    return await this.findManyOrderBatchService.execute({
+      fk_client:  req.user.id,
+      invoice_number,
+      numberOrderBatch,
+      skip,
+      take: limit
+    })
+  }
+
+
+  @Get("usersForOrderBatch")
+  @ApiOperation({ summary: "EndPoint em listagem de usuarios para bvincular lotes de pedidos",
+   description: "Esse endpoint deve ser usado para lista os usuarios que tanto cliente quanto unidade para criar um lote" })
+  async findAllUserTOBAtch() {
+    return await this.listUsersForOrderBatchService.execute()
+  }
+
+
+  
 
 
   @UseInterceptors(

@@ -280,7 +280,7 @@ model OrderBatch {
   file_payment_voucher    String?
   invoice_number          String?
   numberOrderBatch        Int              @default(autoincrement())
-  fk_client               String
+  fk_client               String  // Client ou company
   fk_user_open_orderbatch String
   user                    User             @relation(name: "userClient", fields: [fk_client], references: [id])
   userBatch               User             @relation(name: "userOpenOrderBatch", fields: [fk_user_open_orderbatch], references: [id])

@@ -6,6 +6,7 @@ import FindOneByClientCompanyService from './services/find-one-by-client-company
 import CreateClientCompanyService from './services/create-client-company.service';
 import { DeleteClientCompanyService } from './services/delete-client-company.service';
 import BCryptHash from '../users/providers/implementations/BCryptHash';
+import UpdateClientCompanyService from './services/update-client-company.service';
 
 @Module({
   imports: [DatabaseModule],
@@ -15,6 +16,7 @@ import BCryptHash from '../users/providers/implementations/BCryptHash';
     FindOneByClientCompanyService,
     CreateClientCompanyService,
     DeleteClientCompanyService,
+    UpdateClientCompanyService,
     BCryptHash
   ]
 })

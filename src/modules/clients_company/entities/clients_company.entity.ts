@@ -8,5 +8,6 @@ export class ClientCompany {
     accountable?: string
     clients?: Client
     company?: Company
+    fk_user?: string;
 
 }

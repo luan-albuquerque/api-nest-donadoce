@@ -79,7 +79,6 @@ export class AppModule implements NestModule {
     dayjs.extend(timezone);
     dayjs.tz.setDefault('America/Manaus');
 
-  
     consumer.apply(EnsureAuthenticatedMiddleware)
       .exclude(
 
@@ -87,7 +86,7 @@ export class AppModule implements NestModule {
         { method: RequestMethod.ALL, path: "/caution/(.*)" },
         { method: RequestMethod.ALL, path: "/invoice/(.*)" },
         { method: RequestMethod.ALL, path: "/payment/(.*)" },
-        { method: RequestMethod.ALL, path: "/order_batch/(.*)" },
+        // { method: RequestMethod.ALL, path: "/order_batch/(.*)" },
         { method: RequestMethod.POST, path: "/session" },
         { method: RequestMethod.POST, path: '/session/send-email' },
         { method: RequestMethod.POST, path: '/session/redefine-password' }
