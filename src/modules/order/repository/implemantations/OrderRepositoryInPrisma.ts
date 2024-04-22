@@ -23,6 +23,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     ) { }
     async findListExportFaturamento(orderStatus: string, client: string, orderType: string, dataInitial: string, dataFinal: string): Promise<any> {
         try {
+            if(!dataInitial || !dataFinal) return;
             const sql = `
             select o."dateOrder" , o."numberOrder", os.description as "descriptionStatus", c.corporate_name as "client", c2.corporate_name  as "company" , 
             r.description , oi."amountItem", oi."valueOrderItem", 
