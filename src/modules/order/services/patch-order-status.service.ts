@@ -115,7 +115,7 @@ export class PatchOrderStatusService {
 
         if(item.fk_categoryOrderItem == "491aebc2-1c69-11ee-be56-0242ac120002") { // Se for dejejum
         
-          dataaa = dayjs(dayjs(item.delivery_date).subtract(1, 'day').format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate()
+          dataaa = dayjs(dayjs(item.delivery_date).subtract(1, 'day').format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate()//
         
         }
         // CONTROL PRODUCTION PRODUCT
