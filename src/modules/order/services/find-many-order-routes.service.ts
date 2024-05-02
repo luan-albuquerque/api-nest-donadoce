@@ -19,6 +19,7 @@ interface ListDelivery {
   companyClient: ClientCompany
   revenueDescription: string
   deliveryDate: Date
+  item: any;
 }
 
 @Injectable()
@@ -67,6 +68,7 @@ export class FindManyOrderRoutesService {
                   companyClient,
                   revenueDescription: orderItem.revenues.description,
                   deliveryDate: orderItem.delivery_date,
+                  item: orderItem,
 
                 })
               }
@@ -80,6 +82,7 @@ export class FindManyOrderRoutesService {
                 user: order.user,
                 deliveryDate: orderItem.delivery_date,
                 companyClient,
+                item: orderItem,
               })
 
             }
