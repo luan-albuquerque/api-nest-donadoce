@@ -178,7 +178,7 @@ export class RevenueController {
       imagem,
       description: bodyform.description,
       status: bodyform.status,
-      order_type: Number(bodyform.order_type),
+      order_type: Number(bodyform.status),
       value: Number(bodyform.value),
       old_imagem: bodyform.old_imagem,
       yield_per_quantity: Number(bodyform.yield_per_quantity),
