@@ -19,7 +19,7 @@ export class UpdateRevenueService {
             throw new UnauthorizedException("Receita não encontrada")
         }
 
-        //updateRevenueDto.order_type = updateRevenueDto.status == 1 ? "programmed" : "coffe";
+        updateRevenueDto.order_type = updateRevenueDto.status == 1 ? "programmed" : "coffe";
 
         const revenueNewAtu = await this.revenuesRepository.findByDescription(updateRevenueDto.description)
 
