@@ -17,7 +17,12 @@ export class FindManyOrderToBatchService {
 
        
     
-      return await this.orderRepository.findManyAllToBatch({numberOrder, skip, take, order_status, orderType, fk_client })
+      const data = await this.orderRepository.findManyAllToBatch({numberOrder, skip, take, order_status, orderType, fk_client })
+
+      return {
+        count: data.length,
+        data,
+      }
       
      } catch (error) {
 

@@ -37,8 +37,8 @@ export class CreateOrderProgrammedService {
     const user = await this.userRepository.finInforUser(fk_user);
 
      
-    if(user.is_company){  
-        fk_user = user?.Client_Company.clients.id;
+    if(user?.is_company){  
+        fk_user = user?.Client_Company.company.id;
         
       }
 

@@ -519,7 +519,7 @@ export class OrderController {
   })
 
   @ApiQuery({
-    name: 'fk_client',
+    name: 'fk_user',
     required: false,
     type: String,
   })
@@ -532,7 +532,7 @@ export class OrderController {
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
     @Query('numberOrder') numberOrder = undefined,
     @Query('orderType') orderType = undefined,
-    @Query('fk_client') fk_client = undefined,
+    @Query('fk_user') fk_client = undefined,
     @Query('statusOrder') statusOrder = undefined,
 
   ) {

@@ -31,8 +31,8 @@ export class CreateOrderCoffeService {
     const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
 
        
-    if(user.is_company){  
-      fk_user = user?.Client_Company.clients.id;
+    if(user?.is_company){  
+      fk_user = user?.Client_Company.company.id;
     
     }
 

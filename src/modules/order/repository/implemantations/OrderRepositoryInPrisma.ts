@@ -1,4 +1,4 @@
- import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { OrderRepository } from "../contract/OrderRepository";
 import { CreateOrderAlternativeDto } from "../../dto/create-order-alternative.dto";
 import { PrismaService } from "src/shared/config/database/prisma/prisma.service";
@@ -23,7 +23,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     ) { }
     async findListExportFaturamento(orderStatus: string, client: string, orderType: string, dataInitial: string, dataFinal: string): Promise<any> {
         try {
-            if(!dataInitial || !dataFinal) return;
+            if (!dataInitial || !dataFinal) return;
             const sql = `
             select o."dateOrder" , o."numberOrder", os.description as "descriptionStatus", c.corporate_name as "client", c2.corporate_name  as "company" , 
             r.description , oi."amountItem", oi."valueOrderItem", 
@@ -39,7 +39,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             and o.fk_user like '%${client}%'
             order by o."dateOrder" desc;
             `;
-            
+
             const result = await this.prisma.$queryRaw(Prisma.raw(sql)).finally(() => {
                 this.prisma.$disconnect()
             });
@@ -61,8 +61,8 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
         return data;
     }
-    async findManyAllToBatch({fk_client,numberOrder,orderType,order_status,skip,take}: ListByAdminOrderDTO): Promise<OrderToBatchDTO[]> {
-        
+    async findManyAllToBatch({ fk_client, numberOrder, orderType, order_status, skip, take }: ListByAdminOrderDTO): Promise<OrderToBatchDTO[]> {
+
         const data = await this.prisma.order.findMany({
             select: {
                 id: true,
@@ -79,15 +79,19 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 fk_user: true,
                 file_caution: true,
                 user: {
-
-                    select: {
-                        Clients: {
-                            select: {
-                                corporate_name: true
-                            }
-                        }
+                    select:{
+                     is_company: true,
+                     is_client: true,
+                     is_enabled: true,
+                     email: true,
+                     Clients: true,
+                     Client_Company: {
+                         select:{
+                             company: true,
+                         }
+                     }    
                     }
-                },
+                 },
                 // orderItem: {
                 //     select: {
                 //         homologate: true,
@@ -111,29 +115,34 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 //         valueOrderItem: true,
                 //     }
                 // },
-                orderBatchItem:{
-                     select:{
-                        orderBatch:{
-                            select:{
+                orderBatchItem: {
+                    select: {
+                        orderBatch: {
+                            select: {
                                 file_invoice: true,
                                 file_payment_voucher: true,
                                 fk_client: true,
                                 fk_user_open_orderbatch: true,
                                 invoice_number: true,
                                 numberOrderBatch: true,
-                                user:{
-                                    select:{
-                                        Clients:{
-                                            select:{
-                                                corporate_name: true,
-                                            }
+                                user: {
+                                   select:{
+                                    is_company: true,
+                                    is_client: true,
+                                    is_enabled: true,
+                                    email: true,
+                                    Clients: true,
+                                    Client_Company: {
+                                        select:{
+                                            company: true,
                                         }
-                                    }
+                                    }    
+                                   }
                                 },
-                                userBatch:{
-                                    select:{
-                                        Clients:{
-                                            select:{
+                                userBatch: {
+                                    select: {
+                                        Clients: {
+                                            select: {
                                                 corporate_name: true,
                                             }
                                         }
@@ -141,7 +150,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                                 }
                             }
                         }
-                     }
+                    }
                 },
                 valueOrder: true,
                 orderStatus: {
@@ -153,10 +162,16 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             skip,
             take,
             where: {
+                AND: [
+                    {
+                        fk_user: fk_client,
+                    },
+                    {
+                        numberOrder
+                    }
+                ],
                 fk_orderstatus: order_status,
-                fk_user: fk_client,
                 order_type: orderType,
-                numberOrder,
             },
             orderBy: {
                 numberOrder: "desc"
@@ -167,8 +182,8 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
         return data;
     }
-    async findManyAllFilter({desc_user,fk_client,numberOrder,orderType,order_status,skip,take}: ListByAdminOrderDTO, where: any): Promise<OrderAdmin[]> {
-        
+    async findManyAllFilter({ desc_user, fk_client, numberOrder, orderType, order_status, skip, take }: ListByAdminOrderDTO, where: any): Promise<OrderAdmin[]> {
+
         const data = await this.prisma.order.findMany({
             select: {
                 id: true,
@@ -260,7 +275,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                     },
                 },
                 company: {
-                    select:{
+                    select: {
                         id: true,
                         address: true,
                         cep: true,
@@ -276,13 +291,13 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                     }
                 },
                 user: {
-                    select:{
+                    select: {
                         id: true,
                         email: true,
                         Clients: true,
                         is_enabled: true,
                         is_client: true,
-                        is_company: true,                        
+                        is_company: true,
                     }
                 },
 
@@ -435,7 +450,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 //     }
                 // ]
                 fk_user: fk_client,
-                orderBatchItem:{
+                orderBatchItem: {
                     is_removed: false,
                 }
             },
@@ -471,9 +486,9 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
         return data;
     }
-    async findMany({numberOrder, skip, take, order_status, orderType, fk_client, fk_company }: ListByAdminOrderDTO, dataInicial: Date, dataFinal: Date): Promise<OrderAdmin[]> {
+    async findMany({ numberOrder, skip, take, order_status, orderType, fk_client, fk_company }: ListByAdminOrderDTO, dataInicial: Date, dataFinal: Date): Promise<OrderAdmin[]> {
 
-   
+
         const data = await this.prisma.order.findMany({
             select: {
                 id: true,
@@ -491,16 +506,16 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 fk_user: true,
                 file_caution: true,
                 fk_company: true,
-                company:{
-                  select:{
-                    priority: true,
-                    corporate_name: true,
-                    cep: true,
-                    district: true,
-                    cnpj: true,
-                    address: true,
-                    county: true, 
-                  }
+                company: {
+                    select: {
+                        priority: true,
+                        corporate_name: true,
+                        cep: true,
+                        district: true,
+                        cnpj: true,
+                        address: true,
+                        county: true,
+                    }
                 },
                 user: {
 
@@ -552,15 +567,15 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 fk_company: fk_company,
                 orderItem: {
                     some: {
-                    
-                    
-                                delivery_date: {
-                                    gte: dataInicial,
-                                    lte: dataFinal
 
-                                }
-                            
-                         
+
+                        delivery_date: {
+                            gte: dataInicial,
+                            lte: dataFinal
+
+                        }
+
+
 
 
 
@@ -579,7 +594,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         return data;
     }
 
-    async create({ createOrderItemDto, dateOrder, fk_user, fk_orderstatus, valueOrder, order_type, fk_company,is_created_by_company }: CreateOrderAlternativeDto): Promise<void> {
+    async create({ createOrderItemDto, dateOrder, fk_user, fk_orderstatus, valueOrder, order_type, fk_company, is_created_by_company }: CreateOrderAlternativeDto): Promise<void> {
 
         await this.prisma.order.create({
             data: {
