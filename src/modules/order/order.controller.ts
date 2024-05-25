@@ -34,6 +34,7 @@ import { FindManyOrderToBatchService } from './services/find-many-order-to-batch
 import { FindExportListFaturamento } from './services/find-exportorders.service';
 import { ShoppingListDto } from '../dashboard/dtos/shoppinglist.dto';
 import { ListExportFaturamentoDTO } from '../ingredients/dto/list-export-faturamento.dto';
+import { FindManyTrayAndBoxesService } from './services/find-many-tray-and-boxes.service';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -56,7 +57,8 @@ export class OrderController {
     private readonly findManyOrderRoutesService: FindManyOrderRoutesService,
     private readonly findManyOrderAllFiltersService: FindManyOrderAllFiltersService,
     private readonly findManyOrderToBatchService: FindManyOrderToBatchService,
-    private readonly findExportListFaturamento: FindExportListFaturamento
+    private readonly findExportListFaturamento: FindExportListFaturamento,
+    public readonly  findManyTrayAndBoxesService: FindManyTrayAndBoxesService
   ) { }
 
   @Get('kambamRoute')
@@ -75,6 +77,9 @@ export class OrderController {
     return await this.findManyOrderRoutesService.execute(orderType);
   }
 
+
+
+  
   @ApiBody({
     type: CreateOrderDto,
   })
@@ -575,7 +580,38 @@ export class OrderController {
     
   }
 
-  
+
+  @ApiQuery({
+    name: 'take',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'fk_orderstatus',
+    required: false,
+    type: String,
+  })
+
+  @Get('findManyTrayAndBoxes')
+  @ApiOperation({ summary: "Lista de Bandejas e Caixas em Unidades" })
+
+  async findManyTrayAndBoxes(
+    @Query('take', new DefaultValuePipe(10), ParseIntPipe) take = 10,
+    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
+    @Query('fk_orderstatus') fk_orderstatus = undefined,
+
+  ): Promise<any> {
+
+    return await this.findManyTrayAndBoxesService.execute(take, skip, fk_orderstatus);
+    
+  }
+
+
   
 
 

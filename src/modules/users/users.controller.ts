@@ -1,6 +1,8 @@
-import { Controller,Param, Post, Body, Put , Get,Query, DefaultValuePipe, ParseIntPipe, Delete, Req} from '@nestjs/common';
+import { Controller,Param, Post, Body, Put , Get,Query, DefaultValuePipe, ParseIntPipe, Delete, Req, Patch} from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { FindOneInforUserService } from './services/find-one-infor-user.service';
+import { UpdatePasswordUserDto } from './dto/update-password-user.dto';
+import { UpdatePasswordService } from './services/update-password.service ';
 
 
 @Controller('users')
@@ -8,7 +10,8 @@ import { FindOneInforUserService } from './services/find-one-infor-user.service'
 @ApiTags("Users")
 export class UsersController {
   constructor(
-    private readonly findOneInforUserService: FindOneInforUserService
+    private readonly findOneInforUserService: FindOneInforUserService,
+    private readonly updatePasswordService: UpdatePasswordService
   ) {}
 
   @Get("my-data")
@@ -16,6 +19,14 @@ export class UsersController {
   async findOne(@Req() req) {
     
     return await this.findOneInforUserService.execute(req.user.id)
+  }
+
+  @Patch("password")
+  @ApiOperation({ summary: "Atualizar senha de cadastro" })
+  async updatePassword(@Req() req, @Body() body: UpdatePasswordUserDto) {
+  
+    await this.updatePasswordService.execute(req.user.id, body);
+  
   }
 
 

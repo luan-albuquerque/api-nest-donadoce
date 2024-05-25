@@ -21,6 +21,41 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async findManyTrayAndBoxes(take: number, skip: number, fk_orderstatus: string): Promise<any> {
+        return await this.prisma.order.findMany({
+           select:{
+            numberOrder: true,
+            dateOrder: true,
+            orderItem: {
+                select:{
+                    revenues:{
+                        select:{
+                            description: true,
+                        }
+                    },
+                    categoryOrderItem:{
+                        select:{
+                            description: true,
+                        }
+                    },
+                    delivery_date: true,
+                },
+              
+            },
+            company: true,
+            amount_of_boxes: true,
+            amount_of_tray: true,
+            orderStatus: true,
+           },
+           where:{
+            fk_orderstatus, 
+           },
+           take, 
+           skip,
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+    }
     async findListExportFaturamento(orderStatus: string, client: string, orderType: string, dataInitial: string, dataFinal: string): Promise<any> {
         try {
             if (!dataInitial || !dataFinal) return;

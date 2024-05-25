@@ -18,7 +18,7 @@ class CreateSessionService {
 
     async execute({ email, password }: CreateSessionDTO) {
         try {
-            const user: User = await this.userRepository.findByMail(email)
+            const user = await this.userRepository.findByMail(email)
             if (!user) {
                 throw new UnauthorizedException(
                     "Usuario não existe"

@@ -18,6 +18,7 @@ import { FindManyOrderRoutesService } from './services/find-many-order-routes.se
 import { FindManyOrderAllFiltersService } from './services/find-many-order-all-filters.service';
 import { FindManyOrderToBatchService } from './services/find-many-order-to-batch.service';
 import { FindExportListFaturamento } from './services/find-exportorders.service';
+import { FindManyTrayAndBoxesService } from './services/find-many-tray-and-boxes.service';
 
 @Module({
   imports:[
@@ -41,7 +42,8 @@ import { FindExportListFaturamento } from './services/find-exportorders.service'
     PatchAddPaymentVoucherOrderService,
     FindManyOrderRoutesService,
     FindManyOrderAllFiltersService,
-    FindManyOrderToBatchService
+    FindManyOrderToBatchService,
+    FindManyTrayAndBoxesService
   ]
 })
 export class OrderModule {}
