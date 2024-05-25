@@ -86,7 +86,7 @@ export class MenuRepositoryInPrisma implements MenuRepository {
             where: {
                 is_enabled: true,
                 dateMenu: {
-                    gte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).add(1, 'day').utc(true).toDate(),
+                    gte: dayjs(dayjs().format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate(),
                 },
             },
             orderBy: {
