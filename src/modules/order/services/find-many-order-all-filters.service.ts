@@ -45,7 +45,6 @@ export class FindManyOrderAllFiltersService {
         order_type: orderType,
         numberOrder: numberOrder != undefined ? Number(numberOrder) : numberOrder,
       }
-      console.log({listWithOrderBatchNull});
       
       if (listWithOrderBatchNull) {
         where = {

@@ -21,7 +21,7 @@ export abstract class OrderRepository {
     abstract findManyByClient(data: ListByClientOrderDTO): Promise<OrderAlternative[]>
     abstract findMany(data: ListByAdminOrderDTO, dataInicial: Date, dataFinal: Date): Promise<OrderAdmin[]>
     abstract findManyAllFilter(data: ListByAdminOrderDTO, where: any): Promise<OrderAdmin[]>
-    abstract findManyAllToBatch(data: ListByAdminOrderDTO): Promise<OrderToBatchDTO[]>
+    abstract findManyAllToBatch(data: ListByAdminOrderDTO, where: any): Promise<OrderToBatchDTO[]>
     abstract findOne(numberOrder: number): Promise<Order[]>
     abstract findById(id: string): Promise<Order>
     abstract findManyOrderByClientNotOrderBatch(fk_client: string): Promise<Order[]>

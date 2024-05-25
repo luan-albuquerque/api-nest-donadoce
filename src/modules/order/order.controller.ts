@@ -490,7 +490,6 @@ export class OrderController {
 
 
 
-
   @ApiQuery({
     name: 'limit',
     required: false,
@@ -513,13 +512,19 @@ export class OrderController {
   })
 
   @ApiQuery({
+    name: 'desc_user_or_client',
+    required: false,
+    type: String,
+  })
+
+  @ApiQuery({
     name: 'statusOrder',
     required: false,
     type: String,
   })
 
   @ApiQuery({
-    name: 'fk_user',
+    name: 'fk_client',
     required: false,
     type: String,
   })
@@ -532,13 +537,16 @@ export class OrderController {
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
     @Query('numberOrder') numberOrder = undefined,
     @Query('orderType') orderType = undefined,
-    @Query('fk_user') fk_client = undefined,
+    @Query('desc_user_or_client') desc_user = undefined,
+    @Query('fk_client') fk_client = undefined,
     @Query('statusOrder') statusOrder = undefined,
+    
 
   ) {
     var orderTypeOfi: OrderType = undefined
     var fk_clientOfi = undefined
     var fk_status = undefined
+ 
 
     if (orderType != undefined) {
 
@@ -551,15 +559,18 @@ export class OrderController {
     if (fk_client !== "undefined") {
       fk_clientOfi = fk_client
     }
-
-    return await this.findManyOrderToBatchService.execute({
-      numberOrder,
-      skip,
-      take: limit,
-      order_status: fk_status,
-      orderType: orderTypeOfi,
-      fk_client: fk_clientOfi
-    })
+  
+    return await this.findManyOrderToBatchService.execute(
+      {
+        desc_user,
+        numberOrder,
+        skip,
+        take: limit,
+        order_status: fk_status,
+        orderType: orderTypeOfi,
+        fk_client: fk_clientOfi
+      },
+    )
 
     
   }

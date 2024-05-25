@@ -61,7 +61,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
         return data;
     }
-    async findManyAllToBatch({ fk_client, numberOrder, orderType, order_status, skip, take }: ListByAdminOrderDTO): Promise<OrderToBatchDTO[]> {
+    async findManyAllToBatch({ skip, take }: ListByAdminOrderDTO,  where: any): Promise<OrderToBatchDTO[]> {
 
         const data = await this.prisma.order.findMany({
             select: {
@@ -92,29 +92,6 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                      }    
                     }
                  },
-                // orderItem: {
-                //     select: {
-                //         homologate: true,
-                //         of_menu: true,
-                //         method_of_preparation: true,
-                //         delivery_date: true,
-                //         categoryOrderItem: {
-                //             select: {
-                //                 description: true,
-                //                 time: true,
-                //             }
-                //         },
-                //         amountItem: true,
-                //         dateOrderItem: true,
-                //         revenues: {
-                //             select: {
-                //                 description: true,
-                //                 imagem: true,
-                //             }
-                //         },
-                //         valueOrderItem: true,
-                //     }
-                // },
                 orderBatchItem: {
                     select: {
                         orderBatch: {
@@ -161,20 +138,9 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             },
             skip,
             take,
-            where: {
-                AND: [
-                    {
-                        fk_user: fk_client,
-                    },
-                    {
-                        numberOrder
-                    }
-                ],
-                fk_orderstatus: order_status,
-                order_type: orderType,
-            },
+            where,
             orderBy: {
-                numberOrder: "desc"
+                numberOrder: "asc"
             }
         }).finally(() => {
             this.prisma.$disconnect()
