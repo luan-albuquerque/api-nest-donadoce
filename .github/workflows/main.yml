@@ -34,4 +34,4 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         key: ${{ secrets.SSH_KEY }}
         script:
-         cd /home/app/api_nest_dona_doce && yarn prisma generate && yarn && yarn && ./init_pm2.sh
+         cd /home/app/api_nest_dona_doce && yarn && yarn prisma generate && yarn && ./init_pm2.sh
