@@ -24,6 +24,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     async findManyTrayAndBoxes(take: number, skip: number, fk_orderstatus: string): Promise<any> {
         return await this.prisma.order.findMany({
            select:{
+            id: true,
             numberOrder: true,
             dateOrder: true,
             orderItem: {
