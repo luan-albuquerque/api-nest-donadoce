@@ -174,7 +174,6 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             },
             skip,
             take,
-            where,
             orderBy: {
                 numberOrder: "asc"
             }

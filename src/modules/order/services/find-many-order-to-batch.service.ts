@@ -13,7 +13,7 @@ export class FindManyOrderToBatchService {
     private readonly userRepository: UserRepository
   ) { }
 
-  async execute({ desc_user = undefined, numberOrder = undefined, skip, take, order_status = undefined, orderType = undefined, fk_client = undefined }: ListByAdminOrderDTO) {
+  async execute({ desc_user = undefined, numberOrder = undefined, skip, take, order_status = undefined, orderType = undefined, fk_client = undefined }: ListByAdminOrderDTO, fk_company: string) {
     
      try {
 
@@ -34,6 +34,7 @@ export class FindManyOrderToBatchService {
           AND: {
           fk_orderstatus: order_status,
           fk_user: fk_client,
+          fk_company: fk_company,
           user: {
             Clients: {
               corporate_name: {

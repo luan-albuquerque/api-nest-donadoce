@@ -534,6 +534,12 @@ export class OrderController {
     type: String,
   })
 
+  @ApiQuery({
+    name: 'fk_company',
+    required: false,
+    type: String,
+  })
+
 
   @Get("allOrdersToBatch")
   @ApiOperation({ summary: "EndPoint para listagem de pedidos para o Lote ", description: "Utilizar apenas com modo Adm e no modal de lotes" })
@@ -545,7 +551,7 @@ export class OrderController {
     @Query('desc_user_or_client') desc_user = undefined,
     @Query('fk_client') fk_client = undefined,
     @Query('statusOrder') statusOrder = undefined,
-    
+    @Query('fk_company') fk_company = undefined,
 
   ) {
     var orderTypeOfi: OrderType = undefined
@@ -575,6 +581,7 @@ export class OrderController {
         orderType: orderTypeOfi,
         fk_client: fk_clientOfi
       },
+      fk_company,
     )
 
     
