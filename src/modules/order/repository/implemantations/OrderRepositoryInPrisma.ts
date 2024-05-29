@@ -114,6 +114,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 fk_orderstatus: true,
                 fk_user: true,
                 file_caution: true,
+                fk_company: true,
                 user: {
                     select:{
                      is_company: true,
@@ -172,6 +173,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                     }
                 }
             },
+            where,
             skip,
             take,
             orderBy: {

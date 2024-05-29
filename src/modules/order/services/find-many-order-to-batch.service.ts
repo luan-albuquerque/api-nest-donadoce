@@ -47,6 +47,7 @@ export class FindManyOrderToBatchService {
           order_type: orderType,
           numberOrder: numberOrder != undefined ? Number(numberOrder) : numberOrder,
           orderBatchItem: null,
+          is_created_by_company: false
           }
         }
         
