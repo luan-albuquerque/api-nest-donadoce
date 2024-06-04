@@ -37,16 +37,20 @@ export class CreateOrderProgrammedService {
     const user = await this.userRepository.finInforUser(fk_user);
 
      
+    if(!user){  
+      throw new NotFoundException(`Usuario não encontrado`)
+    }
+       
     if(user?.is_company){  
-        fk_user = user?.Client_Company.company.id;
-        
-      }
-
+      fk_user = user?.id;
+      createOrderDto.fk_company = user?.Client_Company.company.id;
+    }
 
     if (createOrderDto.createOrderItemDto) {
 
       await Promise.all(
         createOrderDto.createOrderItemDto.map(async (item) => {
+          
           const company = await this.companyRepository.findById(createOrderDto.fk_company);
           if (!company) {
             throw new NotFoundException(`Unidade não encontrada`)

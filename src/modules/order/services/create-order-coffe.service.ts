@@ -30,11 +30,16 @@ export class CreateOrderCoffeService {
   
     const interAll = await this.revenuePerClientRepository.findAllByUser(fk_user);
 
+  
+    if(!user){  
+      throw new NotFoundException(`Usuario não encontrado`)
+    }
        
     if(user?.is_company){  
-      fk_user = user?.Client_Company.company.id;
-    
+      fk_user = user?.id;
+      createOrderCoffeDto.fk_company = user?.Client_Company.company.id;
     }
+
 
     if (createOrderCoffeDto.createOrderCoffeItemDto) {
 
@@ -47,7 +52,7 @@ export class CreateOrderCoffeService {
           }
 
           if (item.method_of_preparation != "frozen" && item.method_of_preparation != "roast") {
-            throw new NotFoundException(`Method_of_preparation not found`)
+            throw new NotFoundException(`modo de preparo não encontrado`)
           }
 
           const inter = interAll.find((iInter) => iInter.fk_revenue === item.fk_revenue);
