@@ -36,7 +36,7 @@ export class CreateOrderCoffeService {
     }
        
     if(user?.is_company){  
-      fk_user = user?.id;
+      fk_user = user?.Client_Company.fk_client;
       createOrderCoffeDto.fk_company = user?.Client_Company.company.id;
     }
 
