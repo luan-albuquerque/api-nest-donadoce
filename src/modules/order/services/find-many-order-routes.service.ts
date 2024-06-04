@@ -49,7 +49,7 @@ export class FindManyOrderRoutesService {
 
         orders.map((order) => {
           order.orderItem.map((orderItem) => {
-            var companyClient = order.company.Client_Company.find((c) => c.fk_client == order.fk_user);
+            var companyClient = order.company.Client_Company.find((c) => c.fk_company == order.fk_company);
 
             if (oListDelivery.length > 0) {
 
