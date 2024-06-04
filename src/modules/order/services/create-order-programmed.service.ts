@@ -42,7 +42,7 @@ export class CreateOrderProgrammedService {
     }
        
     if(user?.is_company){  
-      fk_user = user?.id;
+      fk_user = user?.Client_Company.fk_client;
       createOrderDto.fk_company = user?.Client_Company.company.id;
     }
 
