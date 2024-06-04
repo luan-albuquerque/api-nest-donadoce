@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { ClientsRepository } from 'src/modules/clients/repository/contract/ClientsRepository';
 import { OrderRepository } from 'src/modules/order/repository/contract/OrderRepository';
+import { UserRepository } from 'src/modules/users/repository/contract/UserRepository';
 
 
 @Injectable()
@@ -8,7 +9,7 @@ export class PatchStatusOrderByClientService {
 
   constructor(
     private readonly orderRepository: OrderRepository,
-  
+    private readonly userRepository: UserRepository,
     private readonly clientsRepository: ClientsRepository,
 
   ) { }
@@ -18,10 +19,10 @@ export class PatchStatusOrderByClientService {
     
 
       const order = await this.orderRepository.findById(id);
-      const client = await this.clientsRepository.findById(order.fk_user);
+      const user = await this.userRepository.findById(order.fk_user);
 
-      if (!client) {
-        throw new UnauthorizedException("Usuario que realizou o pedido não pertencem a cadeia de usuarios cliente")
+      if (!user) {
+        throw new UnauthorizedException("Usuario que realizou o pedido não é o mesmo")
       }
 
       if(order.fk_user != fk_user){

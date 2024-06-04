@@ -35,9 +35,7 @@ export class PatchOrderStatusService {
 
     const client = await this.clientsRepository.findById(order.fk_user);
 
-    if (!client) {
-      throw new UnauthorizedException("Usuario que realizou o pedido não pertencem a cadeia de usuarios cliente")
-    }
+  
 
     if (order.fk_orderstatus == "1c69c120002-575f34-1c69-be56-0242ac1201c69") {
       throw new UnauthorizedException("Pedido ja foi entregue")
@@ -83,10 +81,14 @@ export class PatchOrderStatusService {
 
   // em processamento
     if (fk_order_status == "45690813-1c69-11ee-be56-c691200020241") {
+
+      
       await this.validateEstoque(order);
       await this.processIngredientes2(order);
       await this.processProductionByProduct(order);
+      if (client) {
       await this.processProductionByClient(order, client);
+      }
 
     }
 
