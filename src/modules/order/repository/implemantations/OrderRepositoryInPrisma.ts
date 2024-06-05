@@ -177,7 +177,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             skip,
             take,
             orderBy: {
-                numberOrder: "asc"
+                numberOrder: "desc",
             }
         }).finally(() => {
             this.prisma.$disconnect()
