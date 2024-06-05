@@ -4,7 +4,6 @@ import { CreateOrderBatch } from './dto/create_order_batch.dto';
 import { FindManyOrderBatchService } from './services/find-many-order-batch.service';
 import { CreateOrderBatchService } from './services/create-order-batch.service';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
-import { multerOptionsOrderBatch } from 'src/shared/http/middlewares/multerOrderBatch.middleware';
 import { AddPaymentVoucherOrderBatch } from './dto/add_payment_voucher_order_batch.dto';
 import { AddPaymentVoucherInOrderBatchService } from './services/add-payment-voucher-in-order-batch.service';
 import { multerOptionsPayment } from 'src/shared/http/middlewares/multerPaymentmiddleware';
