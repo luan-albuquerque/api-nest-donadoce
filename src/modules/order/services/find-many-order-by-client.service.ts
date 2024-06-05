@@ -20,6 +20,7 @@ export class FindManyOrderByClientService {
 
      
     if(user.is_company){  
+        fk_user = user?.Client_Company.clients.id;
         fk_company = user?.Client_Company.company.id;
       }
 
