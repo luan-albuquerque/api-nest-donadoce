@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors, UploadedFiles, Param, Req, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Query, DefaultValuePipe, ParseIntPipe, UseInterceptors, UploadedFiles, Param, Req, Delete, Res, Header } from '@nestjs/common';
 import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateOrderBatch } from './dto/create_order_batch.dto';
 import { FindManyOrderBatchService } from './services/find-many-order-batch.service';
@@ -12,6 +12,7 @@ import { DeleteOrderBatchService } from './services/delete-orderbatch.service';
 import { UpdateInvoiceOrderBatch } from './dto/update_invoice_order_batch.dto';
 import { UpdateInvoiceInOrderBatch } from './services/update-invoice-in-order-batch.service';
 import { ListUsersForOrderBatchService } from './services/list-users-for-order-batch.service';
+import { FindOneOrderBatchForCsvService } from './services/find-one-order-batch-for-csv.service';
 
 
 @Controller('order_batch')
@@ -24,7 +25,8 @@ export class OrderBatchController {
     private readonly addPaymentVoucherInOrderBatchService: AddPaymentVoucherInOrderBatchService,
     private readonly deleteOrderBatchService: DeleteOrderBatchService,
     private readonly updateInvoiceInOrderBatch: UpdateInvoiceInOrderBatch,
-    private readonly listUsersForOrderBatchService: ListUsersForOrderBatchService
+    private readonly listUsersForOrderBatchService: ListUsersForOrderBatchService,
+    private readonly findOneOrderBatchForCsvService: FindOneOrderBatchForCsvService
   ) { }
 
 
@@ -117,6 +119,10 @@ export class OrderBatchController {
   }
 
 
+
+
+
+
   @Get("findOrderBatchByToken")
   @ApiOperation({ summary: "EndPoint em listagem de lotes de pedidos", description: "" })
   async findOrderBatchByToken(
@@ -146,6 +152,17 @@ export class OrderBatchController {
   }
 
 
+  @Post("csv/:id")
+  @Header('Content-Disposition', 'attachment; filename=orders.csv')
+  @Header('Content-Type', 'text/csv; charset=utf-8')
+  @ApiOperation({ summary: "EndPoint em listagem de lotes de pedidos", description: "" })
+  async findAllForCsv(
+    @Param("id") id: string,
+
+  ) {
+    var result = await this.findOneOrderBatchForCsvService.execute(id);
+    return result;
+  }
   
 
 

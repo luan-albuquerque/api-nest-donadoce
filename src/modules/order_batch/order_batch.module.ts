@@ -7,11 +7,12 @@ import { AddPaymentVoucherInOrderBatchService } from './services/add-payment-vou
 import { DeleteOrderBatchService } from './services/delete-orderbatch.service';
 import { UpdateInvoiceInOrderBatch } from './services/update-invoice-in-order-batch.service';
 import { ListUsersForOrderBatchService } from './services/list-users-for-order-batch.service';
+import { FindOneOrderBatchForCsvService } from './services/find-one-order-batch-for-csv.service';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [OrderBatchController],
-  providers: [CreateOrderBatchService, FindManyOrderBatchService, AddPaymentVoucherInOrderBatchService, DeleteOrderBatchService, UpdateInvoiceInOrderBatch, ListUsersForOrderBatchService
+  providers: [CreateOrderBatchService, FindManyOrderBatchService, FindOneOrderBatchForCsvService, AddPaymentVoucherInOrderBatchService, DeleteOrderBatchService, UpdateInvoiceInOrderBatch, ListUsersForOrderBatchService
   ],
 })
 export class OrderBatchModule {}

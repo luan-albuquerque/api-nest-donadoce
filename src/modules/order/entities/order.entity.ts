@@ -20,6 +20,7 @@ export class Order {
     invoice_number?: string
     file_payment_voucher?: string
     fk_user?: string
+    is_created_by_company?: boolean
     order_type?: OrderType
     orderBatchItem?: OrderBatchItem
     orderItem?: OrderItem[]

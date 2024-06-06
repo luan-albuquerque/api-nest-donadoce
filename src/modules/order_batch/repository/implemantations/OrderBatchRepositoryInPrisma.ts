@@ -13,6 +13,53 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
     constructor(
         private readonly prisma: PrismaService
     ) { }
+    async findOneOrderBatchForCsv(id: string): Promise<OrderBatch> {
+        var data: OrderBatch = await this.prisma.orderBatch.findUnique({
+            select: {
+                id: true,
+                file_invoice: true,
+                file_payment_voucher: true,
+                fk_client: true,
+                invoice_number: true,
+                numberOrderBatch: true,
+                OrderBatchItem: {
+                    select:{
+                        created_at: true,
+                        deleted_at: true,
+                        fk_orderBatch: true,
+                        fk_order: true,
+                        order: {
+                            include: {
+                                company: true,
+                                user: {
+                                    include:{
+                                       Client_Company: true,
+                                       Clients: true,
+                                    },
+                                },
+                                orderStatus: true,
+                                orderItem: {
+                                    include:{
+                                        revenues: true,
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    where:{
+                        deleted_at: null
+                    }
+                },
+            },
+            where: {
+                id,
+            },
+        }).finally(() => {
+            this.prisma.$disconnect()
+        })
+
+        return data
+    }
     async delete(id: string): Promise<void> {
         await this.prisma.orderBatch.delete({
             where: {
