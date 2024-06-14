@@ -165,6 +165,11 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                 user:{
                     select:{
                         Clients: true,
+                        Client_Company: {
+                          include: {
+                            company: true,
+                          }
+                        },
                         id: true,
                         email: true,
                         is_company: true,
@@ -183,6 +188,7 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                                 file_caution: true,
                                 numberOrder: true,
                                 valueOrder: true,
+                                is_created_by_company: true,
                         
                             }
                         },

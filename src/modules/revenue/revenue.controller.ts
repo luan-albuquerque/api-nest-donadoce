@@ -14,6 +14,7 @@ import { UpdateRevenueService } from './services/update-revenue.service';
 import { UpdateRevenueDto } from './dto/update-revenue.dto';
 import { FindAllRevenuesSummarizedService } from './services/find-all-revenues-summarized.service';
 import { FindAllRevenuesNotMenuService } from './services/find-all-revenues-not-menu.service';
+import { OrderType } from '../order/types/ordertype.type';
 @Controller('revenue')
 @ApiTags("Revenue")
 @ApiBearerAuth()
@@ -82,17 +83,31 @@ export class RevenueController {
     required: false,
     type: String,
   })
+  @ApiQuery({
+    name: 'orderType',
+    required: false,
+    type: String,
+  })
   @ApiOperation({ summary: "EndPoint de listagem de todas as receitas.", description: "Obs: Listagem geral resumida " })
   @Get()
   async findAll(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
     @Query('description') description = undefined,
+    @Query('orderType') orderType = undefined,
   ) {
+    var orderTypeOfi: OrderType = undefined
+
+    if (orderType != undefined) {
+
+      orderType == "programmed" ? orderTypeOfi = "programmed" : orderType == "coffe" ? orderTypeOfi = "coffe" : orderTypeOfi = undefined;
+    }
+
     return await this.findAllRevenueService.execute({
       description,
       skip,
-      take: limit
+      take: limit,
+      order_type: orderTypeOfi
     });
   }
 

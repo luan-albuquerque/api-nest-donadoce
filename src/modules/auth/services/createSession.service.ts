@@ -13,48 +13,33 @@ class CreateSessionService {
         private readonly userRepository: UserRepository,
         @Inject(BCryptHashPassword)
         private readonly hashpassword: IHashPasswordContract,
-        private jwt: JwtService
+        private readonly jwt: JwtService
     ) { }
 
     async execute({ email, password }: CreateSessionDTO) {
         try {
-            const user = await this.userRepository.findByMail(email)
+            const user = await this.userRepository.findByMail(email);
             if (!user) {
-                throw new UnauthorizedException(
-                    "Usuario não existe"
-                )
+                throw new UnauthorizedException("Usuário não encontrado.");
             }
-            
-            const comparePass = await this.hashpassword.compareHash(password, user.password)
 
-            if (!comparePass) {
-                throw new UnauthorizedException(
-                    "Usuario ou Senha incorretos"
-                )
+            const isPasswordValid = await this.hashpassword.compareHash(password, user.password);
+            if (!isPasswordValid) {
+                throw new UnauthorizedException("Senha incorreta.");
             }
 
             delete user.password;
             
-            const token = await this.jwt.sign(user)
+            const token = this.jwt.sign(user);
 
             return {
                 token,
                 ...user,
-            }
-
-            
+            };
         } catch (error) {
-            if (error) throw error;
-            throw new InternalServerErrorException(
-                'Error intern in server, please try again',
-            );
+            throw new InternalServerErrorException('Erro interno no servidor. Por favor, tente novamente mais tarde.');
         }
-
-
-
-
     }
 }
-
 
 export default CreateSessionService;

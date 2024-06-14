@@ -60,9 +60,7 @@ export class OrderBatchController {
       // file_caution: file_caution,
       // file_caution_absolute: files.file_caution[0].path,
       file_invoice: file_invoice,
-      file_invoice_absolute: files.file_invoice[0].path,
-      // file_payment_voucher: file_payment_voucher,
-      // file_payment_voucher_absolute:  files.file_payment_voucher[0].path,
+      file_invoice_absolute: files?.file_invoice[0]?.path,
     }
 
     await this.createOrderBatchService.execute(newData);

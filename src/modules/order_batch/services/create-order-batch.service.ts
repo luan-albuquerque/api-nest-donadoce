@@ -71,6 +71,8 @@ export class CreateOrderBatchService {
 
 
   async deleteFile(path_absolute: string) {
+    if(path_absolute == null) return;
+    
     fs.access(path_absolute).then(() => {
       fs.unlink(path_absolute)
 

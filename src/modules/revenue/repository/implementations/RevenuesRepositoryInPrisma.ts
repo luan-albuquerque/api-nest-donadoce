@@ -160,14 +160,15 @@ export class RevenuesRepositoryInPrisma implements RevenuesRepository {
         return data
     }
 
-    async findByAll({ description, skip, take }: FiltersRevenueDTO): Promise<Revenue[]> {
+    async findByAll({ description, skip, take, order_type }: FiltersRevenueDTO): Promise<Revenue[]> {
         const data = await this.prisma.revenues.findMany({
             where: {
                 is_enabled: true,
                 description:{
                     contains: description,
                     mode: "insensitive"
-                }
+                },
+                order_type: order_type
             },
             take,
             skip,

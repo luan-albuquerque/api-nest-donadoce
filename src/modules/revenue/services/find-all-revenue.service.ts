@@ -9,8 +9,8 @@ export class FindAllRevenueService {
         private readonly revenuesRepository: RevenuesRepository,
     ) { }
 
-    async execute({ description, skip, take }: FiltersRevenueDTO){
-        return await this.revenuesRepository.findByAll({ description, skip, take })
+    async execute({ description, skip, take, order_type }: FiltersRevenueDTO){
+        return await this.revenuesRepository.findByAll({ description, skip, take, order_type })
     }
 
 }
