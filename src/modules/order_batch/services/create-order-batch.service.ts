@@ -84,9 +84,9 @@ export class CreateOrderBatchService {
 
     try {
       await this.orderBatchRepository.create(createOrderBatch).then(async () => {
-        // createOrderBatch.createOrderBatchItem.map(async (item) => {
-        //   await this.orderRepository.addInvoiceInOrder(item.fk_order, createOrderBatch.file_invoice, createOrderBatch.invoice_number);
-        // })
+         createOrderBatch.createOrderBatchItem.map(async (item) => {
+           await this.orderRepository.addInvoiceInOrder(item.fk_order, createOrderBatch.file_invoice, createOrderBatch.invoice_number);
+         })
       });
     } catch (error) {
       throw new BadRequestException(error);

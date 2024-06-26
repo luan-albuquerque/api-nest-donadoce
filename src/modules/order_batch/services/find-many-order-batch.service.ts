@@ -19,8 +19,7 @@ export class FindManyOrderBatchService {
 
       if (user?.is_company) {
         filterOrderBatch.fk_client = user?.Client_Company.clients.id;
-        filterOrderBatch.fk_company = user.id;
-        
+        filterOrderBatch.fk_company = user?.Client_Company.company.id;
       } 
       
 

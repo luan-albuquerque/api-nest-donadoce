@@ -150,7 +150,9 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                         }
                     }
                 }
-            }).catch(() => {
+            }).catch((e) => {
+                console.log({e});
+                
                 this.prisma.$disconnect()
             })
         } catch (error) {

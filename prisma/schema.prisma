@@ -53,7 +53,6 @@ model User {
   Order                        Order[]
   OrderBatchUserOpenOrderBatch OrderBatch[]    @relation(name: "userOpenOrderBatch")
   OrderBatchClient             OrderBatch[]    @relation(name: "userClient")
-  OrderBatchCompany            OrderBatch[]    @relation(name: "userCompany")
 
 }
 
@@ -172,6 +171,7 @@ model Company {
   createdAt      DateTime         @default(now())
   updateAt       DateTime?
   Client_Company Client_Company[]
+  OrderBatchCompany   OrderBatch[]    @relation(name: "userCompany")
   Order          Order[]
 }
 
@@ -286,7 +286,7 @@ model OrderBatch {
   fk_company               String?
   fk_user_open_orderbatch String
   user                    User             @relation(name: "userClient", fields: [fk_client], references: [id])
-  userCompany             User?             @relation(name: "userCompany", fields: [fk_company], references: [id])
+  company                 Company?         @relation(name: "userCompany", fields: [fk_company], references: [id])
   userBatch               User             @relation(name: "userOpenOrderBatch", fields: [fk_user_open_orderbatch], references: [id])
   OrderBatchItem          OrderBatchItem[]
 }
