@@ -44,77 +44,33 @@ export class OrderBatchController {
   async create(@Req() req, @Body() createOrderBatch: CreateOrderBatch, @UploadedFiles() files: any,
   ) {
 
-    const file_invoice = files ? files.file_invoice ? files.file_invoice[0].filename : null : null;
+    const file_invoice = files ? files.file_invoice ? files?.file_invoice[0] : null : null;
     // const file_caution = files ? files.file_caution ? files.file_caution[0].filename : null : null;
     // const file_payment_voucher = files ? files.file_payment_voucher ? files.file_payment_voucher[0].filename : null : null;
 
     const bodyform = Object(createOrderBatch)
 
+ 
     const newData: CreateOrderBatch = {
-      createOrderBatchItem: Object(JSON.parse(bodyform.createOrderBatchItem)),
-      end_date: new Date(bodyform.end_date),
-      initial_date: new Date(bodyform.initial_date),
-      fk_user: bodyform.fk_user,
-      invoice_number: bodyform.invoice_number,
+      createOrderBatchItem: Object(JSON.parse(bodyform?.createOrderBatchItem)),
+      end_date: new Date(bodyform?.end_date),
+      initial_date: new Date(bodyform?.initial_date),
+      fk_user: bodyform?.fk_user,
+      invoice_number: bodyform?.invoice_number,
       userOpenOrderBatch: req.user.id,
       // file_caution: file_caution,
       // file_caution_absolute: files.file_caution[0].path,
-      file_invoice: file_invoice,
-      file_invoice_absolute: files?.file_invoice[0]?.path,
+      file_invoice: file_invoice?.filename || null,
+      file_invoice_absolute:  file_invoice?.path || null,
     }
 
-    await this.createOrderBatchService.execute(newData);
+    return await this.createOrderBatchService.execute(newData);
 
 
 
   }
 
 
-  @ApiQuery({
-    name: 'limit',
-    required: false,
-    type: Number,
-  })
-  @ApiQuery({
-    name: 'skip',
-    required: false,
-    type: Number,
-  })
-  @ApiQuery({
-    name: 'fk_client',
-    required: false,
-    type: String,
-  })
-  @ApiQuery({
-    name: 'invoice_number',
-    required: false,
-    type: String,
-  })
-
-  @ApiQuery({
-    name: 'numberOrderBatch',
-    required: false,
-    type: Number,
-  })
-
-  @Get("")
-  @ApiOperation({ summary: "EndPoint em listagem de lotes de pedidos", description: "" })
-  async findAll(
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
-    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
-    @Query('fk_user') fk_client = undefined,
-    @Query('invoice_number') invoice_number = undefined,
-    @Query('numberOrderBatch') numberOrderBatch = undefined,
-
-  ) {
-    return await this.findManyOrderBatchService.execute({
-      fk_client,
-      invoice_number,
-      numberOrderBatch,
-      skip,
-      take: limit
-    })
-  }
 
 
 
@@ -224,5 +180,52 @@ export class OrderBatchController {
     await this.updateInvoiceInOrderBatch.execute(id, {invoice_number:bodyform.invoice_number, file_invoice });
   }
 
+
+  
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'fk_client',
+    required: false,
+    type: String,
+  })
+  @ApiQuery({
+    name: 'invoice_number',
+    required: false,
+    type: String,
+  })
+
+  @ApiQuery({
+    name: 'numberOrderBatch',
+    required: false,
+    type: Number,
+  })
+
+  @Get()
+  @ApiOperation({ summary: "EndPoint em listagem de lotes de pedidos", description: "" })
+  async findAll(
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
+    @Query('fk_user') fk_client = undefined,
+    @Query('invoice_number') invoice_number = undefined,
+    @Query('numberOrderBatch') numberOrderBatch = undefined,
+
+  ) {
+    return await this.findManyOrderBatchService.execute({
+      fk_client,
+      invoice_number,
+      numberOrderBatch,
+      skip,
+      take: limit
+    })
+  }
 
 }

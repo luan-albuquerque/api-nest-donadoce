@@ -13,14 +13,16 @@ export class FindManyOrderBatchService {
   ) { }
 
   async execute(filterOrderBatch: FilterOrderBatch) {
-     
-    const user = await this.userRepository.finInforUser(filterOrderBatch.fk_client);
 
-    if(user?.is_company){  
-      filterOrderBatch.fk_client = user?.Client_Company.clients.id;
+    if (filterOrderBatch.fk_client) {
+      const user = await this.userRepository.finInforUser(filterOrderBatch.fk_client);
+
+      if (user?.is_company) {
+        filterOrderBatch.fk_client = user?.Client_Company.clients.id;
+      }
     }
-     return await this.orderBatchRpeository.findAllOrderBatch(filterOrderBatch);
-    
+    return await this.orderBatchRpeository.findAllOrderBatch(filterOrderBatch);
+
 
   }
 }

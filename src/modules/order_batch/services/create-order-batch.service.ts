@@ -20,40 +20,44 @@ export class CreateOrderBatchService {
   async execute(createOrderBatch: CreateOrderBatch) {
 
     const orderAll: Order[] = await this.orderRepository.findManyNotFilter();
-  
-    
+
+
     await Promise.all(
       createOrderBatch.createOrderBatchItem.map(async (item) => {
         var orderAlReadyExist = orderAll.find((order) => order.id === item.fk_order);
 
-        if (!orderAlReadyExist) {
-          this.deleteFile(createOrderBatch.file_invoice_absolute);
+        if (createOrderBatch?.file_invoice_absolute) {
+          if (!orderAlReadyExist) {
+            this.deleteFile(createOrderBatch.file_invoice_absolute);
 
-          throw new NotFoundException('Pedido ' + item.fk_order + ' não encontrado.')
+            throw new NotFoundException('Pedido ' + item.fk_order + ' não encontrado.')
+          }
         }
-
         var orderSem = await this.orderRepository.findOrderUtilizetedInOrderBatch(item.fk_order);
         var orderFK = await this.orderRepository.findById(item.fk_order);
-        
+
         if (orderFK) {
 
           if (orderFK.fk_orderstatus != "1c69c120002-575f34-1c69-be56-0242ac1201c69" &&
             orderFK.fk_orderstatus != "016b9c84-4e7f-81ee-be56-0242ac1200022fe2af" &&
             orderFK.fk_orderstatus != "789850813-1c69-11ee-be56-c691200020241") {
 
-            this.deleteFile(createOrderBatch.file_invoice_absolute);
-
+            if (createOrderBatch?.file_invoice_absolute) {
+              this.deleteFile(createOrderBatch.file_invoice_absolute);
+            }
             throw new BadRequestException("Para adicionar nota fiscal o pedido deve está com staus 'Revisão Admin' ou 'Entregue' Erro: " + orderFK.numberOrder)
-          } 
-        } 
+          }
+        }
         else {
           throw new BadRequestException("Pedido não encontrado. Erro: Id não encontrado " + item.fk_order)
 
         }
-      
+
         if (orderSem) {
 
-          this.deleteFile(createOrderBatch.file_invoice_absolute);
+          if (createOrderBatch?.file_invoice_absolute) {
+            this.deleteFile(createOrderBatch.file_invoice_absolute);
+          }
 
           throw new BadRequestException('Pedido possivelmente está vinculado a um lote - fk_order: ' + item.fk_order);
 
@@ -71,8 +75,8 @@ export class CreateOrderBatchService {
 
 
   async deleteFile(path_absolute: string) {
-    if(path_absolute == null) return;
-    
+    if (path_absolute == null) return;
+
     fs.access(path_absolute).then(() => {
       fs.unlink(path_absolute)
 

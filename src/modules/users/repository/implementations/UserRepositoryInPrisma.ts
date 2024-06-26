@@ -85,7 +85,8 @@ export class UserRepositoryInPrisma implements UserRepository {
                 updateAt: true,
             },
             where: {
-                id
+                id,
+                
             },
 
         })
