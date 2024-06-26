@@ -7,32 +7,46 @@ import { OrderRepository } from 'src/modules/order/repository/contract/OrderRepo
 import { CreateOrderBatch } from '../dto/create_order_batch.dto';
 import { Order } from 'src/modules/order/entities/order.entity';
 import * as fs from 'fs/promises';
+import { UserRepository } from 'src/modules/users/repository/contract/UserRepository';
 
 @Injectable()
 export class CreateOrderBatchService {
 
   constructor(
     private readonly orderBatchRepository: OrderBatchRepository,
-    private readonly orderRepository: OrderRepository
+    private readonly orderRepository: OrderRepository,
+    private readonly userRepository: UserRepository,
   ) { }
 
 
   async execute(createOrderBatch: CreateOrderBatch) {
 
+    const userClient = await this.userRepository.finInforUser(createOrderBatch.fk_user);
+
+    if (!userClient) {
+      throw new NotFoundException(`Cliente não encontrado`)
+    }
+
     const orderAll: Order[] = await this.orderRepository.findManyNotFilter();
 
-
+    var fk_company = "";
     await Promise.all(
       createOrderBatch.createOrderBatchItem.map(async (item) => {
         var orderAlReadyExist = orderAll.find((order) => order.id === item.fk_order);
 
-        if (createOrderBatch?.file_invoice_absolute) {
-          if (!orderAlReadyExist) {
+        if (!orderAlReadyExist) {
+          if (createOrderBatch?.file_invoice_absolute) {
             this.deleteFile(createOrderBatch.file_invoice_absolute);
-
-            throw new NotFoundException('Pedido ' + item.fk_order + ' não encontrado.')
           }
+
+          throw new NotFoundException('Pedido ' + item.fk_order + ' não encontrado.')
         }
+        if (fk_company != "" && fk_company != orderAlReadyExist.fk_company) {
+          throw new NotFoundException('Pedido contém responsaveis diferente no pedido ' + orderAlReadyExist.numberOrder)
+        }
+
+        fk_company = orderAlReadyExist.fk_company;
+
         var orderSem = await this.orderRepository.findOrderUtilizetedInOrderBatch(item.fk_order);
         var orderFK = await this.orderRepository.findById(item.fk_order);
 
@@ -65,11 +79,18 @@ export class CreateOrderBatchService {
       })
     )
 
-    await this.orderBatchRepository.create(createOrderBatch).then(async () => {
-      createOrderBatch.createOrderBatchItem.map(async (item) => {
-        await this.orderRepository.addInvoiceInOrder(item.fk_order, createOrderBatch.file_invoice, createOrderBatch.invoice_number);
-      })
-    });
+    createOrderBatch.fk_company = fk_company;
+
+
+    try {
+      await this.orderBatchRepository.create(createOrderBatch).then(async () => {
+        // createOrderBatch.createOrderBatchItem.map(async (item) => {
+        //   await this.orderRepository.addInvoiceInOrder(item.fk_order, createOrderBatch.file_invoice, createOrderBatch.invoice_number);
+        // })
+      });
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
 
   }
 

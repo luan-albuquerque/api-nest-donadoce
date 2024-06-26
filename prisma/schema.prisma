@@ -53,6 +53,8 @@ model User {
   Order                        Order[]
   OrderBatchUserOpenOrderBatch OrderBatch[]    @relation(name: "userOpenOrderBatch")
   OrderBatchClient             OrderBatch[]    @relation(name: "userClient")
+  OrderBatchCompany            OrderBatch[]    @relation(name: "userCompany")
+
 }
 
 model Client {
@@ -276,13 +278,15 @@ model RevenuePerClient {
 
 model OrderBatch {
   id                      String           @id @default(uuid())
-  file_invoice            String
+  file_invoice            String?
   file_payment_voucher    String?
   invoice_number          String?
   numberOrderBatch        Int              @default(autoincrement())
-  fk_client               String  // Client ou company
+  fk_client               String  
+  fk_company               String?
   fk_user_open_orderbatch String
   user                    User             @relation(name: "userClient", fields: [fk_client], references: [id])
+  userCompany             User?             @relation(name: "userCompany", fields: [fk_company], references: [id])
   userBatch               User             @relation(name: "userOpenOrderBatch", fields: [fk_user_open_orderbatch], references: [id])
   OrderBatchItem          OrderBatchItem[]
 }

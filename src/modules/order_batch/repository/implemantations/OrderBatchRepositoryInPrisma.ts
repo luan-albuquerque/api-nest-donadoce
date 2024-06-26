@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/shared/config/database/prisma/prisma.service";
 import { OrderBatchRepository } from "../contract/OrderBatchRepository";
 import { CreateOrderBatch } from "../../dto/create_order_batch.dto";
@@ -133,27 +133,34 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
     }
 
     async create(createOrderBatch: CreateOrderBatch): Promise<void> {
-        await this.prisma.orderBatch.create({
-            data: {
-                fk_user_open_orderbatch: createOrderBatch.userOpenOrderBatch,
-                fk_client: createOrderBatch.fk_user,
-                file_invoice: createOrderBatch.file_invoice,
-                invoice_number: createOrderBatch.invoice_number,
-                file_payment_voucher: null,
-                OrderBatchItem: {
-                    createMany: {
-                        data: createOrderBatch.createOrderBatchItem,
-                        skipDuplicates: true,
+        try {
+            
+            await this.prisma.orderBatch.create({
+                data: {
+                    fk_client: createOrderBatch.fk_user,
+                    fk_company: createOrderBatch.fk_company,
+                    file_invoice: createOrderBatch.file_invoice,
+                    invoice_number: createOrderBatch.invoice_number,
+                    fk_user_open_orderbatch: createOrderBatch.userOpenOrderBatch,
+                    file_payment_voucher: null,
+                    OrderBatchItem: {
+                        createMany: {
+                            data: createOrderBatch.createOrderBatchItem,
+                            skipDuplicates: true,
+                        }
                     }
                 }
-            }
-        }).catch(() => {
-            this.prisma.$disconnect()
-        })
+            }).catch(() => {
+                this.prisma.$disconnect()
+            })
+        } catch (error) {
+            throw new BadRequestException(error)
+        }
+ 
     }
 
 
-    async findAllOrderBatch({ fk_client, invoice_number, numberOrderBatch, skip, take }: FilterOrderBatch): Promise<OrderBatch[]> {
+    async findAllOrderBatch({ fk_client, fk_company, invoice_number, numberOrderBatch, skip, take }: FilterOrderBatch): Promise<OrderBatch[]> {
         var data = await this.prisma.orderBatch.findMany({
             select: {
                 id: true,
@@ -198,6 +205,9 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
             where: {
                 fk_client: {
                     contains: fk_client,
+                },
+                fk_company: {
+                    contains: fk_company,
                 },
                 invoice_number: {
                     contains: invoice_number,

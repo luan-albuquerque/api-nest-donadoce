@@ -60,8 +60,8 @@ export class OrderBatchController {
       userOpenOrderBatch: req.user.id,
       // file_caution: file_caution,
       // file_caution_absolute: files.file_caution[0].path,
-      file_invoice: file_invoice?.filename || null,
-      file_invoice_absolute:  file_invoice?.path || null,
+      file_invoice: file_invoice?.filename || "",
+      file_invoice_absolute:  file_invoice?.path || "",
     }
 
     return await this.createOrderBatchService.execute(newData);

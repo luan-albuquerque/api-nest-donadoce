@@ -9,6 +9,7 @@ export class CreateOrderBatch {
     @ApiProperty()
     fk_user: string
 
+    fk_company?: string
 
     @ApiProperty({ type: 'string', format: 'binary', required: false })
     file_invoice?: string
@@ -23,7 +24,7 @@ export class CreateOrderBatch {
     // file_caution_absolute?: string
     // file_payment_voucher_absolute?: string
 
-    @ApiProperty()
+    @ApiProperty({ required: false})
     invoice_number?: string
 
     @IsNotEmpty({ message: 'end_date não pode esvaziar' })

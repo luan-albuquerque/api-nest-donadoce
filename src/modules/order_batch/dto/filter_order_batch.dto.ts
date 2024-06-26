@@ -6,6 +6,7 @@ export class FilterOrderBatch {
     invoice_number?: string
     numberOrderBatch?: number
     fk_client?: string
+    fk_company?: string
 
 
 }
