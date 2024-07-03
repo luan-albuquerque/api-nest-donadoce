@@ -214,7 +214,7 @@ export class OrderBatchController {
   async findAll(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
-    @Query('fk_user') fk_client = undefined,
+    @Query('fk_client') fk_client = undefined,
     @Query('invoice_number') invoice_number = undefined,
     @Query('numberOrderBatch') numberOrderBatch = undefined,
 
