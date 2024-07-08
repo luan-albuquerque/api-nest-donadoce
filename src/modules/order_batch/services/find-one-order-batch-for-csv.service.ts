@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { OrderBatchRepository } from '../repository/contract/OrderBatchRepository';
 import { OrderBatch } from '../entities/order_batch.entity';
 import { createObjectCsvStringifier } from 'csv-writer';
@@ -8,11 +8,22 @@ import * as dayjs from 'dayjs';
 export class FindOneOrderBatchForCsvService {
   constructor(
     private readonly orderBatchRepository: OrderBatchRepository
-  ) {}
+  ) { }
 
   async execute(id: string) {
-    const data = await this.orderBatchRepository.findOneOrderBatchForCsv(id);
-    return this.generateCsv(data);
+    try {
+     var orderbatch = await this.orderBatchRepository.findOneOrderBatch(id);
+
+     if(!orderbatch){
+      throw new NotFoundException("Lote não encontrado.");
+     }
+
+      const data = await this.orderBatchRepository.findOneOrderBatchForCsv(id);
+      return this.generateCsv(data);
+    }
+    catch (error) {
+      return error;
+    }
   }
 
   private generateCsv(data: OrderBatch): string {
@@ -61,9 +72,9 @@ export class FindOneOrderBatchForCsvService {
 
     return (
       '\uFEFF' + // Adding BOM for UTF-8
-      title + '\n' + 
-      csvStringifier.getHeaderString() + 
-      csvStringifier.stringifyRecords(records) + 
+      title + '\n' +
+      csvStringifier.getHeaderString() +
+      csvStringifier.stringifyRecords(records) +
       '\n' + footer
     );
   }
