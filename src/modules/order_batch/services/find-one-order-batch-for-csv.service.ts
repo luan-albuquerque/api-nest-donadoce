@@ -3,30 +3,36 @@ import { OrderBatchRepository } from '../repository/contract/OrderBatchRepositor
 import { OrderBatch } from '../entities/order_batch.entity';
 import { createObjectCsvStringifier } from 'csv-writer';
 import * as dayjs from 'dayjs';
+import { UserRepository } from 'src/modules/users/repository/contract/UserRepository';
 
 @Injectable()
 export class FindOneOrderBatchForCsvService {
   constructor(
-    private readonly orderBatchRepository: OrderBatchRepository
+    private readonly orderBatchRepository: OrderBatchRepository,
+    private readonly userRepository: UserRepository
   ) { }
 
-  async execute(id: string) {
+  async execute(id: string): Promise<string> {
     try {
-     var orderbatch = await this.orderBatchRepository.findOneOrderBatch(id);
+      const orderBatch = await this.orderBatchRepository.findOneOrderBatch(id);
 
-     if(!orderbatch){
-      throw new NotFoundException("Lote não encontrado.");
-     }
+      if (!orderBatch) {
+        throw new NotFoundException("Lote não encontrado.");
+      }
 
       const data = await this.orderBatchRepository.findOneOrderBatchForCsv(id);
-      return this.generateCsv(data);
-    }
-    catch (error) {
-      return error;
+      const result = await this.generateCsv(data);
+
+
+      return result;
+    } catch (error) {
+      // Aqui você pode adicionar um logger ou outras ações para tratar o erro
+      console.error("Erro ao gerar CSV:", error);
+      throw error;
     }
   }
 
-  private generateCsv(data: OrderBatch): string {
+  private async generateCsv(data: OrderBatch): Promise<string> {
     const title = `Numero do Lote: ${data.numberOrderBatch}\n`;
     let valorF: number = 0;
 
@@ -46,17 +52,19 @@ export class FindOneOrderBatchForCsvService {
       alwaysQuote: true,
     });
 
-    const records = data.OrderBatchItem.flatMap(orderBatchItem => {
+    const records = await Promise.all(data.OrderBatchItem.flatMap(async (orderBatchItem) => {
       const { order } = orderBatchItem;
       const { numberOrder, company, user } = order;
+
+      const user2 = await this.userRepository.finInforUser(user.id);
 
       return order.orderItem.map(orderItem => {
         const { amountItem, revenues, valueOrderItem } = orderItem;
         const totalValue = amountItem * valueOrderItem;
         valorF += totalValue;
         return {
-          "Empresa": (order.is_created_by_company ? user?.Client_Company.clients.corporate_name : user?.Clients.corporate_name),
-          "Fabrica": (company.corporate_name),
+          "Empresa": (order.is_created_by_company ? user2?.Client_Company?.clients?.corporate_name : user2?.Clients.corporate_name),
+          "Fabrica": company.corporate_name,
           'Numero de Pedido': numberOrder,
           'Data de Solicitacao de Pedido': dayjs(order.dateOrder).utc(true).format("YYYY-MM-DDT00:00:00Z"),
           'Data de Entrega do Pedido': dayjs(orderItem.delivery_date).utc(true).format("YYYY-MM-DDT00:00:00Z"),
@@ -66,7 +74,7 @@ export class FindOneOrderBatchForCsvService {
           'Valor Total': totalValue.toFixed(2), // Ensure two decimal places
         };
       });
-    });
+    }));
 
     const footer = `Total do Lote: ; ; ; ; ; ; ; ; ${valorF.toFixed(2)}\n`; // Ensure two decimal places
 
@@ -74,7 +82,7 @@ export class FindOneOrderBatchForCsvService {
       '\uFEFF' + // Adding BOM for UTF-8
       title + '\n' +
       csvStringifier.getHeaderString() +
-      csvStringifier.stringifyRecords(records) +
+      csvStringifier.stringifyRecords(records.flat()) +
       '\n' + footer
     );
   }
