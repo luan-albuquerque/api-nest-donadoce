@@ -30,8 +30,13 @@ async execute(data1: Date = undefined, data2: Date = undefined, orderStatus: str
 
    
 
-   return await this.orderRepository.findListExportFaturamento(orderStatus, client, orderType.toLowerCase(), dataInitial, dataFinal)
-}
+   const data =  await this.orderRepository.findListExportFaturamento(orderStatus, client, orderType.toLowerCase(), dataInitial, dataFinal)
+ 
+
+  
+  return data;
+
+ }
 
 
 

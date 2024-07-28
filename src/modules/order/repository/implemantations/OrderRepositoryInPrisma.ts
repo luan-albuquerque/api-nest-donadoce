@@ -23,36 +23,36 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     ) { }
     async findManyTrayAndBoxes(take: number, skip: number, fk_orderstatus: string): Promise<any> {
         return await this.prisma.order.findMany({
-           select:{
-            id: true,
-            numberOrder: true,
-            dateOrder: true,
-            orderItem: {
-                select:{
-                    revenues:{
-                        select:{
-                            description: true,
-                        }
+            select: {
+                id: true,
+                numberOrder: true,
+                dateOrder: true,
+                orderItem: {
+                    select: {
+                        revenues: {
+                            select: {
+                                description: true,
+                            }
+                        },
+                        categoryOrderItem: {
+                            select: {
+                                description: true,
+                            }
+                        },
+                        delivery_date: true,
                     },
-                    categoryOrderItem:{
-                        select:{
-                            description: true,
-                        }
-                    },
-                    delivery_date: true,
+
                 },
-              
+                company: true,
+                amount_of_boxes: true,
+                amount_of_tray: true,
+                orderStatus: true,
             },
-            company: true,
-            amount_of_boxes: true,
-            amount_of_tray: true,
-            orderStatus: true,
-           },
-           where:{
-            fk_orderstatus, 
-           },
-           take, 
-           skip,
+            where: {
+                fk_orderstatus,
+            },
+            take,
+            skip,
         }).finally(() => {
             this.prisma.$disconnect()
         })
@@ -61,9 +61,23 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         try {
             if (!dataInitial || !dataFinal) return;
             const sql = `
-            select o."dateOrder" , o."numberOrder", os.description as "descriptionStatus", c.corporate_name as "client", c2.corporate_name  as "company" , 
-            r.description , oi."amountItem", oi."valueOrderItem", 
-            (oi."amountItem" * oi."valueOrderItem") as "valueItemTotal" from "Order" o 
+            SELECT 
+    o."dateOrder", 
+    o."numberOrder", 
+    os.description AS "descriptionStatus", 
+    c.corporate_name AS "client", 
+    c2.corporate_name AS "company", 
+    r.description, 
+    oi."amountItem", 
+    oi."valueOrderItem", 
+   (select sum(ir.amount_ingredient * i.value_per_serving  * i.amount)  from "Ingredients_Revenues" ir 
+   inner join "Ingredients" i on i.id = ir.fk_ingredient 
+   where ir.fk_revenues =   r.id) as UnitCostofRevenue,
+   ((select sum(ir.amount_ingredient * i.value_per_serving  * i.amount)  from "Ingredients_Revenues" ir 
+   inner join "Ingredients" i on i.id = ir.fk_ingredient 
+   where ir.fk_revenues =   r.id) * oi."amountItem") as TotalCostofRevenue,
+    (oi."amountItem" * oi."valueOrderItem") AS "valueItemTotal"
+            from "Order" o 
             inner join "OrderItem" oi on oi.fk_order = o.id
             inner join "Client" c on o.fk_user = c.id
             inner join "Company" c2 on o.fk_company  = c2.id 
@@ -75,6 +89,8 @@ export class OrderRepositoryInPrisma implements OrderRepository {
             and o.fk_user like '%${client}%'
             order by o."dateOrder" desc;
             `;
+
+
 
             const result = await this.prisma.$queryRaw(Prisma.raw(sql)).finally(() => {
                 this.prisma.$disconnect()
@@ -97,7 +113,7 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
         return data;
     }
-    async findManyAllToBatch({ skip, take }: ListByAdminOrderDTO,  where: any): Promise<OrderToBatchDTO[]> {
+    async findManyAllToBatch({ skip, take }: ListByAdminOrderDTO, where: any): Promise<OrderToBatchDTO[]> {
 
         const data = await this.prisma.order.findMany({
             select: {
@@ -116,19 +132,19 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                 file_caution: true,
                 fk_company: true,
                 user: {
-                    select:{
-                     is_company: true,
-                     is_client: true,
-                     is_enabled: true,
-                     email: true,
-                     Clients: true,
-                     Client_Company: {
-                         select:{
-                             company: true,
-                         }
-                     }    
+                    select: {
+                        is_company: true,
+                        is_client: true,
+                        is_enabled: true,
+                        email: true,
+                        Clients: true,
+                        Client_Company: {
+                            select: {
+                                company: true,
+                            }
+                        }
                     }
-                 },
+                },
                 orderBatchItem: {
                     select: {
                         orderBatch: {
@@ -140,18 +156,18 @@ export class OrderRepositoryInPrisma implements OrderRepository {
                                 invoice_number: true,
                                 numberOrderBatch: true,
                                 user: {
-                                   select:{
-                                    is_company: true,
-                                    is_client: true,
-                                    is_enabled: true,
-                                    email: true,
-                                    Clients: true,
-                                    Client_Company: {
-                                        select:{
-                                            company: true,
+                                    select: {
+                                        is_company: true,
+                                        is_client: true,
+                                        is_enabled: true,
+                                        email: true,
+                                        Clients: true,
+                                        Client_Company: {
+                                            select: {
+                                                company: true,
+                                            }
                                         }
-                                    }    
-                                   }
+                                    }
                                 },
                                 userBatch: {
                                     select: {
