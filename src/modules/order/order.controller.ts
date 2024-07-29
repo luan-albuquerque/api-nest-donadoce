@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, UploadedFiles, ParseIntPipe, Patch, Param, Put, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, Query, DefaultValuePipe, UploadedFiles, ParseIntPipe, Patch, Param, Put, UseInterceptors, Res } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
@@ -35,6 +35,7 @@ import { FindExportListFaturamento } from './services/find-exportorders.service'
 import { ShoppingListDto } from '../dashboard/dtos/shoppinglist.dto';
 import { ListExportFaturamentoDTO } from '../ingredients/dto/list-export-faturamento.dto';
 import { FindManyTrayAndBoxesService } from './services/find-many-tray-and-boxes.service';
+import { FindExportListFaturamentoCsv } from './services/find-exportorders-csv.service';
 
 @Controller('order')
 @ApiBearerAuth()
@@ -58,7 +59,8 @@ export class OrderController {
     private readonly findManyOrderAllFiltersService: FindManyOrderAllFiltersService,
     private readonly findManyOrderToBatchService: FindManyOrderToBatchService,
     private readonly findExportListFaturamento: FindExportListFaturamento,
-    public readonly  findManyTrayAndBoxesService: FindManyTrayAndBoxesService
+    public readonly  findManyTrayAndBoxesService: FindManyTrayAndBoxesService,
+    public readonly  findExportListFaturamentoCsv: FindExportListFaturamentoCsv
   ) { }
 
   @Get('kambamRoute')
@@ -292,6 +294,23 @@ export class OrderController {
 
     return data;
   }
+
+  @Patch("exportCsvFat")
+  async FindExportListFaturamentoCsv(@Body() {
+    client,
+    orderStatus,
+    orderType,
+    dataInicial,
+    dataFinal,
+  }: ListExportFaturamentoDTO, @Res() res) {
+   
+    const csvData = await this.findExportListFaturamentoCsv.execute(dataInicial,dataFinal,orderStatus, client, orderType);
+
+    res.header('Content-Type', 'text/csv');
+    res.attachment('faturamento.csv');
+    res.send(csvData);
+  }
+
 
   @Patch("findExportFaturamento")
   async findExportFaturamento(@Body() {
@@ -620,7 +639,6 @@ export class OrderController {
 
 
   
-
 
   
 }

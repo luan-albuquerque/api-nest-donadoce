@@ -19,6 +19,7 @@ import { FindManyOrderAllFiltersService } from './services/find-many-order-all-f
 import { FindManyOrderToBatchService } from './services/find-many-order-to-batch.service';
 import { FindExportListFaturamento } from './services/find-exportorders.service';
 import { FindManyTrayAndBoxesService } from './services/find-many-tray-and-boxes.service';
+import { FindExportListFaturamentoCsv } from './services/find-exportorders-csv.service';
 
 @Module({
   imports:[
@@ -43,7 +44,8 @@ import { FindManyTrayAndBoxesService } from './services/find-many-tray-and-boxes
     FindManyOrderRoutesService,
     FindManyOrderAllFiltersService,
     FindManyOrderToBatchService,
-    FindManyTrayAndBoxesService
+    FindManyTrayAndBoxesService,
+    FindExportListFaturamentoCsv
   ]
 })
 export class OrderModule {}
