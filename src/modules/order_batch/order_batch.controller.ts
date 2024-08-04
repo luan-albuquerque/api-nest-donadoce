@@ -197,6 +197,12 @@ export class OrderBatchController {
     required: false,
     type: String,
   })
+
+  @ApiQuery({
+    name: 'fk_company',
+    required: false,
+    type: String,
+  })
   @ApiQuery({
     name: 'invoice_number',
     required: false,
@@ -215,6 +221,7 @@ export class OrderBatchController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip = 0,
     @Query('fk_client') fk_client = undefined,
+    @Query('fk_company') fk_company = undefined,
     @Query('invoice_number') invoice_number = undefined,
     @Query('numberOrderBatch') numberOrderBatch = undefined,
 
@@ -223,6 +230,7 @@ export class OrderBatchController {
       fk_client,
       invoice_number,
       numberOrderBatch,
+      fk_company,
       skip,
       take: limit
     })
