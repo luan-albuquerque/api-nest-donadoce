@@ -68,7 +68,7 @@ export class FindManyOrderRoutesService {
                   companyClient,
                   revenueDescription: orderItem.revenues.description,
                   deliveryDate: orderItem.delivery_date,
-                  item: orderItem,
+                  item: order.orderItem,
 
                 })
               }
@@ -82,7 +82,7 @@ export class FindManyOrderRoutesService {
                 user: order.user,
                 deliveryDate: orderItem.delivery_date,
                 companyClient,
-                item: orderItem,
+                item: order.orderItem,
               })
 
             }
