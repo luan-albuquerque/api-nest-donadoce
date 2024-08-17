@@ -34,11 +34,11 @@ export class ControlProductionController {
     @ApiOperation({ summary: "EndPoint para listaagen do kambam ", 
     description: "É pertimido o filtro por order_type 'programmed' ou 'coffe' e mode_kambam como 'product'  ou 'client' " })
     async listKambam(
-        @Query('order_type') orderIfType = "programmed",
+        @Query('order_type') orderIfType = null,
         @Query('mode_kambam') modeKambamIfType = "product"
     ) {
 
-        var orderType: OrderType = orderIfType == "coffe" ? "coffe" : "programmed"
+        var orderType: OrderType = orderIfType;
         var mode: ModeKambamType = modeKambamIfType == "product" ? "product" : "client";
 
         return await this.listKambaService.execute(orderType, mode);
