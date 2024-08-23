@@ -11,7 +11,7 @@ export class PatchUpdateSequencialService {
   ) { }
 
   async execute(data: PatchSetControlProductionProductDto[]) {
-
+    // ete
     await Promise.all(
       data.map(async (item) => {
          await this.controlProductionRepository.updateSequencialProduct(item.id, item.set);
