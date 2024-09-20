@@ -171,12 +171,20 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
 
 
     async findItemProduction({ fk_categoryOrderItem, fk_revenue, delivery_date }: FindItemProductionDto): Promise<ControlProductionProductEntity> {
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+    
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999); 
 
         return await this.prisma.controlProductionProduct.findFirst({
             where: {
                 fk_revenue,
                 fk_categoryOrderItem,
-                delivery_date,
+                 delivery_date: {
+                    gte: startOfDay,
+                    lt: endOfDay,
+                },
             }
         }).finally(() => {
             this.prisma.$disconnect();

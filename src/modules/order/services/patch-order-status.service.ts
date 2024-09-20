@@ -186,9 +186,9 @@ export class PatchOrderStatusService {
 
         // CONTROL PRODUCTION PRODUCT
         const c = await this.controlProductionRepository.findItemProduction({
-          fk_categoryOrderItem: item.fk_categoryOrderItem,
+          // fk_categoryOrderItem: item.fk_categoryOrderItem,
           fk_revenue: item.fk_revenue,
-          delivery_date: dataaa
+          // delivery_date: dataaa
         })
 
         if (c) {
