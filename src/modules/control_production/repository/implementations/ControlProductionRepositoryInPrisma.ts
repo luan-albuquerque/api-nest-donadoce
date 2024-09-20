@@ -59,17 +59,26 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
             this.prisma.$disconnect();
         })
     }
-    async findItemProductionClient({ delivery_date, fk_categoryOrderItem, fk_revenue, fk_user }: FindItemProductionDtoClient): Promise<ControlProductionClientEntity> {
+    async findItemProductionClient({ fk_categoryOrderItem, fk_revenue, fk_user }: FindItemProductionDtoClient): Promise<ControlProductionClientEntity> {
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+    
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999); 
+    
         return await this.prisma.controlProductionClient.findFirst({
             where: {
                 fk_revenue,
                 fk_categoryOrderItem,
-                delivery_date,
-                fk_user
-            }
+                fk_user,
+                delivery_date: {
+                    gte: startOfDay,
+                    lt: endOfDay,
+                },
+            },
         }).finally(() => {
             this.prisma.$disconnect();
-        })
+        });
     }
     async createItemProductionTypeClient(
         { amount_actual, corporate_name, delivery_date, description,

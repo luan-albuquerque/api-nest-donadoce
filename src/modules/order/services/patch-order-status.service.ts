@@ -126,7 +126,7 @@ export class PatchOrderStatusService {
         const c = await this.controlProductionRepository.findItemProductionClient({
           fk_categoryOrderItem: item.fk_categoryOrderItem,
           fk_revenue: item.fk_revenue,
-          delivery_date: dataaa,
+          // delivery_date: dataaa,
           fk_user: order.fk_user,
         })
 
