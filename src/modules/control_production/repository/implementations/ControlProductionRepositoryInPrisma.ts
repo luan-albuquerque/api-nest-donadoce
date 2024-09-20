@@ -59,22 +59,15 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
             this.prisma.$disconnect();
         })
     }
-    async findItemProductionClient({ fk_categoryOrderItem, fk_revenue, fk_user }: FindItemProductionDtoClient): Promise<ControlProductionClientEntity> {
-        const startOfDay = new Date();
-        startOfDay.setHours(0, 0, 0, 0);
+    async findItemProductionClient({ fk_ordertype, fk_revenue, fk_user, delivery_date }: FindItemProductionDtoClient): Promise<ControlProductionClientEntity> {
     
-        const endOfDay = new Date();
-        endOfDay.setHours(23, 59, 59, 999); 
     
         return await this.prisma.controlProductionClient.findFirst({
             where: {
                 fk_revenue,
-                fk_categoryOrderItem,
+                order_type: fk_ordertype,
                 fk_user,
-                delivery_date: {
-                    gte: startOfDay,
-                    lt: endOfDay,
-                },
+                delivery_date,
             },
         }).finally(() => {
             this.prisma.$disconnect();
@@ -170,21 +163,13 @@ export class ControlProductionRepositoryInPrisma implements ControlProductionRep
 
 
 
-    async findItemProduction({ fk_categoryOrderItem, fk_revenue, delivery_date }: FindItemProductionDto): Promise<ControlProductionProductEntity> {
-        const startOfDay = new Date();
-        startOfDay.setHours(0, 0, 0, 0);
-    
-        const endOfDay = new Date();
-        endOfDay.setHours(23, 59, 59, 999); 
-
+    async findItemProduction({ fk_revenue, delivery_date, order_type }: FindItemProductionDto): Promise<ControlProductionProductEntity> {
+     
         return await this.prisma.controlProductionProduct.findFirst({
             where: {
                 fk_revenue,
-                fk_categoryOrderItem,
-                 delivery_date: {
-                    gte: startOfDay,
-                    lt: endOfDay,
-                },
+                order_type,
+                delivery_date,
             }
         }).finally(() => {
             this.prisma.$disconnect();
