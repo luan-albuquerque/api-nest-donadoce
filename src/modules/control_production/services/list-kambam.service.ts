@@ -30,7 +30,7 @@ export class ListKambaService {
 
     productions.forEach(item => {
       console.log(item)
-      const deliveryHour = dayjs(item.delivery_date).utc(false).hour();
+      const deliveryHour = dayjs(item.delivery_date).utc(true).hour();
       console.log(deliveryHour)
 
       if (deliveryHour >= 6 && deliveryHour < 10) {
@@ -75,7 +75,7 @@ export class ListKambaService {
 
     productions.forEach(item => {
       console.log(item)
-      const deliveryHour = dayjs(item.delivery_date).utc(false).hour();
+      const deliveryHour = dayjs(item.delivery_date).utc(true).hour();
       console.log(deliveryHour)
 
       if (deliveryHour >= 6 && deliveryHour < 10) {
