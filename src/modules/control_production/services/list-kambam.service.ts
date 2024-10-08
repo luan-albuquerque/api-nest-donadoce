@@ -31,7 +31,8 @@ export class ListKambaService {
     productions.forEach(item => {
       console.log(item)
       const deliveryHour = dayjs(item.delivery_date).utc(true).hour();
-      console.log(deliveryHour)
+      
+      item.delivery_date = deliveryHour;
 
       if (deliveryHour >= 6 && deliveryHour < 10) {
         const c = result["06:00-10:00"].find(i => i.fk_revenue == item.fk_revenue)
