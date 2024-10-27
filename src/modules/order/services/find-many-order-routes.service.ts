@@ -29,62 +29,60 @@ export class FindManyOrderRoutesService {
 
   async execute(orderType: OrderType) {
     try {
-      // const routesPrioty = await this.companyRepository.findAllPriority();
+      const startOfDay = dayjs.utc().startOf('day').toDate();
+      const endOfDay = dayjs.utc().endOf('day').toDate();
+
       const orders = await this.orderRepository.findManyOrderInRoute(
-        dayjs(dayjs().format('YYYY-MM-DDT00:00:00Z')).utc(true).toDate(),
-        dayjs(dayjs().format('YYYY-MM-DDT00:00:00Z')).utc(true).add(1, 'day').toDate(),
+        startOfDay,
+        endOfDay,
         orderType,
       );
 
       const oListDelivery: ListDelivery[] = [];
-      
-      await Promise.all(
-        orders.map((order) => {
-          order.orderItem.map((orderItem) => {
-            const companyClient = order.company.Client_Company.find(
-              (c) => c.fk_company === order.fk_company,
-            );
 
-            const deliveryEntry = {
-              orderNumber: order.numberOrder,
-              orderId: order.id,
-              clientId: order.fk_user,
-              user: order.user,
-              company: order.company,
-              companyClient,
-              revenueDescription: orderItem.revenues.description,
-              deliveryDate: orderItem.delivery_date,
-              item: order.orderItem,
-              priority: order.company.priority,
-            };
+      for (const order of orders) {
+        for (const orderItem of order.orderItem) {
+          const companyClient = order.company.Client_Company.find(
+            (c) => c.fk_company === order.fk_company,
+          );
 
-            // Check for existing entry based on company and delivery date
-            const exists = oListDelivery.find(
-              (e) =>
-                e.company.id === order.fk_company &&
-                e.deliveryDate.getTime() === orderItem.delivery_date.getTime(),
-            );
+          const deliveryEntry: ListDelivery = {
+            orderNumber: order.numberOrder,
+            orderId: order.id,
+            clientId: order.fk_user,
+            user: order.user,
+            company: order.company,
+            companyClient,
+            revenueDescription: orderItem.revenues.description,
+            deliveryDate: orderItem.delivery_date,
+            item: orderItem,
+            priority: order.company.priority,
+          };
 
-            if (!exists) {
-              oListDelivery.push(deliveryEntry);
-            }
-          });
-        }),
-      );
+          // Checa por uma entrada existente com base na companhia e data de entrega
+          const exists = oListDelivery.some(
+            (e) =>
+              e.company.id === order.fk_company &&
+              e.deliveryDate.getTime() === orderItem.delivery_date.getTime(),
+          );
 
-      // Sort the deliveries by priority (ascending) and delivery date (ascending)
-      oListDelivery.sort((a, b) => {
-        // Sort by priority first (ascending)
-        if (a.priority !== b.priority) {
-          return a.priority - b.priority; // Menor prioridade vem primeiro
+          if (!exists) {
+            oListDelivery.push(deliveryEntry);
+          }
         }
-        // If priorities are the same, sort by delivery date (ascending)
-        return a.deliveryDate.getTime() - b.deliveryDate.getTime(); // Menor data vem primeiro
+      }
+
+      // Ordena as entregas por prioridade e data de entrega
+      oListDelivery.sort((a, b) => {
+        if (a.priority !== b.priority) {
+          return a.priority - b.priority;
+        }
+        return a.deliveryDate.getTime() - b.deliveryDate.getTime();
       });
 
       return oListDelivery;
     } catch (error) {
-      throw new InternalServerErrorException('Erro: ' + error);
+      throw new InternalServerErrorException('Erro: ' + error.message);
     }
   }
 }

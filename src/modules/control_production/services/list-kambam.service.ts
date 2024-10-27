@@ -29,8 +29,7 @@ export class ListKambaService {
     };
 
     productions.forEach(item => {
-      console.log(item)
-      const deliveryHour = dayjs(item.delivery_date).utc(true).hour();
+      const deliveryHour = dayjs(item.delivery_date).utc(false).hour();
       
       item.delivery_date = deliveryHour;
 
@@ -50,8 +49,7 @@ export class ListKambaService {
           result["10:00-13:00"].push(item);
         }
 
-        // result["10:00-13:00"].push(item);
-      } else if (deliveryHour >= 13 && deliveryHour < 15) {
+      } else if (deliveryHour >= 13 && deliveryHour <= 15) {
         
         const c = result["13:00-15:00"].find(i => i.fk_revenue == item.fk_revenue)
         if(c){
@@ -75,9 +73,9 @@ export class ListKambaService {
     };
 
     productions.forEach(item => {
-      console.log(item)
-      const deliveryHour = dayjs(item.delivery_date).utc(true).hour();
-      console.log(deliveryHour)
+      // console.log(item)
+      const deliveryHour = dayjs(item.delivery_date).utc(false).hour();
+      
 
       if (deliveryHour >= 6 && deliveryHour < 10) {
         const c = result["06:00-10:00"].find(i => i.fk_revenue == item.fk_revenue && item.fk_user == i.fk_user)
@@ -104,8 +102,7 @@ export class ListKambaService {
         } else {
           result["13:00-15:00"].push(item);
         }
-
-        // result["13:00-15:00"].push(item);
+ 
       }
     });
 
