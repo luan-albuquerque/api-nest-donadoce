@@ -126,6 +126,7 @@ export class CreateOrderProgrammedService {
             throw new NotFoundException(`Categoria não encontrada em itens fora do cardapio. Error: fk_category: ${item.fk_categoryOrderItem}`)
           }
           const inter = interAll.find((iInter) => iInter.fk_revenue === item.fk_revenue);
+          
           var value = revenue.value
 
           if (inter) {
