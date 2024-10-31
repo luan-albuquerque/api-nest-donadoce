@@ -80,7 +80,7 @@ export class CreateOrderCoffeService {
           createOrderItemDtoAlt.push({
             of_menu: true,
             amountItem: item.amountItem,
-            dateOrderItem: dayjs().utc(true).toDate(),
+            dateOrderItem: dayjs().utc(false).toDate(),
             method_of_preparation: item.method_of_preparation,
             delivery_date: dat,
             homologate: "APROVADO",
@@ -97,7 +97,7 @@ export class CreateOrderCoffeService {
 
       const createOrderAlternativeDto: CreateOrderAlternativeDto = {
         fk_orderstatus: "022ac120002-1c69-11ee-be56-0242ac120002",
-        dateOrder: dayjs().utc(true).toDate(),
+        dateOrder: dayjs().utc(false).toDate(),
         valueOrder: valueTotal,
         is_created_by_company: user.is_company ? true : false,
         fk_user: fk_user,

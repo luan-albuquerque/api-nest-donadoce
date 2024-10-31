@@ -90,7 +90,7 @@ export class CreateOrderProgrammedService {
           createOrderItemDtoAlt.push({
             of_menu: true,
             amountItem: item.amountItem,
-            dateOrderItem: dayjs().utc(true).toDate(),
+            dateOrderItem: dayjs().utc(false).toDate(),
             method_of_preparation: item.method_of_preparation,
             delivery_date: menuSeleted.dateMenu,
             homologate: "APROVADO",
@@ -126,7 +126,7 @@ export class CreateOrderProgrammedService {
             throw new NotFoundException(`Categoria não encontrada em itens fora do cardapio. Error: fk_category: ${item.fk_categoryOrderItem}`)
           }
           const inter = interAll.find((iInter) => iInter.fk_revenue === item.fk_revenue);
-          
+
           var value = revenue.value
 
           if (inter) {
@@ -144,7 +144,7 @@ export class CreateOrderProgrammedService {
             method_of_preparation: item.method_of_preparation,
             delivery_date: menuSeleted.dateMenu,
             amountItem: item.amountItem,
-            dateOrderItem: dayjs().utc(true).toDate(),
+            dateOrderItem: dayjs().utc(false).toDate(),
             fk_categoryOrderItem: item.fk_categoryOrderItem,
             fk_revenue: item.fk_revenue,
             valueOrderItem: value,
@@ -157,7 +157,7 @@ export class CreateOrderProgrammedService {
 
       const createOrderAlternativeDto: CreateOrderAlternativeDto = {
         fk_orderstatus: "022ac120002-1c69-11ee-be56-0242ac120002",
-        dateOrder: dayjs().utc(true).toDate(),
+        dateOrder: dayjs().utc(false).toDate(),
         valueOrder: valueTotal,
         fk_user: fk_user,
         is_created_by_company: user.is_company ? true : false,

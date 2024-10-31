@@ -114,12 +114,12 @@ export class PatchOrderStatusService {
         const revenue = await this.revenuesRepository.findByOne(item.fk_revenue);
 
         // var dataaa = dayjs(dayjs(item.delivery_date).format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate()
-        var dataaa = dayjs(dayjs(item.delivery_date)).utc(true).toDate()
+        var dataaa = dayjs(dayjs(item.delivery_date)).utc(false).toDate()
 
         if(item.fk_categoryOrderItem == "491aebc2-1c69-11ee-be56-0242ac120002") { // Se for dejejum
         
           // dataaa = dayjs(dayjs(item.delivery_date).subtract(1, 'day').format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate()//
-          dataaa = dayjs(dayjs(item.delivery_date).subtract(1, 'day')).utc(true).toDate()//
+          dataaa = dayjs(dayjs(item.delivery_date).subtract(1, 'day')).utc(false).toDate()//
         
         }
         // CONTROL PRODUCTION PRODUCT
@@ -174,12 +174,12 @@ export class PatchOrderStatusService {
         const revenue = await this.revenuesRepository.findByOne(item.fk_revenue);
   
         // var dataaa = dayjs(dayjs(item.delivery_date).format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate()
-        var dataaa = dayjs(dayjs(item.delivery_date)).utc(true).toDate()
+        var dataaa = dayjs(dayjs(item.delivery_date)).utc(false).toDate()
 
         if(item.fk_categoryOrderItem == "491aebc2-1c69-11ee-be56-0242ac120002") { // Se for dejejum
         
           // dataaa = dayjs(dayjs(item.delivery_date).subtract(1, 'day').format("YYYY-MM-DDT00:00:00Z")).utc(true).toDate()
-          dataaa = dayjs(dayjs(item.delivery_date).subtract(1, 'day')).utc(true).toDate()
+          dataaa = dayjs(dayjs(item.delivery_date).subtract(1, 'day')).utc(false).toDate()
         
         }
 
