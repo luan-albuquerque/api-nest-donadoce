@@ -76,6 +76,7 @@ export class ListKambaService {
       // console.log(item)
       const deliveryHour = dayjs(item.delivery_date).utc(false).hour();
       
+      item.delivery_date = deliveryHour;
 
       if (deliveryHour >= 6 && deliveryHour < 10) {
         const c = result["06:00-10:00"].find(i => i.fk_revenue == item.fk_revenue && item.fk_user == i.fk_user)
@@ -94,7 +95,7 @@ export class ListKambaService {
         }
 
         // result["10:00-13:00"].push(item);
-      } else if (deliveryHour >= 13 && deliveryHour < 15) {
+      } else if (deliveryHour >= 13 && deliveryHour <= 15) {
         
         const c = result["13:00-15:00"].find(i => i.fk_revenue == item.fk_revenue && item.fk_user == i.fk_user)
         if(c){

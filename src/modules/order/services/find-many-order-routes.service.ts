@@ -16,7 +16,7 @@ interface ListDelivery {
   companyClient: ClientCompany;
   revenueDescription: string;
   deliveryDate: Date;
-  item: any;
+  // item: any;
   priority: number;
 }
 
@@ -29,9 +29,10 @@ export class FindManyOrderRoutesService {
 
   async execute(orderType: OrderType) {
     try {
-      const startOfDay = dayjs.utc().startOf('day').toDate();
-      const endOfDay = dayjs.utc().endOf('day').toDate();
-
+      const dataa = new Date()
+      const startOfDay =  dayjs(`${dataa.getFullYear()}-${dataa.getMonth() + 1}-${dataa.getDate()} 00:00:00`).utc(true).toDate()
+      const endOfDay =  dayjs(`${dataa.getFullYear()}-${dataa.getMonth() + 1}-${dataa.getDate()} 23:59:59`).utc(true).toDate()
+       
       const orders = await this.orderRepository.findManyOrderInRoute(
         startOfDay,
         endOfDay,
@@ -40,11 +41,13 @@ export class FindManyOrderRoutesService {
 
       const oListDelivery: ListDelivery[] = [];
 
-      for (const order of orders) {
+      for (const order of orders) {  
+
         for (const orderItem of order.orderItem) {
-          const companyClient = order.company.Client_Company.find(
+          const companyClient = order?.company?.Client_Company.find(
             (c) => c.fk_company === order.fk_company,
           );
+          
 
           const deliveryEntry: ListDelivery = {
             orderNumber: order.numberOrder,
@@ -55,9 +58,10 @@ export class FindManyOrderRoutesService {
             companyClient,
             revenueDescription: orderItem.revenues.description,
             deliveryDate: orderItem.delivery_date,
-            item: orderItem,
+            // item: orderItem,
             priority: order.company.priority,
           };
+
 
           // Checa por uma entrada existente com base na companhia e data de entrega
           const exists = oListDelivery.some(
@@ -66,12 +70,16 @@ export class FindManyOrderRoutesService {
               e.deliveryDate.getTime() === orderItem.delivery_date.getTime(),
           );
 
+          
+
           if (!exists) {
             oListDelivery.push(deliveryEntry);
           }
         }
+        
+        delete order.company.Client_Company;
       }
-
+     
       // Ordena as entregas por prioridade e data de entrega
       oListDelivery.sort((a, b) => {
         if (a.priority !== b.priority) {
