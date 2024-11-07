@@ -68,14 +68,14 @@ export class CreateOrderCoffeService {
 
           valueTotal = (value * item.amountItem) + valueTotal;
           
-          item.delivery_date = dayjs(item.delivery_date).utc(false).add(5, 'h').toDate();
+          item.delivery_date = dayjs(item.delivery_date).utc(false).toDate();
           item.order_time  = dayjs(item.order_time).utc(false).toDate();
  
        
-          const dat =  dayjs(`${item.delivery_date.getFullYear()}-${item.delivery_date.getMonth() + 1}-${item.delivery_date.getDate()} ${item.order_time.getHours()}:${item.order_time.getMinutes()}:${item.order_time.getSeconds()}`).toDate()
+          const dat =  dayjs(`${item.delivery_date.getFullYear()}-${item.delivery_date.getMonth() + 1}-${item.delivery_date.getDate() + 1} ${item.order_time.getHours()}:${item.order_time.getMinutes()}:${item.order_time.getSeconds()}`).toDate()
          
 
-           
+          console.log(dat)
 
           createOrderItemDtoAlt.push({
             of_menu: true,
