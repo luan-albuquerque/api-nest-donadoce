@@ -14,6 +14,7 @@ import { OrderType } from "../../types/ordertype.type";
 import { OrderToBatchDTO } from "../../entities/order-to-batch.entity";
 import { OrderBatchItem } from "src/modules/order_batch_item/entities/order_batch_item.entity";
 import { Prisma } from "@prisma/client";
+import * as dayjs from 'dayjs';
 
 
 @Injectable()
@@ -286,7 +287,11 @@ export class OrderRepositoryInPrisma implements OrderRepository {
     }
 
     async findManyOrderInRoute(date_inicial: Date, date_final: Date, orderType: OrderType): Promise<Order[]> {
-        return await this.prisma.order.findMany({
+
+        const date_inicial_dejejum =  dayjs(`${date_inicial.getFullYear()}-${date_inicial.getMonth() + 1}-${date_inicial.getDate() + 2} 00:00:00`).utc(true).toDate()
+        const date_final_dejejum =  dayjs(`${date_final.getFullYear()}-${date_final.getMonth() + 1}-${date_final.getDate() + 1} 23:59:59`).utc(true).toDate()
+        
+        const data =  await this.prisma.order.findMany({
             include: {
                 orderItem: {
                     include: {
@@ -322,21 +327,26 @@ export class OrderRepositoryInPrisma implements OrderRepository {
 
             },
             where: {
-                fk_orderstatus: "789850813-1c69-11ee-be56-c691200020241",
-                orderItem: {
-                    every: {
-                        AND: [{
-                            delivery_date: {
-                                gte: date_inicial
-                            },
-                        },
-                        {
-                            delivery_date: {
-                                lte: date_final
+                OR:  {
+                      OR:[
+                        { fk_orderstatus: "789850813-1c69-11ee-be56-c691200020241",},
+                        {fk_orderstatus: '45690813-1c69-11ee-be56-c691200020241',}
+                      ],
+                        orderItem: {
+                            every: {
+                                AND: [{
+                                    delivery_date: {
+                                        gte: date_inicial
+                                    },
+                                },
+                                {
+                                    delivery_date: {
+                                        lte: date_final_dejejum
+                                    }
+                                }]
                             }
-                        }]
+                        },
                     }
-                },
             },
             orderBy: {
                 company: {
@@ -348,6 +358,9 @@ export class OrderRepositoryInPrisma implements OrderRepository {
         }).finally(() => {
             this.prisma.$disconnect()
         })
+
+        
+        return data;
     }
     async patchStatusByClient(id: string, fk_status_order: string, comment: string): Promise<void> {
         await this.prisma.order.update({

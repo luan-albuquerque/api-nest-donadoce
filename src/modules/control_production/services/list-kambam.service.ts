@@ -25,7 +25,7 @@ export class ListKambaService {
     const result = {
       "06:00-10:00": [],
       "10:00-13:00": [],
-      "13:00-15:00": [],
+      "13:00-17:00": [],
     };
 
     productions.forEach(item => {
@@ -49,13 +49,13 @@ export class ListKambaService {
           result["10:00-13:00"].push(item);
         }
 
-      } else if (deliveryHour >= 13 && deliveryHour <= 15) {
+      } else if (deliveryHour >= 13 && deliveryHour <= 17) {
         
-        const c = result["13:00-15:00"].find(i => i.fk_revenue == item.fk_revenue)
+        const c = result["13:00-17:00"].find(i => i.fk_revenue == item.fk_revenue)
         if(c){
           c.amount_actual = c.amount_actual + item.amount_actual
         } else {
-          result["13:00-15:00"].push(item);
+          result["13:00-17:00"].push(item);
         }
 
         // result["13:00-15:00"].push(item);
@@ -69,7 +69,7 @@ export class ListKambaService {
     const result = {
       "06:00-10:00": [],
       "10:00-13:00": [],
-      "13:00-15:00": [],
+      "13:00-17:00": [],
     };
 
     productions.forEach(item => {
@@ -95,13 +95,13 @@ export class ListKambaService {
         }
 
         // result["10:00-13:00"].push(item);
-      } else if (deliveryHour >= 13 && deliveryHour <= 15) {
+      } else if (deliveryHour >= 13 && deliveryHour <= 17) {
         
-        const c = result["13:00-15:00"].find(i => i.fk_revenue == item.fk_revenue && item.fk_user == i.fk_user)
+        const c = result["13:00-17:00"].find(i => i.fk_revenue == item.fk_revenue && item.fk_user == i.fk_user)
         if(c){
           c.amount_actual = c.amount_actual + item.amount_actual
         } else {
-          result["13:00-15:00"].push(item);
+          result["13:00-17:00"].push(item);
         }
  
       }

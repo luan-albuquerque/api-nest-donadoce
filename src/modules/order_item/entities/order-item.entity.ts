@@ -14,4 +14,5 @@ export class OrderItem {
     delivery_date: Date
     method_of_preparation: MethodOfPreparationType
     revenues?: Revenue
+    comment?: string;
 }

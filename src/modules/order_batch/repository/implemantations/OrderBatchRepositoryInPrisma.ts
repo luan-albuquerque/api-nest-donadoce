@@ -216,6 +216,9 @@ export class OrderBatchRepositoryInPrisma implements OrderBatchRepository {
                 },
                 numberOrderBatch: numberOrderBatch != undefined ? Number(numberOrderBatch): numberOrderBatch,
             },
+            orderBy:{
+                numberOrderBatch: 'desc'  
+            },
             skip,
             take
         }).finally(() => {
